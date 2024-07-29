@@ -1,4 +1,4 @@
-package com.obss.firstapp.model
+package com.obss.firstapp.model.movieDetail
 
 import com.google.gson.annotations.SerializedName
 
