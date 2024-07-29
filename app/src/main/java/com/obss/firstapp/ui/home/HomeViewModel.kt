@@ -16,15 +16,14 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val movieApi: MovieApiService): ViewModel() {
 
-    private val _popularMovieList = MutableStateFlow<List<Movie>>(emptyList())
-    val popularMovieList: StateFlow<List<Movie>> = _popularMovieList
+    private val _popularMovieList = MutableStateFlow(MovieList(emptyList()))
+    val popularMovieList: StateFlow<MovieList> = _popularMovieList
 
 
     fun getPopularMovies() {
         viewModelScope.launch {
             val response = movieApi.getPopularMovies(1)
             _popularMovieList.update { response }
-            Log.i("HomeViewModel", "Popular movies: $response")
         }
     }
 
