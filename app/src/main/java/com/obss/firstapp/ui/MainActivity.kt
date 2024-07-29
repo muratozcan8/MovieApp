@@ -1,10 +1,11 @@
-package com.obss.firstapp
+package com.obss.firstapp.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.obss.firstapp.R
 
 class MainActivity : AppCompatActivity() {
 
