@@ -8,8 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
 
-    private var threshold = 100
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -20,17 +18,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        printFibonacciNumbers(threshold)
     }
 
-    private fun printFibonacciNumbers(threshold: Int) {
-        var prev = 0
-        var curr = 1
-        while (curr <= threshold) {
-            println(curr)
-            val next = prev + curr
-            prev = curr
-            curr = next
-        }
-    }
 }
