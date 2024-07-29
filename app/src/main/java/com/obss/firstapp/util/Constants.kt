@@ -1,0 +1,12 @@
+package com.obss.firstapp.util
+
+object Constants {
+    const val BASE_URL = "https://api.themoviedb.org/3/"
+    const val API_KEY = "5e20cdb23ef83bd413641d453509d0382"
+    const val BEARER =
+        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZTIwY2RiMjNlZjgzYmQ0MTM2NDFkNDUzNTA5ZDAzOCIsIm5iZiI6MTcyMjIzODQyOS43MDUxOTEsInN1YiI6IjY2YTc0MzkwYWY5ZDMyZDMyYWFiYWE5ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2K5GbmtHtzY_2HATgGcEgpuCxrHd7_TqX-GryrpqWSU"
+    const val POPULAR = "popular"
+    const val TOP_RATED = "top_rated"
+    const val NOW_PLAYING = "now_playing"
+    const val UPCOMING = "upcoming"
+}
