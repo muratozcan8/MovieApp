@@ -13,7 +13,7 @@ interface MovieApiService {
     suspend fun getPopularMovies(@Query("page") page: Int): MovieList
 
     @GET("movie/top_rated")
-    suspend fun getTopRatedMovies(): List<Movie>
+    suspend fun getTopRatedMovies(@Query("page") page: Int): MovieList
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
