@@ -23,7 +23,7 @@ class HomeViewModel @Inject constructor(private val movieApi: MovieApiService): 
 
     fun getPopularMovies() {
         viewModelScope.launch {
-            val response = movieApi.getPopularMovies(1)
+            val response = movieApi.getPopularMovies(2)
             _popularMovieList.update { response }
         }
     }

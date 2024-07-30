@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentHomeBinding
+import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.model.movie.MovieList
+import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -32,11 +35,18 @@ class HomeFragment : Fragment() {
         viewModel.getPopularMovies()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.popularMovieList.collect {
-                Log.i("Popular Movies", it.toString())
+                initRecyclerAdapter(it.results)
             }
         }
 
 
+    }
+
+
+    fun initRecyclerAdapter(popularMovieList : List<Movie>) {
+        val adapter = PopularMovieAdapter()
+        binding.rvPopularMovies.adapter = adapter
+        adapter.updateList(popularMovieList)
     }
 
 }

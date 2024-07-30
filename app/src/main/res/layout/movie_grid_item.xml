@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center_horizontal"
+    android:padding="3dp">
+    
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcv_movie_grid"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="20dp"
+        app:strokeWidth="1dp"
+        app:cardCornerRadius="10dp"
+        android:backgroundTint="#2F2f39"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_movie_grid"
+                android:layout_width="120dp"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/avatars"
+                android:layout_gravity="top|center"/>
+
+            <TextView
+                android:id="@+id/tv_movie_grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="3dp"
+                android:layout_marginTop="6dp"
+                android:lines="2"
+                android:maxLines="2"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:text="Movie Name"
+                android:textColor="@color/white"
+                android:layout_gravity="bottom|center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="6dp">
+                <ImageView
+                    android:id="@+id/iv_movie_score_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/star_24"
+                    android:layout_marginStart="6dp"
+                    app:tint="#FFC107" />
+                <TextView
+                    android:id="@+id/tv_movie_score_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8.57"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="4dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/ib_movie_fav_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/favorite_24"
+                    app:tint="@color/white"
+                    android:layout_marginEnd="6dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
