@@ -38,6 +38,10 @@ class SearchFragment : Fragment() {
 
         viewModel.searchMovies("The Matrix")
 
+        binding.etSearchMovie.setOnFocusChangeListener { view, b ->
+            Log.e("Search", "Focus Changed")
+        }
+
         collectFlow {
             viewModel.searchMovieList.collect {
                 initRecyclerAdapter(it)
