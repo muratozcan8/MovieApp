@@ -3,7 +3,7 @@ package com.obss.firstapp.ui.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.obss.firstapp.model.movie.MovieList
+import com.obss.firstapp.model.MovieSearch
 import com.obss.firstapp.network.MovieApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val movieApi: MovieApiService): ViewModel() {
 
-    private val _searchedMovieList = MutableStateFlow(MovieList(emptyList()))
-    val searchMovieList: StateFlow<MovieList> = _searchedMovieList
+    private val _searchedMovieList = MutableStateFlow<List<MovieSearch>>(emptyList())
+    val searchMovieList: StateFlow<List<MovieSearch>> = _searchedMovieList
 
     private val _loadingStateFlow = MutableStateFlow(false)
     val loadingStateFlow: StateFlow<Boolean> = _loadingStateFlow
@@ -27,8 +27,8 @@ class SearchViewModel @Inject constructor(private val movieApi: MovieApiService)
         _loadingStateFlow.update { true }
         viewModelScope.launch {
             try {
-                val response = movieApi.getPopularMovies(1)
-                _searchedMovieList.update { response }
+                val response = movieApi.searchMovies(query)
+                _searchedMovieList.update { response.results }
             } catch (exception: Exception) {
                 catchException(exception)
             } finally {

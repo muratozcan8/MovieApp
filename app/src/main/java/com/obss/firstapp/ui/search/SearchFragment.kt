@@ -11,6 +11,10 @@ import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.model.MovieSearch
+import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.ui.adapter.PopularMovieAdapter
+import com.obss.firstapp.ui.adapter.SearchMovieAdapter
 import com.obss.firstapp.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -36,9 +40,21 @@ class SearchFragment : Fragment() {
 
         collectFlow {
             viewModel.searchMovieList.collect {
-                Log.e("Search", it.results.toString())
+                initRecyclerAdapter(it)
             }
         }
+
+        collectFlow {
+            viewModel.loadingStateFlow.collect {
+                binding.progressBarSearch.visibility = if(it) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
+    private fun initRecyclerAdapter(searchedMovieList : List<MovieSearch>) {
+        val adapter = SearchMovieAdapter()
+        binding.rvSearchMovie.adapter = adapter
+        adapter.updateList(searchedMovieList)
     }
 
 }

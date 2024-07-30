@@ -32,7 +32,7 @@ interface MovieApiService {
     ): MovieDetail
 
     @GET("search/movie")
-    fun searchMovies(
+    suspend fun searchMovies(
         @Query("query") query: String,
     ): MovieSearchResult
 
