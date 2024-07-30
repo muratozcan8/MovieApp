@@ -14,7 +14,7 @@
         app:cardElevation="20dp"
         app:strokeWidth="1dp"
         app:cardCornerRadius="10dp"
-        android:backgroundTint="#2F2f39"
+        android:backgroundTint="@color/gray_background"
         android:layout_margin="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +68,7 @@
                     app:srcCompat="@drawable/star_24"
                     android:layout_gravity="end"
                     android:layout_marginStart="6dp"
-                    app:tint="#FFC107" />
+                    app:tint="@color/gold" />
                 <TextView
                     android:id="@+id/tv_movie_score_linear"
                     android:layout_width="wrap_content"
