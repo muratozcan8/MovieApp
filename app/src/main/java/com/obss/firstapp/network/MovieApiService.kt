@@ -6,6 +6,7 @@ import com.obss.firstapp.model.credit.Credits
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.model.movieDetail.MovieDetail
+import com.obss.firstapp.model.movieDetail.MovieImage
 import com.obss.firstapp.model.review.Review
 import com.obss.firstapp.model.video.Video
 import retrofit2.http.GET
@@ -48,6 +49,11 @@ interface MovieApiService {
     suspend fun getMovieReviews(
         @Path("movie_id") movieId: Int,
     ): Review
+
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(
+        @Path("movie_id") movieId: Int,
+    ): MovieImage
 
     @GET("movie/{movie_id}/videos")
     suspend fun getMovieVideos(
