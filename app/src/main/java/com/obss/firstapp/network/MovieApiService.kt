@@ -1,10 +1,9 @@
 package com.obss.firstapp.network
 
-import com.obss.firstapp.model.MovieSearchResult
+import com.obss.firstapp.model.movieSearch.MovieSearchResult
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.actor.ActorMovies
 import com.obss.firstapp.model.credit.Credits
-import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.model.movieDetail.MovieImage

@@ -3,7 +3,7 @@ package com.obss.firstapp.ui.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.obss.firstapp.model.MovieSearch
+import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.network.MovieApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

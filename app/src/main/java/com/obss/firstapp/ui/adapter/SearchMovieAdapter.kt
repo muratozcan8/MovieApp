@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
-import com.obss.firstapp.model.MovieSearch
-import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.model.movieSearch.MovieSearch
 import kotlin.math.roundToInt
 
 class SearchMovieAdapter() : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>() {

@@ -7,17 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.obss.firstapp.R
-import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ext.collectFlow
-import com.obss.firstapp.model.MovieSearch
-import com.obss.firstapp.model.movie.Movie
-import com.obss.firstapp.ui.adapter.PopularMovieAdapter
+import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
-import com.obss.firstapp.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
