@@ -1,5 +1,6 @@
 package com.obss.firstapp.network
 
+import com.obss.firstapp.model.MovieSearchResult
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.actor.ActorMovies
 import com.obss.firstapp.model.credit.Credits
@@ -29,6 +30,12 @@ interface MovieApiService {
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int
     ): MovieDetail
+
+    @GET("search/movie")
+    fun searchMovies(
+        @Query("query") query: String,
+    ): MovieSearchResult
+
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieCredits(
