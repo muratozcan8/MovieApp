@@ -34,23 +34,26 @@
                 tools:src="@tools:sample/avatars"
                 android:layout_gravity="top|center"/>
 
-            <TextView
-                android:id="@+id/tv_movie_linear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="6dp"
-                android:lines="2"
-                android:maxLines="2"
-                android:text="Movie Name"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-            <View
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_movie_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:text="Movie Name"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
