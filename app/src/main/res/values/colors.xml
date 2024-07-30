@@ -5,6 +5,7 @@
     <color name="white_transparent">#9AFFFFFF</color>
     <color name="gray_bottom">#F29E9E9E</color>
     <color name="gray_background">#2F2F39</color>
+    <color name="gray_transparent_search">#4DFFFFFF</color>
     <color name="gold">#FFC107</color>
     <color name="red_bottom">#FF1E1E</color>
 </resources>
