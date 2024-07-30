@@ -6,4 +6,5 @@
     <string name="search">Search</string>
     <string name="favorite">Favorite</string>
     <string name="search_movies">Search Movies...</string>
+    <string name="movie_app">Movie App</string>
 </resources>

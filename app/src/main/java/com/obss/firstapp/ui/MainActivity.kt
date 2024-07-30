@@ -3,6 +3,7 @@ package com.obss.firstapp.ui
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.gray_top)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.gray_bottom)
         setupBottomNavigation()
 
     }
