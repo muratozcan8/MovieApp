@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentHomeBinding
+import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
@@ -33,9 +34,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getPopularMovies()
-        viewLifecycleOwner.lifecycleScope.launch {
+        collectFlow {
             viewModel.popularMovieList.collect {
                 initRecyclerAdapter(it.results)
+            }
+        }
+        collectFlow {
+            viewModel.loadingStateFlow.collect {
+                binding.progressBarHome.visibility = if(it) View.VISIBLE else View.GONE
             }
         }
 
@@ -43,7 +49,7 @@ class HomeFragment : Fragment() {
     }
 
 
-    fun initRecyclerAdapter(popularMovieList : List<Movie>) {
+    private fun initRecyclerAdapter(popularMovieList : List<Movie>) {
         val adapter = PopularMovieAdapter()
         binding.rvPopularMovies.adapter = adapter
         adapter.updateList(popularMovieList)

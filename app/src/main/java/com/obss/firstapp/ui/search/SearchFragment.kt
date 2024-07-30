@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.databinding.FragmentSearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
