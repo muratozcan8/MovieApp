@@ -2,16 +2,19 @@ package com.obss.firstapp.ui.search
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -30,10 +33,12 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.searchMovies("The Matrix")
-
-        binding.etSearchMovie.setOnFocusChangeListener { view, b ->
-            Log.e("Search", "Focus Changed")
+        binding.etSearchMovie.addTextChangedListener { searchText ->
+            collectFlow {
+                val text = searchText.toString()
+                delay(1000)
+                if (text == searchText.toString()) viewModel.searchMovies(searchText.toString())
+            }
         }
 
         collectFlow {
