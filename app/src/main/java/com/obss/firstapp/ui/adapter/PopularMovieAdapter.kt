@@ -1,15 +1,11 @@
 package com.obss.firstapp.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.size.Scale
-import com.bumptech.glide.Glide
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.model.movie.Movie
-import com.obss.firstapp.model.movie.MovieList
 
 class PopularMovieAdapter() : RecyclerView.Adapter<PopularMovieAdapter.ViewHolder>() {
 
