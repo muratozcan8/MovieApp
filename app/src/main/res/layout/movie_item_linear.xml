@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcv_movie_linear"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         app:cardElevation="20dp"
         app:strokeWidth="1dp"
         app:cardCornerRadius="10dp"
@@ -28,8 +28,8 @@
             android:orientation="horizontal">
             <ImageView
                 android:id="@+id/iv_movie_linear"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="90dp"
+                android:layout_height="120dp"
                 android:scaleType="centerCrop"
                 tools:src="@tools:sample/avatars"
                 android:layout_gravity="top|center"/>
@@ -48,8 +48,9 @@
                     android:layout_height="wrap_content"
                     android:lines="2"
                     android:maxLines="2"
+                    android:fontFamily="@font/ubuntu_bold"
                     android:text="Movie Name"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -74,6 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8.5"
+                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:layout_gravity="end"
                     android:textColor="@color/white"
