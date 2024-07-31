@@ -84,11 +84,12 @@ class HomeFragment : Fragment() {
         }
         collectFlow {
             adapter.submitData(popularMovieList)
+        }
+        collectFlow {
             adapter.loadStateFlow.collect {
                 val state = it.refresh
                 binding.progressBarHome.isVisible = state is LoadState.Loading
             }
-
         }
     }
 
