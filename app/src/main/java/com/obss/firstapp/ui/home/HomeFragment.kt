@@ -19,6 +19,7 @@ import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentHomeBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.ui.adapter.LoadMoreAdapter
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
@@ -73,12 +74,21 @@ class HomeFragment : Fragment() {
         initRecyclerAdapter(popularMovieList)
     }
 
+    private fun checkLoadMoreMovie(adapter: PopularMovieAdapter) {
+        collectFlow {
+            binding.rvPopularMovies.adapter = adapter.withLoadStateFooter(
+                LoadMoreAdapter{
+                    adapter.retry()
+                }
+            )
+        }
+    }
+
 
     private fun initRecyclerAdapter(popularMovieList: PagingData<Movie>) {
         val adapter = PopularMovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
         adapter.setOnItemClickListener { movie ->
-            Log.e("movie", "movie: $movie")
             val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id!!)
             findNavController().navigate(direction)
         }
@@ -91,6 +101,7 @@ class HomeFragment : Fragment() {
                 binding.progressBarHome.isVisible = state is LoadState.Loading
             }
         }
+        checkLoadMoreMovie(adapter)
     }
 
     companion object {

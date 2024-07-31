@@ -7,4 +7,6 @@
     <string name="favorite">Favorite</string>
     <string name="search_movies">Search Movies...</string>
     <string name="movie_app">Movie App</string>
+    <string name="oppps_please_try_again">Oppps! please try again!</string>
+    <string name="retry">Retry</string>
 </resources>
