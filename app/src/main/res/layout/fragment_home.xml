@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            app:srcCompat="@drawable/favorite_24"/>
+            app:srcCompat="@drawable/movie_play_24"/>
 
         <View
             android:layout_width="0dp"
