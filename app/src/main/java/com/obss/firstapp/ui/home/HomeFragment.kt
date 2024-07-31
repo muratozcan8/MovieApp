@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
         var isGridLayout = true
         private var SPAN_COUNT = 3
         private var SPAN_COUNT_GRID = 3
-        private var SPAN_COUNT_LANDSCAPE_GRID = 5
+        private var SPAN_COUNT_LANDSCAPE_GRID = 6
 
     }
 

@@ -39,7 +39,6 @@
             android:layout_gravity="center"
             app:srcCompat="@drawable/grid_view_24"/>
 
-
     </LinearLayout>
 
 
@@ -50,7 +49,6 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         android:paddingTop="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
