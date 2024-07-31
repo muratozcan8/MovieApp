@@ -48,6 +48,7 @@ dependencies {
     val room_version = "2.6.1"
     val retrofit_version = "2.11.0"
     val hilt_version = "2.46"
+    val paging_version = "3.3.1"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -80,4 +81,8 @@ dependencies {
 
     //coil
     implementation("io.coil-kt:coil:2.7.0")
+
+    //paging
+    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
+    implementation("androidx.paging:paging-common-ktx:$paging_version")
 }

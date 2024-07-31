@@ -3,17 +3,19 @@ package com.obss.firstapp.ui.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
 import com.obss.firstapp.model.movie.Movie
-import com.obss.firstapp.ui.home.HomeFragment
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class PopularMovieAdapter(private var isGridLayout: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var popularMovieList: List<Movie> = listOf()
+class PopularMovieAdapter @Inject constructor(
+    private var isGridLayout: Boolean)
+    : PagingDataAdapter<Movie, RecyclerView.ViewHolder>(differCallback) {
 
     inner class GridViewHolder(val binding: MovieGridItemBinding) : RecyclerView.ViewHolder(binding.root)
     inner class LinearViewHolder(val binding: MovieItemLinearBinding) : RecyclerView.ViewHolder(binding.root)
@@ -28,26 +30,30 @@ class PopularMovieAdapter(private var isGridLayout: Boolean) : RecyclerView.Adap
         }
     }
 
-    override fun getItemCount(): Int = popularMovieList.size
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val movie = popularMovieList[position]
+        val movie = getItem(position)
         if (holder is GridViewHolder) {
-            holder.binding.ivMovieGrid.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
-            holder.binding.tvMovieGrid.text = movie.title
-            holder.binding.tvMovieScoreGrid.text = (((movie.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+            holder.binding.ivMovieGrid.load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+            holder.binding.tvMovieGrid.text = movie?.title
+            holder.binding.tvMovieScoreGrid.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
         } else if (holder is LinearViewHolder) {
-            holder.binding.ivMovieLinear.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
-            holder.binding.tvMovieLinear.text = movie.title
-            holder.binding.tvMovieScoreLinear.text = (((movie.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+            holder.binding.ivMovieLinear.load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+            holder.binding.tvMovieLinear.text = movie?.title
+            holder.binding.tvMovieScoreLinear.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+        }
+        holder.setIsRecyclable(false)
+    }
+
+    companion object {
+        val differCallback = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem == newItem
+            }
         }
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateList(newList: List<Movie>) {
-        popularMovieList = newList
-        notifyDataSetChanged()
-    }
-
-
 }

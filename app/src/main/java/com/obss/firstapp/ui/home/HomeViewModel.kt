@@ -3,9 +3,16 @@ package com.obss.firstapp.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.network.MovieApiService
+import com.obss.firstapp.paging.MoviesPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,45 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val movieApi: MovieApiService): ViewModel() {
 
-    private val _popularMovieList = MutableStateFlow(MovieList(emptyList()))
-    val popularMovieList: StateFlow<MovieList> = _popularMovieList
-
-    private val _topRatedMovieList = MutableStateFlow(MovieList(emptyList()))
-    val topRatedMovieList: StateFlow<MovieList> = _popularMovieList
-
-    private val _loadingStateFlow = MutableStateFlow(false)
-    val loadingStateFlow: StateFlow<Boolean> = _loadingStateFlow
-
-
-    fun getPopularMovies() {
-        _loadingStateFlow.update { true }
-        viewModelScope.launch {
-            try {
-                val response = movieApi.getPopularMovies(1)
-                _popularMovieList.update { response }
-            } catch (exception: Exception) {
-                catchException(exception)
-            } finally {
-                _loadingStateFlow.update { false }
-            }
-
-        }
-    }
-
-    fun getTopRatedMovies() {
-        _loadingStateFlow.update { true }
-        viewModelScope.launch {
-            try {
-                val response = movieApi.getTopRatedMovies(1)
-                _topRatedMovieList.update { response }
-            } catch (exception: Exception) {
-                catchException(exception)
-            } finally {
-                _loadingStateFlow.update { false }
-            }
-
-        }
-    }
+    val movieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
+        MoviesPagingSource(movieApi)
+    }.flow.cachedIn(viewModelScope)
 
     private fun catchException(exception: Exception) {
         when (exception) {

@@ -7,18 +7,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentHomeBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movie.Movie
-import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.last
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -40,27 +44,24 @@ class HomeFragment : Fragment() {
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
 
-        viewModel.getPopularMovies()
-
         binding.ibMovieHomeLayout.setOnClickListener {
             isGridLayout = !isGridLayout
-            setViewLayout(viewModel.popularMovieList.value.results)
+            collectFlow {
+                viewModel.movieList.collect {
+                    setLayoutView(it)
+                }
+            }
         }
 
         collectFlow {
-            viewModel.popularMovieList.collect {
-                initRecyclerAdapter(it.results)
-                setViewLayout(it.results)
-            }
-        }
-        collectFlow {
-            viewModel.loadingStateFlow.collect {
-                binding.progressBarHome.visibility = if(it) View.VISIBLE else View.GONE
+            viewModel.movieList.collect {
+                initRecyclerAdapter(it)
+                setLayoutView(it)
             }
         }
     }
 
-    private fun setViewLayout(popularMovieList: List<Movie>) {
+    private fun setLayoutView(popularMovieList: PagingData<Movie>) {
         if (isGridLayout) {
             binding.ibMovieHomeLayout.setImageResource(R.drawable.linear_view_24)
             binding.rvPopularMovies.layoutManager = GridLayoutManager(context, SPAN_COUNT)
@@ -72,10 +73,16 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun initRecyclerAdapter(popularMovieList : List<Movie>) {
+    private fun initRecyclerAdapter(popularMovieList: PagingData<Movie>) {
         val adapter = PopularMovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
-        adapter.updateList(popularMovieList)
+        collectFlow {
+            adapter.submitData(popularMovieList)
+            adapter.loadStateFlow.collect {
+                val state = it.refresh
+                binding.progressBarHome.isVisible = state is LoadState.Loading
+            }
+        }
     }
 
     companion object {
