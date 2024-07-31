@@ -11,7 +11,7 @@ import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.ui.home.HomeFragment
 import kotlin.math.roundToInt
 
-class PopularMovieAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PopularMovieAdapter(private var isGridLayout: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var popularMovieList: List<Movie> = listOf()
 
@@ -21,7 +21,7 @@ class PopularMovieAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class LinearViewHolder(val binding: MovieItemLinearBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (HomeFragment.isGridLayout) {
+        return if (isGridLayout) {
             val binding = MovieGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             GridViewHolder(binding)
         } else {

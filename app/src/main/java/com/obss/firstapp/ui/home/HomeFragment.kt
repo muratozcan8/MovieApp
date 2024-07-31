@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
 
 
     private fun initRecyclerAdapter(popularMovieList : List<Movie>) {
-        val adapter = PopularMovieAdapter()
+        val adapter = PopularMovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
         adapter.updateList(popularMovieList)
     }
@@ -82,9 +82,7 @@ class HomeFragment : Fragment() {
         var isGridLayout = true
         private var SPAN_COUNT = 3
         private var SPAN_COUNT_GRID = 3
-        private var SPAN_COUNT_LINEAR = 1
         private var SPAN_COUNT_LANDSCAPE_GRID = 5
-        private var SPAN_COUNT_LANDSCAPE_LINEAR = 2
 
     }
 
