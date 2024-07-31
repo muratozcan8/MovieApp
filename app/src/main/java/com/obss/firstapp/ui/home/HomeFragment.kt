@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -76,12 +77,18 @@ class HomeFragment : Fragment() {
     private fun initRecyclerAdapter(popularMovieList: PagingData<Movie>) {
         val adapter = PopularMovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
+        adapter.setOnItemClickListener { movie ->
+            Log.e("movie", "movie: $movie")
+            val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id!!)
+            findNavController().navigate(direction)
+        }
         collectFlow {
             adapter.submitData(popularMovieList)
             adapter.loadStateFlow.collect {
                 val state = it.refresh
                 binding.progressBarHome.isVisible = state is LoadState.Loading
             }
+
         }
     }
 

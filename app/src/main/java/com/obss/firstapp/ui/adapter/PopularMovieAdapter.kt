@@ -41,7 +41,16 @@ class PopularMovieAdapter @Inject constructor(
             holder.binding.tvMovieLinear.text = movie?.title
             holder.binding.tvMovieScoreLinear.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
         }
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(movie!!) }
+        }
         holder.setIsRecyclable(false)
+    }
+
+    private var onItemClickListener: ((Movie) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Movie) -> Unit) {
+        onItemClickListener = listener
     }
 
     companion object {

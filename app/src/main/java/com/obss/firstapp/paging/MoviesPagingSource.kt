@@ -20,10 +20,6 @@ class MoviesPagingSource(private val apiService: MovieApiService) : PagingSource
             val responseData = mutableListOf<Movie>()
             responseData.addAll(data)
 
-            Log.e("Paging", "Current Page: $currentPage")
-            Log.e("Paging", "Response Data: $responseData")
-            Log.e("Paging", "Data: $data")
-
             LoadResult.Page(
                 data = responseData,
                 prevKey = if (currentPage == 1) null else -1,
