@@ -15,8 +15,6 @@ class PopularMovieAdapter(private var isGridLayout: Boolean) : RecyclerView.Adap
 
     private var popularMovieList: List<Movie> = listOf()
 
-    //inner class ViewHolder(val binding: MovieGridItemBinding) : RecyclerView.ViewHolder(binding.root) {}
-
     inner class GridViewHolder(val binding: MovieGridItemBinding) : RecyclerView.ViewHolder(binding.root)
     inner class LinearViewHolder(val binding: MovieItemLinearBinding) : RecyclerView.ViewHolder(binding.root)
 
