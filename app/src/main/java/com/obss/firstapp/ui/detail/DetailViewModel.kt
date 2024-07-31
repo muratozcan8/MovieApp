@@ -3,7 +3,12 @@ package com.obss.firstapp.ui.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.obss.firstapp.model.actor.Actor
+import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movieDetail.MovieDetail
+import com.obss.firstapp.model.movieDetail.MovieImage
+import com.obss.firstapp.model.movieDetail.MoviePoster
+import com.obss.firstapp.model.review.ReviewResult
 import com.obss.firstapp.network.MovieApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +24,16 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
     private val _movie = MutableStateFlow<MovieDetail?>(null)
     val movie: StateFlow<MovieDetail?> = _movie
 
+    private val _movieImages = MutableStateFlow<List<MoviePoster>>(listOf())
+    val movieImages: StateFlow<List<MoviePoster>> = _movieImages
+
+    private val _movieCasts = MutableStateFlow<List<Cast>>(listOf())
+    val movieCasts: StateFlow<List<Cast>> = _movieCasts
+
+    private val _movieReviews = MutableStateFlow<List<ReviewResult>>(listOf())
+    val movieReviews: StateFlow<List<ReviewResult>> = _movieReviews
+
+
     fun getMovieDetails(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -29,6 +44,40 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
             }
         }
     }
+
+    fun getMovieImages(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = movieApi.getMovieImages(movieId)
+                _movieImages.value = response.posters!!
+            } catch (exception: Exception) {
+                catchException(exception)
+            }
+        }
+    }
+
+    fun getMovieCasts(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = movieApi.getMovieCredits(movieId)
+                _movieCasts.value = response.cast
+            } catch (exception: Exception) {
+                catchException(exception)
+            }
+        }
+    }
+
+    fun getMovieReviews(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = movieApi.getMovieReviews(movieId)
+                _movieReviews.value = response.results
+            } catch (exception: Exception) {
+                catchException(exception)
+            }
+        }
+    }
+
 
     private fun catchException(exception: Exception) {
         when (exception) {

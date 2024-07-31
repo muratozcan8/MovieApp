@@ -30,12 +30,34 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val movieId = arguments?.getInt("movieId")
         viewModel.getMovieDetails(movieId!!)
+        viewModel.getMovieImages(movieId)
+        viewModel.getMovieCasts(movieId)
+        viewModel.getMovieReviews(movieId)
+
         collectFlow {
             viewModel.movie.collect { movie ->
                 Log.e("movie", movie?.title.toString())
                 Log.e("movie", movie?.releaseDate.toString())
                 Log.e("movie", movie?.overview.toString())
             }
+        }
+        collectFlow {
+            viewModel.movieImages.collect { images ->
+                Log.e("images", images.toString())
+            }
+        }
+
+        collectFlow {
+            viewModel.movieCasts.collect { casts ->
+                Log.e("casts", casts.toString())
+            }
+        }
+
+        collectFlow {
+            viewModel.movieReviews.collect { reviews ->
+                Log.e("reviews", reviews.toString())
+            }
+
         }
 
 
