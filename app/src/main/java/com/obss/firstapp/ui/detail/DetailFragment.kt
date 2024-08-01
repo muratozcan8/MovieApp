@@ -10,6 +10,10 @@ import androidx.fragment.app.viewModels
 import coil.load
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.model.credit.Cast
+import com.obss.firstapp.model.movieSearch.MovieSearch
+import com.obss.firstapp.ui.adapter.ActorListAdapter
+import com.obss.firstapp.ui.adapter.SearchMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -52,7 +56,10 @@ class DetailFragment : Fragment() {
 
         collectFlow {
             viewModel.movieCasts.collect { casts ->
-                //Log.e("casts", casts.toString())
+                if (casts.isNotEmpty()) {
+                    initRecyclerAdapter(casts)
+                    binding.tvActors.text = casts.take(3).joinToString(", ") { it.name.toString() }
+                }
             }
         }
 
@@ -60,10 +67,13 @@ class DetailFragment : Fragment() {
             viewModel.movieReviews.collect { reviews ->
                 //Log.e("reviews", reviews.toString())
             }
-
         }
+    }
 
-
+    private fun initRecyclerAdapter(actorList : List<Cast>) {
+        val adapter = ActorListAdapter()
+        binding.rvActors.adapter = adapter
+        adapter.updateList(actorList)
     }
 
 }
