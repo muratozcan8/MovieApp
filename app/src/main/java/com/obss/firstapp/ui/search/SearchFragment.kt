@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movieSearch.MovieSearch
+import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
 import com.obss.firstapp.ui.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +35,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as MainActivity).changeVisibilityBottomBar(true)
         binding.etSearchMovie.addTextChangedListener { searchText ->
             collectFlow {
                 val text = searchText.toString()

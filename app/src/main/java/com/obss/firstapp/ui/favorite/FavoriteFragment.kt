@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.databinding.FragmentHomeBinding
+import com.obss.firstapp.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,5 +26,6 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).changeVisibilityBottomBar(true)
     }
 }

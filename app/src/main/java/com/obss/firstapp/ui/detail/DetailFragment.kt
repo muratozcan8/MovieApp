@@ -13,6 +13,7 @@ import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movieDetail.Genre
+import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +35,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).changeVisibilityBottomBar(false)
         val movieId = arguments?.getInt("movieId")
         viewModel.getMovieDetails(movieId!!)
         viewModel.getMovieImages(movieId)
@@ -47,13 +49,13 @@ class DetailFragment : Fragment() {
                 binding.tvMovieDate.text = movie?.releaseDate?.take(4)
                 binding.tvMovieTime.text = movie?.runtime?.roundToInt().toString() + " min"
                 binding.tvSummary.text = movie?.overview
-                if (movie?.genres != null) initGenresRecyclerAdapter(movie?.genres!!)
+                if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
             }
         }
         collectFlow {
             viewModel.movieImages.collect { images ->
                 Log.e("images", images.toString())
-                if (images.isNotEmpty()) binding.ivMovie.load("https://image.tmdb.org/t/p/w500${images[1].filePath}")
+                if (images.isNotEmpty()) binding.ivMovie.load("https://image.tmdb.org/t/p/w500${images[0].filePath}")
             }
         }
 
@@ -73,8 +75,7 @@ class DetailFragment : Fragment() {
         }
 
         binding.ivBackButton.setOnClickListener {
-            val action = DetailFragmentDirections.actionDetailFragmentToHomeFragment()
-            findNavController().navigate(action)
+            findNavController().popBackStack()
         }
     }
 

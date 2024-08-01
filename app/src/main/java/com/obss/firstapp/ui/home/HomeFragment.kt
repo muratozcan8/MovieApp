@@ -19,6 +19,7 @@ import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentHomeBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.LoadMoreAdapter
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).changeVisibilityBottomBar(true)
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
