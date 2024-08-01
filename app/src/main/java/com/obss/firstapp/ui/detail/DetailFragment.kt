@@ -44,6 +44,7 @@ class DetailFragment : Fragment() {
             viewModel.movie.collect { movie ->
                 binding.tvMovieTitle.text = movie?.title
                 binding.tvMovieScore.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+                binding.tvMovieDate.text = movie?.releaseDate?.take(4)
                 binding.tvMovieTime.text = movie?.runtime?.roundToInt().toString() + " min"
                 binding.tvSummary.text = movie?.overview
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie?.genres!!)

@@ -126,6 +126,25 @@
                     app:layout_constraintTop_toTopOf="parent"
                     />
 
+                <TextView
+                    android:id="@+id/tv_movie_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:layout_marginStart="8dp"
+                    app:drawableStartCompat="@drawable/date_24"
+                    app:drawableTint="@color/white"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_movie_time"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
