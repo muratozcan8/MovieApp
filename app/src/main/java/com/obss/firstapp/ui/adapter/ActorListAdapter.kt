@@ -19,7 +19,7 @@ class ActorListAdapter() : RecyclerView.Adapter<ActorListAdapter.ViewHolder>()  
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = actorList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val actor = actorList[position]
