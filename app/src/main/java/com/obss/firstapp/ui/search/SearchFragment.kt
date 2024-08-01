@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
+import com.obss.firstapp.ui.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -58,6 +60,10 @@ class SearchFragment : Fragment() {
         val adapter = SearchMovieAdapter()
         binding.rvSearchMovie.adapter = adapter
         adapter.updateList(searchedMovieList)
+        adapter.setOnItemClickListener { movie ->
+            val direction = SearchFragmentDirections.actionSearchFragmentToDetailFragment(movie.id!!)
+            findNavController().navigate(direction)
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
+import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieSearch.MovieSearch
 import kotlin.math.roundToInt
 
@@ -28,6 +29,15 @@ class SearchMovieAdapter() : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>
         holder.binding.ivMovieGrid.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
         holder.binding.tvMovieGrid.text = movie.title
         holder.binding.tvMovieScoreGrid.text = (((movie.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(movie) }
+        }
+    }
+
+    private var onItemClickListener: ((MovieSearch) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (MovieSearch) -> Unit) {
+        onItemClickListener = listener
     }
 
     fun updateList(newList: List<MovieSearch>) {
