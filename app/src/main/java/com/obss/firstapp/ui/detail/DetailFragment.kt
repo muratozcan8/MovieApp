@@ -16,6 +16,7 @@ import com.obss.firstapp.model.movieDetail.Genre
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
+import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -54,8 +55,12 @@ class DetailFragment : Fragment() {
         }
         collectFlow {
             viewModel.movieImages.collect { images ->
-                Log.e("images", images.toString())
-                if (images.isNotEmpty()) binding.ivMovie.load("https://image.tmdb.org/t/p/w500${images[0].filePath}")
+                val adapter = MovieImageAdapter()
+                binding.ivMovie.adapter = adapter
+                binding.ivMovie.offscreenPageLimit = 3
+                binding.ivMovie.clipToPadding = false
+                binding.ivMovie.setPadding(100, 0, 100, 0)
+                adapter.updateList(images)
             }
         }
 
