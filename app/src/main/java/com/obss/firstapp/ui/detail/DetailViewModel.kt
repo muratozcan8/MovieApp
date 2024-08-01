@@ -33,6 +33,9 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
     private val _movieReviews = MutableStateFlow<List<ReviewResult>>(listOf())
     val movieReviews: StateFlow<List<ReviewResult>> = _movieReviews
 
+    private val _actor = MutableStateFlow<Actor?>(null)
+    val actor: StateFlow<Actor?> = _actor
+
 
     fun getMovieDetails(movieId: Int) {
         viewModelScope.launch {
@@ -72,6 +75,17 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
             try {
                 val response = movieApi.getMovieReviews(movieId)
                 _movieReviews.value = response.results
+            } catch (exception: Exception) {
+                catchException(exception)
+            }
+        }
+    }
+
+    fun getActorDetails(actorId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = movieApi.getActorDetails(actorId)
+                _actor.value = response
             } catch (exception: Exception) {
                 catchException(exception)
             }

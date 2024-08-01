@@ -1,16 +1,23 @@
 package com.obss.firstapp.ui.detail
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movieDetail.Genre
 import com.obss.firstapp.ui.MainActivity
@@ -59,7 +66,7 @@ class DetailFragment : Fragment() {
                 binding.ivMovie.adapter = adapter
                 binding.ivMovie.offscreenPageLimit = 3
                 binding.ivMovie.clipToPadding = false
-                binding.ivMovie.setPadding(100, 0, 100, 0)
+                binding.ivMovie.setPadding(0, 0, 0, 0)
                 adapter.updateList(images)
             }
         }
@@ -88,12 +95,35 @@ class DetailFragment : Fragment() {
         val adapter = ActorListAdapter()
         binding.rvActors.adapter = adapter
         adapter.updateList(actorList)
+        adapter.setOnItemClickListener { actor ->
+            viewModel.getActorDetails(actor.id!!)
+            collectFlow {
+                viewModel.actor.collect { actorDetail ->
+                    if (actorDetail != null) showActorDialog(actorDetail)
+                }
+            }
+        }
     }
 
     private fun initGenresRecyclerAdapter(categoryList : List<Genre>) {
         val adapter = MovieCategoryAdapter()
         binding.rvCategory.adapter = adapter
         adapter.updateList(categoryList)
+    }
+
+    private fun showActorDialog(actor: Actor) {
+        val actorDialog = layoutInflater.inflate(R.layout.bottomsheet_dialog, null)
+        val dialog = BottomSheetDialog(requireContext(), R.style.DialogAnimation)
+        dialog.setContentView(actorDialog)
+        dialog.dismiss()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
+        dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
+        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = actor.birthday
+        dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text = actor.placeOfBirth
+        dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = actor.homepage.toString()
+        dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = actor.biography
+        dialog.show()
     }
 
 }

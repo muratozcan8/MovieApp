@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.ActorItemBinding
 import com.obss.firstapp.model.credit.Cast
+import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieSearch.MovieSearch
 
 class ActorListAdapter() : RecyclerView.Adapter<ActorListAdapter.ViewHolder>()  {
@@ -24,6 +25,15 @@ class ActorListAdapter() : RecyclerView.Adapter<ActorListAdapter.ViewHolder>()  
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val actor = actorList[position]
         holder.binding.ivActor.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(actor) }
+        }
+    }
+
+    private var onItemClickListener: ((Cast) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Cast) -> Unit) {
+        onItemClickListener = listener
     }
 
     fun updateList(newList: List<Cast>) {
