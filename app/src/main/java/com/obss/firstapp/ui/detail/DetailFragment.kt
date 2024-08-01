@@ -25,6 +25,7 @@ import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -99,7 +100,11 @@ class DetailFragment : Fragment() {
             viewModel.getActorDetails(actor.id!!)
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
-                    if (actorDetail != null) showActorDialog(actorDetail)
+                    if (actorDetail != null) {
+                        showActorDialog(actorDetail)
+                        cancel()
+                    }
+
                 }
             }
         }
@@ -115,7 +120,6 @@ class DetailFragment : Fragment() {
         val actorDialog = layoutInflater.inflate(R.layout.bottomsheet_dialog, null)
         val dialog = BottomSheetDialog(requireContext(), R.style.DialogAnimation)
         dialog.setContentView(actorDialog)
-        dialog.dismiss()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name

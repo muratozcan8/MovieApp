@@ -82,6 +82,7 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
     }
 
     fun getActorDetails(actorId: Int) {
+        _actor.value = null
         viewModelScope.launch {
             try {
                 val response = movieApi.getActorDetails(actorId)
