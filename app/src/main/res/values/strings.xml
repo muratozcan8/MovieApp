@@ -9,4 +9,6 @@
     <string name="movie_app">Movie App</string>
     <string name="oppps_please_try_again">Oppps! please try again!</string>
     <string name="retry">Retry</string>
+    <string name="summary">Summary</string>
+    <string name="actors">Actors</string>
 </resources>

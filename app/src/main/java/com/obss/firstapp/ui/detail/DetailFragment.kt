@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.obss.firstapp.R
+import coil.load
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -36,26 +37,28 @@ class DetailFragment : Fragment() {
 
         collectFlow {
             viewModel.movie.collect { movie ->
-                Log.e("movie", movie?.title.toString())
-                Log.e("movie", movie?.releaseDate.toString())
-                Log.e("movie", movie?.overview.toString())
+                binding.tvMovieTitle.text = movie?.title
+                binding.tvMovieScore.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+                binding.tvMovieTime.text = movie?.runtime?.roundToInt().toString()
+                binding.tvSummary.text = movie?.overview
             }
         }
         collectFlow {
             viewModel.movieImages.collect { images ->
                 Log.e("images", images.toString())
+                if (images.isNotEmpty()) binding.ivMovie.load("https://image.tmdb.org/t/p/w500${images[0].filePath}")
             }
         }
 
         collectFlow {
             viewModel.movieCasts.collect { casts ->
-                Log.e("casts", casts.toString())
+                //Log.e("casts", casts.toString())
             }
         }
 
         collectFlow {
             viewModel.movieReviews.collect { reviews ->
-                Log.e("reviews", reviews.toString())
+                //Log.e("reviews", reviews.toString())
             }
 
         }
