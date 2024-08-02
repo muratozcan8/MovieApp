@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
+import com.obss.firstapp.databinding.BottomsheetDialogBinding
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.actor.Actor
@@ -123,9 +124,9 @@ class DetailFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
-        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = actor.birthday
-        dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text = actor.placeOfBirth
-        dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = actor.homepage.toString()
+        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.toString()
+        dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text = if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
+        dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = actor.biography
         dialog.show()
     }
