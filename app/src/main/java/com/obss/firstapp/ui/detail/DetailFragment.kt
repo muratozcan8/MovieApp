@@ -100,7 +100,7 @@ class DetailFragment : Fragment() {
             viewModel.getActorDetails(actor.id!!)
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
-                    if (actorDetail != null) {
+                    if (actorDetail != null && actor.id == actorDetail.id!!) {
                         showActorDialog(actorDetail)
                         cancel()
                     }
