@@ -18,22 +18,41 @@
         app:layout_constraintEnd_toEndOf="parent">
 
 
-        <ImageView
-            android:id="@+id/tv_movie_app"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleButton"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="4dp"
-            app:srcCompat="@drawable/movie_play_24"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content">
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/m_btn_popular"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/popular"
+                />
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/m_btn_top_rated"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/top_rated"
+                />
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/m_btn_now_playing"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/now_playing"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <ImageButton
             android:id="@+id/ib_movie_home_layout"
             android:layout_width="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:srcCompat="@drawable/grid_view_24"/>

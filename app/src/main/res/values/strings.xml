@@ -13,4 +13,7 @@
     <string name="actors">Actors</string>
     <string name="biography">Biography</string>
     <string name="recommendations">Recommendations</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="now_playing">Now Playing</string>
 </resources>

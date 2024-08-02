@@ -25,6 +25,11 @@ interface MovieApiService {
         @Query("page") page: Int
     ): MovieList
 
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovies(
+        @Query("page") page: Int
+    ): MovieList
+
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int

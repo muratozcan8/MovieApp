@@ -8,15 +8,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.obss.firstapp.model.movie.Movie
-import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.network.MovieApiService
-import com.obss.firstapp.paging.MoviesPagingSource
+import com.obss.firstapp.paging.PopularMoviesPagingSource
+import com.obss.firstapp.paging.TopRatedMoviesPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -24,8 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val movieApi: MovieApiService): ViewModel() {
 
-    val movieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
-        MoviesPagingSource(movieApi)
+    val popularMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
+        PopularMoviesPagingSource(movieApi)
+    }.flow.cachedIn(viewModelScope)
+
+    val topRatedMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
+        TopRatedMoviesPagingSource(movieApi)
     }.flow.cachedIn(viewModelScope)
 
     private fun catchException(exception: Exception) {

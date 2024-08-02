@@ -1,13 +1,12 @@
 package com.obss.firstapp.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.network.MovieApiService
 import retrofit2.HttpException
 
-class MoviesPagingSource(private val apiService: MovieApiService) : PagingSource<Int, Movie>() {
+class PopularMoviesPagingSource(private val apiService: MovieApiService) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return null
     }

@@ -2,6 +2,7 @@ package com.obss.firstapp.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -36,10 +37,13 @@ class PopularMovieAdapter @Inject constructor(
             holder.binding.ivMovieGrid.load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
             holder.binding.tvMovieGrid.text = movie?.title
             holder.binding.tvMovieScoreGrid.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+            if (movie != null) holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
+
         } else if (holder is LinearViewHolder) {
             holder.binding.ivMovieLinear.load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
             holder.binding.tvMovieLinear.text = movie?.title
             holder.binding.tvMovieScoreLinear.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+            if (movie != null) holder.binding.ibMovieFavLinear.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
         }
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { it(movie!!) }

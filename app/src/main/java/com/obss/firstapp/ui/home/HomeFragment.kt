@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         changeVisibilityBottomBar(true)
         changeSpanCount()
         setLayoutButton()
-        getPopularMovies()
+        setMovieTypeButtons()
     }
 
     private fun setLayoutView(popularMovieList: PagingData<Movie>) {
@@ -72,9 +72,38 @@ class HomeFragment : Fragment() {
 
     private fun getPopularMovies() {
         collectFlow {
-            viewModel.movieList.collect {
+            viewModel.popularMovieList.collect {
                 initRecyclerAdapter(it)
                 setLayoutView(it)
+            }
+        }
+    }
+
+    private fun getTopRatedMovies() {
+        collectFlow {
+            viewModel.topRatedMovieList.collect {
+                initRecyclerAdapter(it)
+                setLayoutView(it)
+            }
+        }
+    }
+
+    private fun setMovieTypeButtons() {
+        binding.toggleButton.check(binding.mBtnPopular.id)
+        getPopularMovies()
+        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.m_btn_popular -> {
+                        getPopularMovies()
+                    }
+                    R.id.m_btn_top_rated -> {
+                        getTopRatedMovies()
+                    }
+                    R.id.m_btn_now_playing -> {
+                        //getNowPlayingMovies()
+                    }
+                }
             }
         }
     }
@@ -89,7 +118,7 @@ class HomeFragment : Fragment() {
         binding.ibMovieHomeLayout.setOnClickListener {
             isGridLayout = !isGridLayout
             collectFlow {
-                viewModel.movieList.collect {
+                viewModel.popularMovieList.collect {
                     setLayoutView(it)
                 }
             }
