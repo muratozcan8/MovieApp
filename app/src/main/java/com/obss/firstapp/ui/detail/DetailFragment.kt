@@ -1,9 +1,9 @@
 package com.obss.firstapp.ui.detail
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
-import com.obss.firstapp.databinding.BottomsheetDialogBinding
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.actor.Actor
@@ -85,14 +85,18 @@ class DetailFragment : Fragment() {
         viewModel.getMovieReviews(movieId)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun fillMovieDetails() {
         collectFlow {
             viewModel.movie.collect { movie ->
                 binding.tvMovieTitle.text = movie?.title
-                binding.tvMovieScore.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
-                binding.tvMovieDate.text = movie?.releaseDate?.take(4)
-                binding.tvMovieTime.text = movie?.runtime?.roundToInt().toString() + " min"
-                binding.tvSummary.text = movie?.overview
+                binding.tvMovieScore.text = if (movie?.voteAverage != null)
+                        (((movie.voteAverage.times(10)).roundToInt()) / 10.0).toString() else "-"
+                binding.tvMovieDate.text = if (movie?.releaseDate.isNullOrEmpty()) "-"
+                    else movie?.releaseDate?.take(DATE_LENGTH)
+                binding.tvMovieTime.text = if (movie?.runtime != null)
+                    movie.runtime.roundToInt().toString() + " min" else "-"
+                binding.tvSummary.text = if (movie?.overview.isNullOrEmpty()) "-" else movie?.overview
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
             }
         }
@@ -111,12 +115,15 @@ class DetailFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun fillActorDetails() {
         collectFlow {
             viewModel.movieCasts.collect { casts ->
                 if (casts.isNotEmpty()) {
                     initActorsRecyclerAdapter(casts.take(ACTOR_COUNT))
                     binding.tvActors.text = casts.take(ACTOR_COUNT).joinToString(", ") { it.name.toString() }
+                } else {
+                    binding.tvActors.text = "-"
                 }
             }
         }
@@ -148,6 +155,7 @@ class DetailFragment : Fragment() {
 
     companion object {
         private const val ACTOR_COUNT = 3
+        private const val DATE_LENGTH = 4
     }
 
 }
