@@ -45,52 +45,12 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).changeVisibilityBottomBar(false)
-        val movieId = arguments?.getInt("movieId")
-        viewModel.getMovieDetails(movieId!!)
-        viewModel.getMovieImages(movieId)
-        viewModel.getMovieCasts(movieId)
-        viewModel.getMovieReviews(movieId)
-
-        collectFlow {
-            viewModel.movie.collect { movie ->
-                binding.tvMovieTitle.text = movie?.title
-                binding.tvMovieScore.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
-                binding.tvMovieDate.text = movie?.releaseDate?.take(4)
-                binding.tvMovieTime.text = movie?.runtime?.roundToInt().toString() + " min"
-                binding.tvSummary.text = movie?.overview
-                if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
-            }
-        }
-        collectFlow {
-            viewModel.movieImages.collect { images ->
-                val adapter = MovieImageAdapter()
-                binding.ivMovie.adapter = adapter
-                binding.ivMovie.offscreenPageLimit = 3
-                binding.ivMovie.clipToPadding = false
-                binding.ivMovie.setPadding(0, 0, 0, 0)
-                adapter.updateList(images)
-            }
-        }
-
-        collectFlow {
-            viewModel.movieCasts.collect { casts ->
-                if (casts.isNotEmpty()) {
-                    initActorsRecyclerAdapter(casts.take(3))
-                    binding.tvActors.text = casts.take(3).joinToString(", ") { it.name.toString() }
-                }
-            }
-        }
-
-        collectFlow {
-            viewModel.movieReviews.collect { reviews ->
-                //Log.e("reviews", reviews.toString())
-            }
-        }
-
-        binding.ivBackButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        changeVisibilityBottomBar(false)
+        getMovieDetailsInfo()
+        fillMovieDetails()
+        fillMovieImages()
+        fillActorDetails()
+        setBackButton()
     }
 
     private fun initActorsRecyclerAdapter(actorList : List<Cast>) {
@@ -117,6 +77,51 @@ class DetailFragment : Fragment() {
         adapter.updateList(categoryList)
     }
 
+    private fun getMovieDetailsInfo() {
+        val movieId = arguments?.getInt("movieId")
+        viewModel.getMovieDetails(movieId!!)
+        viewModel.getMovieImages(movieId)
+        viewModel.getMovieCasts(movieId)
+        viewModel.getMovieReviews(movieId)
+    }
+
+    private fun fillMovieDetails() {
+        collectFlow {
+            viewModel.movie.collect { movie ->
+                binding.tvMovieTitle.text = movie?.title
+                binding.tvMovieScore.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+                binding.tvMovieDate.text = movie?.releaseDate?.take(4)
+                binding.tvMovieTime.text = movie?.runtime?.roundToInt().toString() + " min"
+                binding.tvSummary.text = movie?.overview
+                if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
+            }
+        }
+    }
+
+    private fun fillMovieImages() {
+        collectFlow {
+            viewModel.movieImages.collect { images ->
+                val adapter = MovieImageAdapter()
+                binding.ivMovie.adapter = adapter
+                binding.ivMovie.offscreenPageLimit = 3
+                binding.ivMovie.clipToPadding = false
+                binding.ivMovie.setPadding(0, 0, 0, 0)
+                adapter.updateList(images)
+            }
+        }
+    }
+
+    private fun fillActorDetails() {
+        collectFlow {
+            viewModel.movieCasts.collect { casts ->
+                if (casts.isNotEmpty()) {
+                    initActorsRecyclerAdapter(casts.take(ACTOR_COUNT))
+                    binding.tvActors.text = casts.take(ACTOR_COUNT).joinToString(", ") { it.name.toString() }
+                }
+            }
+        }
+    }
+
     private fun showActorDialog(actor: Actor) {
         val actorDialog = layoutInflater.inflate(R.layout.bottomsheet_dialog, null)
         val dialog = BottomSheetDialog(requireContext(), R.style.DialogAnimation)
@@ -129,6 +134,20 @@ class DetailFragment : Fragment() {
         dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = actor.biography
         dialog.show()
+    }
+
+    private fun changeVisibilityBottomBar(isVisible: Boolean) {
+        (activity as MainActivity).changeVisibilityBottomBar(isVisible)
+    }
+
+    private fun setBackButton() {
+        binding.ivBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    companion object {
+        private const val ACTOR_COUNT = 3
     }
 
 }
