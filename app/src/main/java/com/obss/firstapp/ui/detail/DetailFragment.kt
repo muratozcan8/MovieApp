@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
@@ -139,7 +138,7 @@ class DetailFragment : Fragment() {
         dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.toString()
         dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text = if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
-        dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = actor.biography
+        dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = if (actor.biography.isNullOrEmpty()) "-" else actor.biography
         dialog.show()
     }
 
