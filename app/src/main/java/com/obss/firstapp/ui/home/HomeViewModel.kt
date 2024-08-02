@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.network.MovieApiService
+import com.obss.firstapp.paging.NowPlayingMoviesPagingSource
 import com.obss.firstapp.paging.PopularMoviesPagingSource
 import com.obss.firstapp.paging.TopRatedMoviesPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,10 @@ class HomeViewModel @Inject constructor(private val movieApi: MovieApiService): 
 
     val topRatedMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
         TopRatedMoviesPagingSource(movieApi)
+    }.flow.cachedIn(viewModelScope)
+
+    val nowPlayingMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
+        NowPlayingMoviesPagingSource(movieApi)
     }.flow.cachedIn(viewModelScope)
 
     private fun catchException(exception: Exception) {

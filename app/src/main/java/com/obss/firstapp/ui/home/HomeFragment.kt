@@ -88,6 +88,15 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun getNowPlayingMovies() {
+        collectFlow {
+            viewModel.nowPlayingMovieList.collect {
+                initRecyclerAdapter(it)
+                setLayoutView(it)
+            }
+        }
+    }
+
     private fun setMovieTypeButtons() {
         binding.toggleButton.check(binding.mBtnPopular.id)
         getPopularMovies()
@@ -101,7 +110,7 @@ class HomeFragment : Fragment() {
                         getTopRatedMovies()
                     }
                     R.id.m_btn_now_playing -> {
-                        //getNowPlayingMovies()
+                        getNowPlayingMovies()
                     }
                 }
             }
