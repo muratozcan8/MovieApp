@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -104,6 +105,11 @@ class DetailFragment : Fragment() {
                     movie.runtime.roundToInt().toString() + " min" else "-"
                 binding.tvSummary.text = if (movie?.overview.isNullOrEmpty()) "-" else movie?.overview
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
+                binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
+                binding.ivFavButton.setOnClickListener {
+                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                    binding.ivFavButton.setImageResource(R.drawable.favorite_24)
+                }
             }
         }
     }

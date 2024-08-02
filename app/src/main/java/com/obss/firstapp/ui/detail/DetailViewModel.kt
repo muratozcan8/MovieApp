@@ -60,7 +60,7 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
         viewModelScope.launch {
             try {
                 val response = movieApi.getMovieImages(movieId)
-                _movieImages.value = response.posters!!
+                _movieImages.value = response.backdrops!!
             } catch (exception: Exception) {
                 catchException(exception)
             } finally {
