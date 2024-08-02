@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class MovieDetail(
     @SerializedName("adult") val adult: Boolean?,
-    @SerializedName("budget") val budget: Int?,
     @SerializedName("genres") val genres: List<Genre>?,
     @SerializedName("id") val id: Int?,
     @SerializedName("original_title") val originalTitle: String?,
@@ -13,7 +12,6 @@ data class MovieDetail(
     @SerializedName("runtime") val runtime: Double,
     @SerializedName("poster_path") val posterPath: String,
     @SerializedName("release_date") val releaseDate: String?,
-    @SerializedName("revenue")val revenue: Int,
     @SerializedName("title") val title: String?,
     @SerializedName("video") val video: Boolean,
     @SerializedName("vote_average") val voteAverage: Double?,
