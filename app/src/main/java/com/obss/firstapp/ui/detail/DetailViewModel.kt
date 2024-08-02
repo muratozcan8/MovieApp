@@ -30,53 +30,51 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
     private val _movieCasts = MutableStateFlow<List<Cast>>(listOf())
     val movieCasts: StateFlow<List<Cast>> = _movieCasts
 
-    private val _movieReviews = MutableStateFlow<List<ReviewResult>>(listOf())
-    val movieReviews: StateFlow<List<ReviewResult>> = _movieReviews
-
     private val _actor = MutableStateFlow<Actor?>(null)
     val actor: StateFlow<Actor?> = _actor
 
+    private val _isLoadings = MutableStateFlow(false)
+    val isLoadings: StateFlow<Boolean> = _isLoadings
+
 
     fun getMovieDetails(movieId: Int) {
+        _isLoadings.value = true
         viewModelScope.launch {
             try {
                 val response = movieApi.getMovieDetails(movieId)
                 _movie.value = response
             } catch (exception: Exception) {
                 catchException(exception)
+            } finally {
+                _isLoadings.value = false
             }
         }
     }
 
     fun getMovieImages(movieId: Int) {
+        _isLoadings.value = true
         viewModelScope.launch {
             try {
                 val response = movieApi.getMovieImages(movieId)
                 _movieImages.value = response.posters!!
             } catch (exception: Exception) {
                 catchException(exception)
+            } finally {
+                _isLoadings.value = false
             }
         }
     }
 
     fun getMovieCasts(movieId: Int) {
+        _isLoadings.value = true
         viewModelScope.launch {
             try {
                 val response = movieApi.getMovieCredits(movieId)
                 _movieCasts.value = response.cast
             } catch (exception: Exception) {
                 catchException(exception)
-            }
-        }
-    }
-
-    fun getMovieReviews(movieId: Int) {
-        viewModelScope.launch {
-            try {
-                val response = movieApi.getMovieReviews(movieId)
-                _movieReviews.value = response.results
-            } catch (exception: Exception) {
-                catchException(exception)
+            } finally {
+                _isLoadings.value = false
             }
         }
     }

@@ -26,6 +26,7 @@ import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -45,6 +46,7 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         changeVisibilityBottomBar(false)
+        setLoadingProgressBar()
         getMovieDetailsInfo()
         fillMovieDetails()
         fillMovieImages()
@@ -58,9 +60,11 @@ class DetailFragment : Fragment() {
         adapter.updateList(actorList)
         adapter.setOnItemClickListener { actor ->
             viewModel.getActorDetails(actor.id!!)
+            binding.progressBarActorDetail.visibility = View.VISIBLE
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
                     if (actorDetail != null && actor.id == actorDetail.id!!) {
+                        binding.progressBarActorDetail.visibility = View.GONE
                         showActorDialog(actorDetail)
                         cancel()
                     }
@@ -81,7 +85,6 @@ class DetailFragment : Fragment() {
         viewModel.getMovieDetails(movieId!!)
         viewModel.getMovieImages(movieId)
         viewModel.getMovieCasts(movieId)
-        viewModel.getMovieReviews(movieId)
     }
 
     @SuppressLint("SetTextI18n")
@@ -143,12 +146,24 @@ class DetailFragment : Fragment() {
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
-        (activity as MainActivity).changeVisibilityBottomBar(isVisible)
+        collectFlow {
+            delay(200)
+            (activity as MainActivity).changeVisibilityBottomBar(isVisible)
+        }
     }
 
     private fun setBackButton() {
         binding.ivBackButton.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun setLoadingProgressBar() {
+        collectFlow {
+            viewModel.isLoadings.collect {
+                binding.progressBarDetail.visibility = if (it) View.VISIBLE else View.GONE
+                binding.svMovieDetail.visibility = if (it) View.GONE else View.VISIBLE
+            }
         }
     }
 
