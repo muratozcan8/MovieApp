@@ -43,26 +43,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).changeVisibilityBottomBar(true)
-        val isLandscape =
-            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
-
-        binding.ibMovieHomeLayout.setOnClickListener {
-            isGridLayout = !isGridLayout
-            collectFlow {
-                viewModel.movieList.collect {
-                    setLayoutView(it)
-                }
-            }
-        }
-
-        collectFlow {
-            viewModel.movieList.collect {
-                initRecyclerAdapter(it)
-                setLayoutView(it)
-            }
-        }
+        changeVisibilityBottomBar(true)
+        changeSpanCount()
+        setLayoutButton()
+        getPopularMovies()
     }
 
     private fun setLayoutView(popularMovieList: PagingData<Movie>) {
@@ -86,6 +70,31 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun getPopularMovies() {
+        collectFlow {
+            viewModel.movieList.collect {
+                initRecyclerAdapter(it)
+                setLayoutView(it)
+            }
+        }
+    }
+
+    private fun changeSpanCount() {
+        val isLandscape =
+            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
+    }
+
+    private fun setLayoutButton() {
+        binding.ibMovieHomeLayout.setOnClickListener {
+            isGridLayout = !isGridLayout
+            collectFlow {
+                viewModel.movieList.collect {
+                    setLayoutView(it)
+                }
+            }
+        }
+    }
 
     private fun initRecyclerAdapter(popularMovieList: PagingData<Movie>) {
         val adapter = PopularMovieAdapter(isGridLayout)
@@ -104,6 +113,10 @@ class HomeFragment : Fragment() {
             }
         }
         checkLoadMoreMovie(adapter)
+    }
+
+    private fun changeVisibilityBottomBar(isVisible: Boolean) {
+        (activity as MainActivity).changeVisibilityBottomBar(isVisible)
     }
 
     companion object {
