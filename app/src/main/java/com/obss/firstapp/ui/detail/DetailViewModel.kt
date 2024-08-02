@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
+import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.model.movieDetail.MovieImage
 import com.obss.firstapp.model.movieDetail.MoviePoster
@@ -29,6 +30,9 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
 
     private val _movieCasts = MutableStateFlow<List<Cast>>(listOf())
     val movieCasts: StateFlow<List<Cast>> = _movieCasts
+
+    private val _recommendationMovies = MutableStateFlow<List<Movie>>(listOf())
+    val recommendationMovies: StateFlow<List<Movie>> = _recommendationMovies
 
     private val _actor = MutableStateFlow<Actor?>(null)
     val actor: StateFlow<Actor?> = _actor
@@ -87,6 +91,20 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
                 _actor.value = response
             } catch (exception: Exception) {
                 catchException(exception)
+            }
+        }
+    }
+
+    fun getRecommendationMovies(movieId: Int) {
+        _isLoadings.value = true
+        viewModelScope.launch {
+            try {
+                val response = movieApi.getMovieRecommendations(movieId)
+                _recommendationMovies.value = response.results
+            } catch (exception: Exception) {
+                catchException(exception)
+            } finally {
+                _isLoadings.value = false
             }
         }
     }

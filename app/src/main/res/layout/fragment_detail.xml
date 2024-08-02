@@ -9,7 +9,7 @@
 
     <ScrollView
         android:id="@+id/sv_movie_detail"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -76,7 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/movie_app"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textColor="@color/white"
                 android:layout_marginBottom="5dp"
@@ -99,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8.0"
+                    android:textSize="17sp"
                     android:fontFamily="@font/ubuntu_bold"
                     app:drawableStartCompat="@drawable/star_24"
                     app:drawableTint="@color/gold"
@@ -115,6 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="120"
+                    android:textSize="17sp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:layout_marginStart="8dp"
                     app:drawableStartCompat="@drawable/time_24"
@@ -133,6 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2023"
+                    android:textSize="17sp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:layout_marginStart="8dp"
                     app:drawableStartCompat="@drawable/date_24"
@@ -168,7 +171,7 @@
                 android:fontFamily="@font/ubuntu_bold"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textColor="@color/gray"
                 app:layout_constraintTop_toBottomOf="@id/rv_category"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -183,7 +186,7 @@
                 android:text="Content Content Content Content Content Content Content Murat Content Content Content Content Content Content Content Content"
                 android:textAlignment="viewStart"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/tv_summary_title"
@@ -195,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/actors"
                 android:layout_marginTop="16dp"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:textColor="@color/gray"
                 app:layout_constraintTop_toBottomOf="@+id/tv_summary"
@@ -207,6 +210,7 @@
                 android:layout_height="wrap_content"
                 android:text="Actor Name, Actor Name, Actor Name"
                 android:layout_marginTop="8dp"
+                android:textSize="15sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubuntu_medium"
                 app:layout_constraintStart_toStartOf="@+id/tv_actors_title"
@@ -222,6 +226,31 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_actors"
                 app:layout_constraintTop_toBottomOf="@+id/tv_actors" />
 
+            <TextView
+                android:id="@+id/tv_recommendations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recommendations"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:textColor="@color/gray"
+                android:fontFamily="@font/ubuntu_bold"
+                app:layout_constraintStart_toStartOf="@+id/rv_actors"
+                app:layout_constraintTop_toBottomOf="@+id/rv_actors"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recommendations"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginBottom="5dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_recommendations"
+                app:layout_constraintTop_toBottomOf="@+id/tv_recommendations" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
@@ -230,7 +259,7 @@
         android:id="@+id/progress_bar_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:indeterminateTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

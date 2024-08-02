@@ -46,10 +46,10 @@ interface MovieApiService {
         @Path("person_id") personId: Int,
     ): Actor
 
-    @GET("person/{person_id}/movie_credits")
-    suspend fun getActorMovies(
-        @Path("person_id") personId: Int,
-    ): ActorMovies
+    @GET("movie/{movie_id}/recommendations")
+    suspend fun getMovieRecommendations(
+        @Path("movie_id") movieId: Int,
+    ): MovieList
 
     @GET("movie/{movie_id}/reviews")
     suspend fun getMovieReviews(

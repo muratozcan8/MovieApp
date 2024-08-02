@@ -10,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -24,6 +27,7 @@ import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
+import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -48,6 +52,7 @@ class DetailFragment : Fragment() {
         changeVisibilityBottomBar(false)
         setLoadingProgressBar()
         getMovieDetailsInfo()
+        getRecommendationMovies()
         fillMovieDetails()
         fillMovieImages()
         fillActorDetails()
@@ -68,7 +73,6 @@ class DetailFragment : Fragment() {
                         showActorDialog(actorDetail)
                         cancel()
                     }
-
                 }
             }
         }
@@ -117,6 +121,22 @@ class DetailFragment : Fragment() {
         }
     }
 
+    private fun getRecommendationMovies() {
+        val movieId = arguments?.getInt("movieId")
+        viewModel.getRecommendationMovies(movieId!!)
+        collectFlow {
+            viewModel.recommendationMovies.collect { movies ->
+                val adapter = RecommendationMovieAdapter()
+                binding.rvRecommendations.adapter = adapter
+                adapter.updateList(movies)
+                adapter.setOnItemClickListener {
+                    val direction = DetailFragmentDirections.actionDetailFragmentSelf(it.id!!)
+                    findNavController().navigate(direction)
+                }
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun fillActorDetails() {
         collectFlow {
@@ -151,6 +171,20 @@ class DetailFragment : Fragment() {
             (activity as MainActivity).changeVisibilityBottomBar(isVisible)
         }
     }
+
+    private fun hideSystemBars() {
+        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController?.let {
+            it.hide(WindowInsetsCompat.Type.statusBars())
+            it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+
+    private fun showSystemBars() {
+        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController?.show(WindowInsetsCompat.Type.statusBars())
+    }
+
 
     private fun setBackButton() {
         binding.ivBackButton.setOnClickListener {
