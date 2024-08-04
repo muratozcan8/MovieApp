@@ -27,9 +27,9 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.ivAuthor.load(reviewList[position].authorDetails.avatarPath)
+        if (reviewList[position].authorDetails.avatarPath != null) holder.binding.ivAuthor.load("https://image.tmdb.org/t/p/w500${reviewList[position].authorDetails.avatarPath}")
         holder.binding.tvAuthorUsername.text = reviewList[position].authorDetails.username
-        holder.binding.tvReviewRating.text = reviewList[position].authorDetails.rating.toString() + "/10"
+        holder.binding.tvReviewRating.text = (reviewList[position].authorDetails.rating * 10).toInt().toString() + "%"
         holder.binding.tvReviewContent.text = reviewList[position].content
         holder.binding.tvReviewDate.text = formatDate(reviewList[position].createdAt)
     }
