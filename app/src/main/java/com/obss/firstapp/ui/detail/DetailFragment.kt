@@ -193,7 +193,7 @@ class DetailFragment : Fragment() {
         val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
         windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
     }
-    
+
     private fun setBackButton() {
         binding.ivBackButton.setOnClickListener {
             findNavController().popBackStack()
