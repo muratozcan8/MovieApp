@@ -21,17 +21,17 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/iv_movie"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            
+
             <View
                 android:id="@+id/view"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_height="125dp"
                 android:background="@drawable/gradient_shadow"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
