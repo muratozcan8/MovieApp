@@ -110,8 +110,10 @@ class DetailFragment : Fragment() {
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
                 binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
                 binding.ivFavButton.setOnClickListener {
-                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
-                    binding.ivFavButton.setImageResource(R.drawable.favorite_24)
+                    //Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                    //binding.ivFavButton.setImageResource(R.drawable.favorite_24)
+                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movie?.id!!)
+                    findNavController().navigate(direction)
                 }
             }
         }
