@@ -96,7 +96,11 @@
             app:destination="@id/detailFragment" />
         <action
             android:id="@+id/action_detailFragment_to_reviewFragment"
-            app:destination="@id/reviewFragment" />
+            app:destination="@id/reviewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/reviewFragment"
@@ -105,7 +109,11 @@
         tools:layout="@layout/fragment_review" >
         <action
             android:id="@+id/action_reviewFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
         <argument
             android:name="movieId"
             app:argType="integer" />
