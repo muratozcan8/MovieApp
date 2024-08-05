@@ -29,10 +29,11 @@
 
         <TextView
             android:id="@+id/tv_review_movie_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/movie_app"
             android:textSize="20sp"
+            android:textAlignment="center"
             android:fontFamily="@font/ubuntu_bold"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"

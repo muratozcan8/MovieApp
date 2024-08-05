@@ -222,13 +222,15 @@
 
             <TextView
                 android:id="@+id/tv_actors"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Actor Name, Actor Name, Actor Name"
                 android:layout_marginTop="8dp"
                 android:textSize="15sp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/ubuntu_medium"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_actors_title"
                 app:layout_constraintTop_toBottomOf="@+id/tv_actors_title"/>
             

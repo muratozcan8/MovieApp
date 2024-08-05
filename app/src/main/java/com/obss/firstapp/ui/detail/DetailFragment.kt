@@ -138,13 +138,21 @@ class DetailFragment : Fragment() {
         viewModel.getRecommendationMovies(movieId!!)
         collectFlow {
             viewModel.recommendationMovies.collect { movies ->
-                val adapter = RecommendationMovieAdapter()
-                binding.rvRecommendations.adapter = adapter
-                adapter.updateList(movies)
-                adapter.setOnItemClickListener {
-                    val direction = DetailFragmentDirections.actionDetailFragmentSelf(it.id!!)
-                    findNavController().navigate(direction)
+                if (movies.isEmpty()) {
+                    binding.tvRecommendations.visibility = View.GONE
+                    binding.rvRecommendations.visibility = View.GONE
+                } else {
+                    binding.tvRecommendations.visibility = View.VISIBLE
+                    binding.rvRecommendations.visibility = View.VISIBLE
+                    val adapter = RecommendationMovieAdapter()
+                    binding.rvRecommendations.adapter = adapter
+                    adapter.updateList(movies)
+                    adapter.setOnItemClickListener {
+                        val direction = DetailFragmentDirections.actionDetailFragmentSelf(it.id!!)
+                        findNavController().navigate(direction)
+                    }
                 }
+
             }
         }
     }
