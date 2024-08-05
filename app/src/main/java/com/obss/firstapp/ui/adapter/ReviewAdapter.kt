@@ -38,7 +38,6 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
         holder.binding.tvReviewRating.text = (reviewList[position].authorDetails.rating * 10).toInt().toString() + "%"
         holder.binding.tvReviewContent.text = reviewList[position].content
         holder.binding.tvReviewDate.text = formatDate(reviewList[position].createdAt)
-        Log.e("ReviewAdapter", "id: ${reviewList[position].id} - length: ${reviewList[position].content.length}")
 
         if (reviewList[position].content.length > MAX_LENGTH) {
             holder.binding.tvReviewSeeMore.visibility = View.VISIBLE

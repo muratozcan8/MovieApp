@@ -48,16 +48,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress_bar_review_score"
-                style="?android:attr/progressBarStyleInverse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:progressDrawable="@drawable/circle_progress_bar"
                 android:indeterminate="false"
+                app:indicatorSize="50dp"
+                app:trackColor="@color/white"
+                android:max="100"
                 android:textAlignment="center"
-                android:background="@drawable/circle_shape"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
@@ -71,7 +71,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="80"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/ubuntu_medium"/>
 
         </RelativeLayout>

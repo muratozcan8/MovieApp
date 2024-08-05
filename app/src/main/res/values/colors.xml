@@ -10,4 +10,6 @@
     <color name="gray_transparent_search">#4DFFFFFF</color>
     <color name="gold">#FFC107</color>
     <color name="red_bottom">#FF1E1E</color>
+    <color name="green">#318534</color>
+    <color name="red">#BD0000</color>
 </resources>

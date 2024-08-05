@@ -42,6 +42,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by viewModels()
+    private var movieName = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +101,7 @@ class DetailFragment : Fragment() {
     private fun fillMovieDetails() {
         collectFlow {
             viewModel.movie.collect { movie ->
+                movie?.title?.let { setMovieName(it) }
                 binding.tvMovieTitle.text = movie?.title
                 binding.tvMovieScore.text = if (movie?.voteAverage != null)
                         (((movie.voteAverage.times(10)).roundToInt()) / 10.0).toString() else "-"
@@ -157,7 +159,7 @@ class DetailFragment : Fragment() {
                     binding.tvReviewSee.text = "See Reviews (${it.size})"
                 }
                 binding.tvReviewSee.setOnClickListener {
-                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId, "Bad Boys: Ride or Die")
+                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId, getMovieName())
                     findNavController().navigate(direction)
                 }
             }
@@ -217,6 +219,14 @@ class DetailFragment : Fragment() {
         binding.ivBackButton.setOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    private fun getMovieName(): String {
+        return movieName
+    }
+
+    private fun setMovieName(newMovieName: String) {
+        movieName = newMovieName
     }
 
     private fun setLoadingProgressBar() {
