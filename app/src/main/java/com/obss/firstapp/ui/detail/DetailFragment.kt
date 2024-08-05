@@ -56,6 +56,7 @@ class DetailFragment : Fragment() {
         changeVisibilityBottomBar(false)
         setLoadingProgressBar()
         getMovieDetailsInfo()
+        setReviewButton()
         getRecommendationMovies()
         fillMovieDetails()
         fillMovieImages()
@@ -110,10 +111,8 @@ class DetailFragment : Fragment() {
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
                 binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
                 binding.ivFavButton.setOnClickListener {
-                    //Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
-                    //binding.ivFavButton.setImageResource(R.drawable.favorite_24)
-                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movie?.id!!)
-                    findNavController().navigate(direction)
+                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                    binding.ivFavButton.setImageResource(R.drawable.favorite_24)
                 }
             }
         }
@@ -146,6 +145,24 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setReviewButton() {
+        val movieId = arguments?.getInt("movieId")
+        viewModel.getReviews(movieId!!)
+        collectFlow {
+            viewModel.reviews.collect {
+                if (it.isNotEmpty()){
+                    binding.tvReviewSee.visibility = View.VISIBLE
+                    binding.tvReviewSee.text = "See Reviews (${it.size})"
+                }
+                binding.tvReviewSee.setOnClickListener {
+                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId!!)
+                    findNavController().navigate(direction)
+                }
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")

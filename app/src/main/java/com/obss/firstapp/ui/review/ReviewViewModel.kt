@@ -27,7 +27,7 @@ class ReviewViewModel @Inject constructor(private val movieApi: MovieApiService)
         try {
             viewModelScope.launch {
                 val response = movieApi.getMovieReviews(movieId)
-                _reviewList.value = response.results
+                _reviewList.value = response.results!!
             }
         } catch (exception: Exception) {
             catchException(exception)
