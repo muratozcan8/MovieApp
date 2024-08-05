@@ -20,32 +20,36 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val movieApi: MovieApiService,
-                                        private val movieDao: MovieDao
-): ViewModel() {
+class HomeViewModel
+    @Inject
+    constructor(
+        private val movieApi: MovieApiService,
+        private val movieDao: MovieDao,
+    ) : ViewModel() {
+        val popularMovieList: Flow<PagingData<Movie>> =
+            Pager(PagingConfig(1)) {
+                PopularMoviesPagingSource(movieApi, movieDao)
+            }.flow.cachedIn(viewModelScope)
 
-    val popularMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
-        PopularMoviesPagingSource(movieApi, movieDao)
-    }.flow.cachedIn(viewModelScope)
+        val topRatedMovieList: Flow<PagingData<Movie>> =
+            Pager(PagingConfig(1)) {
+                TopRatedMoviesPagingSource(movieApi, movieDao)
+            }.flow.cachedIn(viewModelScope)
 
-    val topRatedMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
-        TopRatedMoviesPagingSource(movieApi, movieDao)
-    }.flow.cachedIn(viewModelScope)
+        val nowPlayingMovieList: Flow<PagingData<Movie>> =
+            Pager(PagingConfig(1)) {
+                NowPlayingMoviesPagingSource(movieApi, movieDao)
+            }.flow.cachedIn(viewModelScope)
 
-    val nowPlayingMovieList: Flow<PagingData<Movie>> = Pager(PagingConfig(1)) {
-        NowPlayingMoviesPagingSource(movieApi, movieDao)
-    }.flow.cachedIn(viewModelScope)
-
-    private fun catchException(exception: Exception) {
-        when (exception) {
-            is UnknownHostException -> {
-                Log.e("network exception", "no network")
+        private fun catchException(exception: Exception) {
+            when (exception) {
+                is UnknownHostException -> {
+                    Log.e("network exception", "no network")
+                }
+                is HttpException -> {
+                    Log.e("network exception", "HTTP exception")
+                }
+                else -> Log.e("network exception", "unknown", exception)
             }
-            is HttpException -> {
-                Log.e("network exception", "HTTP exception")
-            }
-            else -> Log.e("network exception", "unknown", exception)
         }
     }
-
-}

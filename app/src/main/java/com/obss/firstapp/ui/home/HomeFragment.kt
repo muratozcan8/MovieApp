@@ -2,17 +2,15 @@ package com.obss.firstapp.ui.home
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.obss.firstapp.R
@@ -23,25 +21,25 @@ import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.LoadMoreAdapter
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.last
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         changeVisibilityBottomBar(true)
         changeSpanCount()
@@ -62,11 +60,12 @@ class HomeFragment : Fragment() {
 
     private fun checkLoadMoreMovie(adapter: PopularMovieAdapter) {
         collectFlow {
-            binding.rvPopularMovies.adapter = adapter.withLoadStateFooter(
-                LoadMoreAdapter{
-                    adapter.retry()
-                }
-            )
+            binding.rvPopularMovies.adapter =
+                adapter.withLoadStateFooter(
+                    LoadMoreAdapter {
+                        adapter.retry()
+                    },
+                )
         }
     }
 
@@ -162,7 +161,5 @@ class HomeFragment : Fragment() {
         private var SPAN_COUNT = 3
         private var SPAN_COUNT_GRID = 3
         private var SPAN_COUNT_LANDSCAPE_GRID = 6
-
     }
-
 }
