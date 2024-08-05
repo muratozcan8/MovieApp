@@ -1,6 +1,5 @@
 package com.obss.firstapp.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.obss.firstapp.model.movie.Movie
@@ -8,13 +7,14 @@ import com.obss.firstapp.network.MovieApiService
 import com.obss.firstapp.room.MovieDao
 import retrofit2.HttpException
 
-class PopularMoviesPagingSource(private val apiService: MovieApiService, private val movieDao: MovieDao) : PagingSource<Int, Movie>() {
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        return null
-    }
+class PopularMoviesPagingSource(
+    private val apiService: MovieApiService,
+    private val movieDao: MovieDao,
+) : PagingSource<Int, Movie>() {
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? = null
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
-        return try {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> =
+        try {
             val currentPage = params.key ?: 1
             val response = apiService.getPopularMovies(currentPage)
             val data = response.results
@@ -22,20 +22,17 @@ class PopularMoviesPagingSource(private val apiService: MovieApiService, private
             data.forEach {
                 val isFavorite = movieDao.getMovieById(it.id!!) != null
                 it.isFavorite = isFavorite
-                Log.e("Popular", "${it.title} - ${it.isFavorite}")
             }
             responseData.addAll(data)
 
             LoadResult.Page(
                 data = responseData,
                 prevKey = if (currentPage == 1) null else -1,
-                nextKey = currentPage.plus(1)
+                nextKey = currentPage.plus(1),
             )
-
         } catch (e: Exception) {
             LoadResult.Error(e)
         } catch (httpE: HttpException) {
             LoadResult.Error(httpE)
         }
-    }
 }

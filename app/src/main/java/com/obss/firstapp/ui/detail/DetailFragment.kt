@@ -4,16 +4,17 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -24,7 +25,6 @@ import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.ext.formatAndCalculateAge
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
-import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieDetail.Genre
 import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.room.FavoriteMovie
@@ -37,26 +37,27 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
-
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by viewModels()
     private var movieName = ""
+    private var isAddFavorite = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentDetailBinding.inflate(inflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         changeVisibilityBottomBar(false)
         setLoadingProgressBar()
@@ -69,7 +70,7 @@ class DetailFragment : Fragment() {
         setBackButton()
     }
 
-    private fun initActorsRecyclerAdapter(actorList : List<Cast>) {
+    private fun initActorsRecyclerAdapter(actorList: List<Cast>) {
         val adapter = ActorListAdapter()
         binding.rvActors.adapter = adapter
         adapter.updateList(actorList)
@@ -88,7 +89,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun initGenresRecyclerAdapter(categoryList : List<Genre>) {
+    private fun initGenresRecyclerAdapter(categoryList: List<Genre>) {
         val adapter = MovieCategoryAdapter()
         binding.rvCategory.adapter = adapter
         adapter.updateList(categoryList)
@@ -107,17 +108,32 @@ class DetailFragment : Fragment() {
             viewModel.movie.collect { movie ->
                 movie?.title?.let { setMovieName(it) }
                 binding.tvMovieTitle.text = movie?.title
-                binding.tvMovieScore.text = if (movie?.voteAverage != null)
-                        (((movie.voteAverage.times(10)).roundToInt()) / 10.0).toString() else "-"
-                binding.tvMovieDate.text = if (movie?.releaseDate.isNullOrEmpty()) "-"
-                    else movie?.releaseDate?.take(DATE_LENGTH)
-                binding.tvMovieTime.text = if (movie?.runtime != null)
-                    movie.runtime.roundToInt().toString() + " min" else "-"
+                binding.tvMovieScore.text =
+                    if (movie?.voteAverage != null) {
+                        (((movie.voteAverage.times(10)).roundToInt()) / 10.0).toString()
+                    } else {
+                        "-"
+                    }
+                binding.tvMovieDate.text =
+                    if (movie?.releaseDate.isNullOrEmpty()) {
+                        "-"
+                    } else {
+                        movie?.releaseDate?.take(DATE_LENGTH)
+                    }
+                binding.tvMovieTime.text =
+                    if (movie?.runtime != null) {
+                        movie.runtime.roundToInt().toString() + " min"
+                    } else {
+                        "-"
+                    }
                 binding.tvSummary.text = if (movie?.overview.isNullOrEmpty()) "-" else movie?.overview
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
                 if (movie != null) {
-                    if (movie.isFavorite) binding.ivFavButton.setImageResource(R.drawable.favorite_24)
-                    else binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
+                    if (movie.isFavorite) {
+                        binding.ivFavButton.setImageResource(R.drawable.favorite_24)
+                    } else {
+                        binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
+                    }
                 }
                 setFavoriteButton(movie)
             }
@@ -143,6 +159,7 @@ class DetailFragment : Fragment() {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
                     viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
                     movie.isFavorite = true
+                    isAddFavorite = true
                     Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -181,7 +198,6 @@ class DetailFragment : Fragment() {
                         findNavController().navigate(direction)
                     }
                 }
-
             }
         }
     }
@@ -191,7 +207,7 @@ class DetailFragment : Fragment() {
         viewModel.getReviews(movieId!!)
         collectFlow {
             viewModel.reviews.collect {
-                if (it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     binding.tvReviewSee.visibility = View.VISIBLE
                     binding.tvReviewSee.text = "See Reviews (${it.size})"
                 }
@@ -201,7 +217,6 @@ class DetailFragment : Fragment() {
                 }
             }
         }
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -225,8 +240,10 @@ class DetailFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
-        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
-        dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text = if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
+        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text =
+            if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
+        dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text =
+            if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = if (actor.biography.isNullOrEmpty()) "-" else actor.biography
         dialog.show()
@@ -254,13 +271,12 @@ class DetailFragment : Fragment() {
 
     private fun setBackButton() {
         binding.ivBackButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult("popBackStackResult", bundleOf("isPopBackStack" to isAddFavorite))
             findNavController().popBackStack()
         }
     }
 
-    private fun getMovieName(): String {
-        return movieName
-    }
+    private fun getMovieName(): String = movieName
 
     private fun setMovieName(newMovieName: String) {
         movieName = newMovieName
@@ -279,5 +295,4 @@ class DetailFragment : Fragment() {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
     }
-
 }

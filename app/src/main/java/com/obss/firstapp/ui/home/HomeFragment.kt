@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -45,6 +47,12 @@ class HomeFragment : Fragment() {
         changeSpanCount()
         setLayoutButton()
         setMovieTypeButtons()
+        setFragmentResultListener("popBackStackResult") { _, bundle ->
+            val result = bundle.getBoolean("isPopBackStack")
+            if (result) {
+                findNavController().navigate(R.id.homeFragment)
+            }
+        }
     }
 
     private fun setLayoutView(popularMovieList: PagingData<Movie>) {
