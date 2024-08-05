@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.obss.firstapp.databinding.FragmentReviewBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.review.ReviewResult
@@ -29,10 +30,21 @@ class ReviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val movieId = arguments?.getInt("movieId")
+        val movieName = arguments?.getString("movieName")
+        binding.tvReviewMovieName.text = movieName
+        binding.ivBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
         viewModel.getReviews(movieId!!)
         collectFlow {
             viewModel.reviewList.collect {
                 initGenresRecyclerAdapter(it)
+                binding.tvReviewScore.text = if (it.isNotEmpty()) {
+                    it.map { it.authorDetails.rating * 10 }.average().toInt().toString()
+                } else {
+                    "-"
+                }
+                binding.progressBarReviewScore.progress = it.map { it.authorDetails.rating * 10 }.average().toInt()
             }
         }
         collectFlow {

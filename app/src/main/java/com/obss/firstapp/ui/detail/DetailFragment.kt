@@ -157,7 +157,7 @@ class DetailFragment : Fragment() {
                     binding.tvReviewSee.text = "See Reviews (${it.size})"
                 }
                 binding.tvReviewSee.setOnClickListener {
-                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId!!)
+                    val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId, "Bad Boys: Ride or Die")
                     findNavController().navigate(direction)
                 }
             }
