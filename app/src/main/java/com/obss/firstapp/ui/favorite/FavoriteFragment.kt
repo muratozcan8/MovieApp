@@ -5,16 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.obss.firstapp.R
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
-import com.obss.firstapp.databinding.FragmentHomeBinding
+import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.ui.MainActivity
+import com.obss.firstapp.ui.adapter.FavoriteMovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoriteBinding
+    private val viewModel: FavoriteViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,5 +30,19 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).changeVisibilityBottomBar(true)
+
+        viewModel.getAllFavoriteMovies()
+        collectFlow {
+            viewModel.favoriteMovies.collect { favoriteMovieList ->
+                val adapter = FavoriteMovieAdapter()
+                binding.rvFavoriteMovie.adapter = adapter
+                adapter.updateList(favoriteMovieList)
+                adapter.setOnItemClickListener {
+                    val direction = FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(it.movieId!!)
+                    findNavController().navigate(direction)
+                }
+            }
+        }
+
     }
 }
