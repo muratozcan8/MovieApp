@@ -24,7 +24,10 @@ import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.ext.formatAndCalculateAge
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
+import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieDetail.Genre
+import com.obss.firstapp.model.movieDetail.MovieDetail
+import com.obss.firstapp.room.FavoriteMovie
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
@@ -112,10 +115,35 @@ class DetailFragment : Fragment() {
                     movie.runtime.roundToInt().toString() + " min" else "-"
                 binding.tvSummary.text = if (movie?.overview.isNullOrEmpty()) "-" else movie?.overview
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
-                binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
-                binding.ivFavButton.setOnClickListener {
-                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                if (movie != null) {
+                    if (movie.isFavorite) binding.ivFavButton.setImageResource(R.drawable.favorite_24)
+                    else binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
+                }
+                setFavoriteButton(movie)
+            }
+        }
+    }
+
+    private fun setFavoriteButton(movie: MovieDetail?) {
+        binding.ivFavButton.setOnClickListener {
+            if (movie != null) {
+                if (movie.isFavorite) {
+                    binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
+                    viewModel.getFavoriteMovie(movie.id!!)
+                    collectFlow {
+                        viewModel.favoriteMovie.collect {
+                            if (it != null) {
+                                viewModel.removeFavoriteMovie(it)
+                                movie.isFavorite = false
+                            }
+                        }
+                    }
+                    Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+                } else {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
+                    viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
+                    movie.isFavorite = true
+                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
                 }
             }
         }

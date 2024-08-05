@@ -11,16 +11,20 @@ import com.obss.firstapp.model.movieDetail.MovieImage
 import com.obss.firstapp.model.movieDetail.MoviePoster
 import com.obss.firstapp.model.review.ReviewResult
 import com.obss.firstapp.network.MovieApiService
+import com.obss.firstapp.room.FavoriteMovie
+import com.obss.firstapp.room.MovieDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val movieApi: MovieApiService): ViewModel() {
+class DetailViewModel @Inject constructor(private val movieApi: MovieApiService,
+                                          private val movieDao: MovieDao): ViewModel() {
 
     private val _movie = MutableStateFlow<MovieDetail?>(null)
     val movie: StateFlow<MovieDetail?> = _movie
@@ -40,6 +44,9 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
     private val _reviews = MutableStateFlow<List<ReviewResult>>(listOf())
     val reviews: StateFlow<List<ReviewResult>> = _reviews
 
+    private val _favoriteMovie = MutableStateFlow<FavoriteMovie?>(null)
+    val favoriteMovie: StateFlow<FavoriteMovie?> = _favoriteMovie
+
     private val _isLoadings = MutableStateFlow(false)
     val isLoadings: StateFlow<Boolean> = _isLoadings
 
@@ -49,7 +56,9 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
         viewModelScope.launch {
             try {
                 val response = movieApi.getMovieDetails(movieId)
-                _movie.value = response
+                val isFavorite = movieDao.getMovieById(movieId) != null
+                val updatedMovie = response.copy(isFavorite = isFavorite)
+                _movie.value = updatedMovie
             } catch (exception: Exception) {
                 catchException(exception)
             } finally {
@@ -122,6 +131,37 @@ class DetailViewModel @Inject constructor(private val movieApi: MovieApiService)
                 catchException(exception)
             } finally {
                 _isLoadings.value = false
+            }
+        }
+    }
+
+    fun addFavoriteMovie(favoriteMovie: FavoriteMovie) {
+        viewModelScope.launch {
+            try {
+                movieDao.insertMovie(favoriteMovie)
+            } catch (exception: Exception) {
+                catchException(exception)
+            }
+        }
+    }
+
+    fun removeFavoriteMovie(favoriteMovie: FavoriteMovie) {
+        viewModelScope.launch {
+            try {
+                movieDao.deleteMovie(favoriteMovie)
+            } catch (exception: Exception) {
+                catchException(exception)
+            }
+        }
+    }
+
+    fun getFavoriteMovie(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = movieDao.getMovieById(movieId)
+                _favoriteMovie.value = response
+            } catch (exception: Exception) {
+                catchException(exception)
             }
         }
     }
