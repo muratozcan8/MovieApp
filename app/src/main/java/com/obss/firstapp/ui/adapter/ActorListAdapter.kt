@@ -28,7 +28,6 @@ class ActorListAdapter() : RecyclerView.Adapter<ActorListAdapter.ViewHolder>()  
         if (!actor.profilePath.isNullOrEmpty()) {
             holder.binding.ivActor.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
         } else {
-            Log.e("Actor", actor.name + ": " + actor.gender.toString())
             if (actor.gender == 2) holder.binding.ivActor.setImageResource(com.obss.firstapp.R.drawable.face_male_24)
             else if (actor.gender == 1) holder.binding.ivActor.setImageResource(com.obss.firstapp.R.drawable.face_female_24)
         }

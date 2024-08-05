@@ -1,8 +1,7 @@
 package com.obss.firstapp.ui.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import coil.load
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.ReviewItemBinding
 import com.obss.firstapp.model.review.ReviewResult
+import com.obss.firstapp.ext.formatToReadableDate
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -37,7 +37,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
         holder.binding.tvAuthorUsername.text = reviewList[position].authorDetails.username
         holder.binding.tvReviewRating.text = (reviewList[position].authorDetails.rating * 10).toInt().toString() + "%"
         holder.binding.tvReviewContent.text = reviewList[position].content
-        holder.binding.tvReviewDate.text = formatDate(reviewList[position].createdAt)
+        holder.binding.tvReviewDate.text = (reviewList[position].createdAt).formatToReadableDate()
 
         if (reviewList[position].content.length > MAX_LENGTH) {
             holder.binding.tvReviewSeeMore.visibility = View.VISIBLE
@@ -80,18 +80,6 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     fun updateList(newList: List<ReviewResult>) {
         reviewList = newList
         notifyDataSetChanged()
-    }
-
-    private fun formatDate(date: String): String {
-        val inputFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        inputFormatter.timeZone = TimeZone.getTimeZone("UTC")
-
-        val birthDate = inputFormatter.parse(date)
-
-        val outputFormatter = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
-        val formattedDate = birthDate?.let { outputFormatter.format(it) }
-
-        return "$formattedDate"
     }
 
     companion object {

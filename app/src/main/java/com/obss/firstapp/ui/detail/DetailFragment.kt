@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.ext.formatAndCalculateAge
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movieDetail.Genre
@@ -196,7 +197,7 @@ class DetailFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
-        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = if (actor.birthday.isNullOrEmpty()) "-" else formatAndCalculateAge(actor.birthday)
+        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text = if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
         dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text = if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = if (actor.biography.isNullOrEmpty()) "-" else actor.biography
@@ -245,27 +246,6 @@ class DetailFragment : Fragment() {
             }
         }
     }
-
-    private fun formatAndCalculateAge(dateString: String): String {
-        val inputFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val birthDate = inputFormatter.parse(dateString)
-
-        val outputFormatter = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
-        val formattedDate = birthDate?.let { outputFormatter.format(it) }
-
-        val birthCalendar = Calendar.getInstance()
-        if (birthDate != null) {
-            birthCalendar.time = birthDate
-        }
-        val today = Calendar.getInstance()
-        var age = today.get(Calendar.YEAR) - birthCalendar.get(Calendar.YEAR)
-
-        if (today.get(Calendar.DAY_OF_YEAR) < birthCalendar.get(Calendar.DAY_OF_YEAR)) {
-            age--
-        }
-        return "$formattedDate ($age)"
-    }
-
 
     companion object {
         private const val ACTOR_COUNT = 3
