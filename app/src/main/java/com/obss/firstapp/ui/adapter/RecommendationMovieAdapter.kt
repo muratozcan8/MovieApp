@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
+import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
-import kotlin.math.roundToInt
 
 class RecommendationMovieAdapter : RecyclerView.Adapter<RecommendationMovieAdapter.ViewHolder>() {
     private var recommendationMovieList = listOf<Movie>()
@@ -34,7 +34,7 @@ class RecommendationMovieAdapter : RecyclerView.Adapter<RecommendationMovieAdapt
         val movie = recommendationMovieList[position]
         holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${movie.posterPath}")
         holder.binding.tvMovieGrid.text = movie.title
-        holder.binding.tvMovieScoreGrid.text = (((movie.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+        holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal()
         holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { it(movie) }

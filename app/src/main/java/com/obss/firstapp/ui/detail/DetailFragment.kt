@@ -24,6 +24,7 @@ import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.ext.formatAndCalculateAge
+import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movieDetail.Genre
@@ -112,7 +113,7 @@ class DetailFragment : Fragment() {
                 binding.tvMovieTitle.text = movie?.title
                 binding.tvMovieScore.text =
                     if (movie?.voteAverage != null) {
-                        (((movie.voteAverage.times(10)).roundToInt()) / 10.0).toString()
+                        movie.voteAverage.roundToSingleDecimal()
                     } else {
                         "-"
                     }

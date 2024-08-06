@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
+import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class PopularMovieAdapter
     @Inject
@@ -48,12 +48,12 @@ class PopularMovieAdapter
             if (holder is GridViewHolder) {
                 holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${movie?.posterPath}")
                 holder.binding.tvMovieGrid.text = movie?.title
-                holder.binding.tvMovieScoreGrid.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+                holder.binding.tvMovieScoreGrid.text = movie?.voteAverage?.roundToSingleDecimal()
                 if (movie != null) holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
             } else if (holder is LinearViewHolder) {
                 holder.binding.ivMovieLinear.load("${IMAGE_BASE_URL}${movie?.posterPath}")
                 holder.binding.tvMovieLinear.text = movie?.title
-                holder.binding.tvMovieScoreLinear.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
+                holder.binding.tvMovieScoreLinear.text = movie?.voteAverage?.roundToSingleDecimal()
                 if (movie != null) holder.binding.ibMovieFavLinear.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
             }
             holder.itemView.setOnClickListener {

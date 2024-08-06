@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
+import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.room.FavoriteMovie
 import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 
@@ -33,7 +34,7 @@ class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolde
         val favoriteMovie = favoriteMovieList[position]
         holder.binding.tvMovieGrid.text = favoriteMovie.title
         holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${favoriteMovie.posterPath}")
-        holder.binding.tvMovieScoreGrid.text = favoriteMovie.averageVote.toString()
+        holder.binding.tvMovieScoreGrid.text = favoriteMovie.averageVote?.roundToSingleDecimal()
         holder.binding.ibMovieFavGrid.visibility = View.VISIBLE
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { it(favoriteMovie) }
