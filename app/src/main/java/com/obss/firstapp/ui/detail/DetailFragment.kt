@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -143,6 +145,7 @@ class DetailFragment : Fragment() {
     private fun setFavoriteButton(movie: MovieDetail?) {
         binding.ivFavButton.setOnClickListener {
             if (movie != null) {
+                isAddFavorite = true
                 if (movie.isFavorite) {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_border_24)
                     viewModel.getFavoriteMovie(movie.id!!)
@@ -159,7 +162,6 @@ class DetailFragment : Fragment() {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
                     viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
                     movie.isFavorite = true
-                    isAddFavorite = true
                     Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -237,6 +239,8 @@ class DetailFragment : Fragment() {
         val actorDialog = layoutInflater.inflate(R.layout.bottomsheet_dialog, null)
         val dialog = BottomSheetDialog(requireContext(), R.style.DialogAnimation)
         dialog.setContentView(actorDialog)
+        val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
+        val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
@@ -245,7 +249,30 @@ class DetailFragment : Fragment() {
         dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text =
             if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
         dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
-        dialog.findViewById<TextView>(R.id.tv_actor_biography)?.text = if (actor.biography.isNullOrEmpty()) "-" else actor.biography
+        if (actor.biography.isNullOrEmpty()) {
+            tvActorBiography?.text = "-"
+        } else {
+            tvActorBiography?.text = actor.biography
+            if (actor.biography.length > 450) {
+                tvBiographySeeMore?.visibility = View.VISIBLE
+                tvActorBiography?.maxLines = 15
+                tvBiographySeeMore?.setOnClickListener {
+                    if (tvActorBiography?.maxLines == 15) {
+                        tvActorBiography.maxLines = Int.MAX_VALUE
+                        tvBiographySeeMore.text = "See Less"
+                        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_less_24)
+                        tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+                    } else {
+                        tvActorBiography?.maxLines = 15
+                        tvBiographySeeMore.text = "See More"
+                        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_more_24)
+                        tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+                    }
+                }
+            }
+        }
+        Log.e("biography", "${tvActorBiography?.lineCount}")
+
         dialog.show()
     }
 
