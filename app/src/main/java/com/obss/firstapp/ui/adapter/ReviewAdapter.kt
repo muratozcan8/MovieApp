@@ -38,7 +38,7 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
         if (reviewList[position].authorDetails.avatarPath !=
             null
         ) {
-            holder.binding.ivAuthor.load("h$IMAGE_BASE_URL${reviewList[position].authorDetails.avatarPath}")
+            holder.binding.ivAuthor.load("$IMAGE_BASE_URL${reviewList[position].authorDetails.avatarPath}")
         }
         holder.binding.tvReviewContent.maxLines = Int.MAX_VALUE
         holder.binding.tvAuthorUsername.text = reviewList[position].authorDetails.username
