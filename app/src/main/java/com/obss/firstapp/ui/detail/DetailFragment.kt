@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -253,27 +252,33 @@ class DetailFragment : Fragment() {
             tvActorBiography?.text = "-"
         } else {
             tvActorBiography?.text = actor.biography
-            if (actor.biography.length > 450) {
-                tvBiographySeeMore?.visibility = View.VISIBLE
-                tvActorBiography?.maxLines = 15
-                tvBiographySeeMore?.setOnClickListener {
-                    if (tvActorBiography?.maxLines == 15) {
-                        tvActorBiography.maxLines = Int.MAX_VALUE
-                        tvBiographySeeMore.text = "See Less"
-                        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_less_24)
-                        tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-                    } else {
-                        tvActorBiography?.maxLines = 15
-                        tvBiographySeeMore.text = "See More"
-                        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_more_24)
-                        tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-                    }
+            setActorDetailsSeeMoreButton(actor, tvActorBiography, tvBiographySeeMore)
+        }
+        dialog.show()
+    }
+
+    private fun setActorDetailsSeeMoreButton(
+        actor: Actor,
+        tvActorBiography: TextView?,
+        tvBiographySeeMore: TextView?,
+    ) {
+        if (actor.biography?.length!! > 450) {
+            tvBiographySeeMore?.visibility = View.VISIBLE
+            tvActorBiography?.maxLines = 15
+            tvBiographySeeMore?.setOnClickListener {
+                if (tvActorBiography?.maxLines == 15) {
+                    tvActorBiography.maxLines = Int.MAX_VALUE
+                    tvBiographySeeMore.text = "See Less"
+                    val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_less_24)
+                    tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+                } else {
+                    tvActorBiography?.maxLines = 15
+                    tvBiographySeeMore.text = "See More"
+                    val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_more_24)
+                    tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
                 }
             }
         }
-        Log.e("biography", "${tvActorBiography?.lineCount}")
-
-        dialog.show()
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
