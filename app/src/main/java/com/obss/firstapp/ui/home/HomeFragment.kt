@@ -47,6 +47,10 @@ class HomeFragment : Fragment() {
         changeSpanCount()
         setLayoutButton()
         setMovieTypeButtons()
+        checkPopBackStack()
+    }
+
+    private fun checkPopBackStack() {
         setFragmentResultListener("popBackStackResult") { _, bundle ->
             val result = bundle.getBoolean("isPopBackStack")
             if (result) {
@@ -55,7 +59,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setLayoutView(popularMovieList: PagingData<Movie>) {
+    private fun setLayoutView(movieList: PagingData<Movie>) {
         if (isGridLayout) {
             binding.ibMovieHomeLayout.setImageResource(R.drawable.linear_view_24)
             binding.rvPopularMovies.layoutManager = GridLayoutManager(context, SPAN_COUNT)
@@ -63,7 +67,7 @@ class HomeFragment : Fragment() {
             binding.ibMovieHomeLayout.setImageResource(R.drawable.grid_view_24)
             binding.rvPopularMovies.layoutManager = LinearLayoutManager(context)
         }
-        initRecyclerAdapter(popularMovieList)
+        initRecyclerAdapter(movieList)
     }
 
     private fun checkLoadMoreMovie(adapter: PopularMovieAdapter) {
@@ -107,17 +111,21 @@ class HomeFragment : Fragment() {
     private fun setMovieTypeButtons() {
         binding.toggleButton.check(binding.mBtnPopular.id)
         getPopularMovies()
+        MOVIE_TYPE = POPULAR
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
                     R.id.m_btn_popular -> {
                         getPopularMovies()
+                        MOVIE_TYPE = POPULAR
                     }
                     R.id.m_btn_top_rated -> {
                         getTopRatedMovies()
+                        MOVIE_TYPE = TOP_RATED
                     }
                     R.id.m_btn_now_playing -> {
                         getNowPlayingMovies()
+                        MOVIE_TYPE = NOW_PLAYING
                     }
                 }
             }
@@ -136,7 +144,27 @@ class HomeFragment : Fragment() {
             collectFlow {
                 viewModel.popularMovieList.collect {
                     setLayoutView(it)
+                    getMoviesWithMovieType()
                 }
+            }
+        }
+    }
+
+    private fun getMoviesWithMovieType() {
+        collectFlow {
+            when (MOVIE_TYPE) {
+                POPULAR ->
+                    viewModel.popularMovieList.collect {
+                        setLayoutView(it)
+                    }
+                TOP_RATED ->
+                    viewModel.topRatedMovieList.collect {
+                        setLayoutView(it)
+                    }
+                NOW_PLAYING ->
+                    viewModel.nowPlayingMovieList.collect {
+                        setLayoutView(it)
+                    }
             }
         }
     }
@@ -169,5 +197,9 @@ class HomeFragment : Fragment() {
         private var SPAN_COUNT = 3
         private var SPAN_COUNT_GRID = 3
         private var SPAN_COUNT_LANDSCAPE_GRID = 6
+        private var MOVIE_TYPE = "movie_type"
+        private var POPULAR = "popular"
+        private var TOP_RATED = "top_rated"
+        private var NOW_PLAYING = "now_playing"
     }
 }
