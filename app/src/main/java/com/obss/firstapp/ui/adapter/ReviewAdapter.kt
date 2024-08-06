@@ -76,13 +76,13 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
         if (isMore) {
             reviewList[position].isMore = false
             holder.binding.tvReviewContent.maxLines = 10
-            holder.binding.tvReviewSeeMore.text = "See More"
+            holder.binding.tvReviewSeeMore.text = holder.itemView.context.getString(R.string.see_more)
             val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.see_more_24)
             holder.binding.tvReviewSeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         } else {
             reviewList[position].isMore = true
             holder.binding.tvReviewContent.maxLines = Int.MAX_VALUE
-            holder.binding.tvReviewSeeMore.text = "See Less"
+            holder.binding.tvReviewSeeMore.text = holder.itemView.context.getString(R.string.see_less)
             val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.see_less_24)
             holder.binding.tvReviewSeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }

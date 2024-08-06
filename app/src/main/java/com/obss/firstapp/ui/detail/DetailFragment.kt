@@ -157,12 +157,12 @@ class DetailFragment : Fragment() {
                             }
                         }
                     }
-                    Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), resources.getString(R.string.removed_movie), Toast.LENGTH_SHORT).show()
                 } else {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
                     viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
                     movie.isFavorite = true
-                    Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), resources.getString(R.string.added_movie), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -211,7 +211,7 @@ class DetailFragment : Fragment() {
             viewModel.reviews.collect {
                 if (it.isNotEmpty()) {
                     binding.tvReviewSee.visibility = View.VISIBLE
-                    binding.tvReviewSee.text = "See Reviews (${it.size})"
+                    binding.tvReviewSee.text = "${resources.getString(R.string.see_reviews)} (${it.size})"
                 }
                 binding.tvReviewSee.setOnClickListener {
                     val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId, getMovieName())
@@ -269,12 +269,12 @@ class DetailFragment : Fragment() {
             tvBiographySeeMore?.setOnClickListener {
                 if (tvActorBiography?.maxLines == BIOGRAPHY_MAX_LINE) {
                     tvActorBiography.maxLines = Int.MAX_VALUE
-                    tvBiographySeeMore.text = "See Less"
+                    tvBiographySeeMore.text = resources.getString(R.string.see_less)
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_less_24)
                     tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
                 } else {
                     tvActorBiography?.maxLines = BIOGRAPHY_MAX_LINE
-                    tvBiographySeeMore.text = "See More"
+                    tvBiographySeeMore.text = resources.getString(R.string.see_more)
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_more_24)
                     tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
                 }
