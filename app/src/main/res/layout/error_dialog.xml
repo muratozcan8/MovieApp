@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_layout_error"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_error_dialog"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_alert_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/tv_error_title_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_alert_red_background"
+        android:padding="12dp"
+        android:text="@string/error"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/ubuntu_medium"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/iv_error_dialog"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/error_24"
+            app:tint="@color/white"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_error_title_dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_error_title_dialog"
+            />
+
+        <TextView
+            android:id="@+id/tv_error_dialog_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/something_went_wrong"
+            android:textSize="16sp"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/gray"
+            android:fontFamily="@font/ubuntu_light"
+            app:layout_constraintTop_toBottomOf="@id/tv_error_title_dialog"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    <Button
+        android:id="@+id/btn_error_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/close"
+        android:textSize="14sp"
+        app:cornerRadius="12dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/constraint_layout_error_dialog"
+        app:layout_constraintBottom_toBottomOf="@id/constraint_layout_error_dialog"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
