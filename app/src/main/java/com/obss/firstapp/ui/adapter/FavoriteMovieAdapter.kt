@@ -6,26 +6,33 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
-import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.room.FavoriteMovie
+import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 
-class FavoriteMovieAdapter() : RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder>() {
-
+class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder>() {
     private var favoriteMovieList = listOf<FavoriteMovie>()
 
-    inner class ViewHolder(val binding: MovieGridItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(
+        val binding: MovieGridItemBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
         val binding = MovieGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = favoriteMovieList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         val favoriteMovie = favoriteMovieList[position]
         holder.binding.tvMovieGrid.text = favoriteMovie.title
-        holder.binding.ivMovieGrid.load("https://image.tmdb.org/t/p/w500${favoriteMovie.posterPath}")
+        holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${favoriteMovie.posterPath}")
         holder.binding.tvMovieScoreGrid.text = favoriteMovie.averageVote.toString()
         holder.binding.ibMovieFavGrid.visibility = View.VISIBLE
         holder.itemView.setOnClickListener {

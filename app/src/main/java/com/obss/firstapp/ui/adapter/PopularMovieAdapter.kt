@@ -11,6 +11,7 @@ import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
 import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -45,12 +46,12 @@ class PopularMovieAdapter
         ) {
             val movie = getItem(position)
             if (holder is GridViewHolder) {
-                holder.binding.ivMovieGrid.load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+                holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${movie?.posterPath}")
                 holder.binding.tvMovieGrid.text = movie?.title
                 holder.binding.tvMovieScoreGrid.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
                 if (movie != null) holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
             } else if (holder is LinearViewHolder) {
-                holder.binding.ivMovieLinear.load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+                holder.binding.ivMovieLinear.load("${IMAGE_BASE_URL}${movie?.posterPath}")
                 holder.binding.tvMovieLinear.text = movie?.title
                 holder.binding.tvMovieScoreLinear.text = (((movie?.voteAverage?.times(10))?.roundToInt() ?: 0) / 10.0).toString()
                 if (movie != null) holder.binding.ibMovieFavLinear.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE

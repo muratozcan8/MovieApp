@@ -8,22 +8,30 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
 import com.obss.firstapp.model.movieDetail.MoviePoster
+import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 
-class MovieImageAdapter() : RecyclerView.Adapter<MovieImageAdapter.ViewHolder>() {
-
+class MovieImageAdapter : RecyclerView.Adapter<MovieImageAdapter.ViewHolder>() {
     private var movieImageList: List<MoviePoster> = listOf()
 
-    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    inner class ViewHolder(
+        val view: View,
+    ) : RecyclerView.ViewHolder(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.slide_image_container, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int = movieImageList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.view.findViewById<ImageView>(R.id.iv_slide).load("https://image.tmdb.org/t/p/w500${movieImageList[position].filePath}")
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
+        holder.view.findViewById<ImageView>(R.id.iv_slide).load("$IMAGE_BASE_URL${movieImageList[position].filePath}")
     }
 
     fun updateList(newList: List<MoviePoster>) {

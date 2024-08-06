@@ -1,7 +1,6 @@
 package com.obss.firstapp.ui.adapter
 
 import android.annotation.SuppressLint
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,20 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.ReviewItemBinding
-import com.obss.firstapp.model.review.ReviewResult
 import com.obss.firstapp.ext.formatToReadableDate
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
+import com.obss.firstapp.model.review.ReviewResult
+import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 
-class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
-
+class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     private var reviewList = listOf<ReviewResult>()
 
-    inner class ViewHolder(val binding: ReviewItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(
+        val binding: ReviewItemBinding,
+    ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
         val binding = ReviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
@@ -31,8 +31,15 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     override fun getItemCount(): Int = reviewList.size
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (reviewList[position].authorDetails.avatarPath != null) holder.binding.ivAuthor.load("https://image.tmdb.org/t/p/w500${reviewList[position].authorDetails.avatarPath}")
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
+        if (reviewList[position].authorDetails.avatarPath !=
+            null
+        ) {
+            holder.binding.ivAuthor.load("h$IMAGE_BASE_URL${reviewList[position].authorDetails.avatarPath}")
+        }
         holder.binding.tvReviewContent.maxLines = Int.MAX_VALUE
         holder.binding.tvAuthorUsername.text = reviewList[position].authorDetails.username
         holder.binding.tvReviewRating.text = (reviewList[position].authorDetails.rating * 10).toInt().toString() + "%"
@@ -61,7 +68,11 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
         }
     }
 
-    private fun updateSeeMoreText(holder: ViewHolder, isMore: Boolean, position: Int) {
+    private fun updateSeeMoreText(
+        holder: ViewHolder,
+        isMore: Boolean,
+        position: Int,
+    ) {
         if (isMore) {
             reviewList[position].isMore = false
             holder.binding.tvReviewContent.maxLines = 10
@@ -85,6 +96,4 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     companion object {
         private const val MAX_LENGTH = 450
     }
-
-
 }

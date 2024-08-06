@@ -34,6 +34,7 @@ import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
+import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -241,7 +242,7 @@ class DetailFragment : Fragment() {
         val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
         val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("https://image.tmdb.org/t/p/w500${actor.profilePath}")
+        dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("$IMAGE_BASE_URL${actor.profilePath}")
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
         dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text =
             if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
@@ -262,17 +263,17 @@ class DetailFragment : Fragment() {
         tvActorBiography: TextView?,
         tvBiographySeeMore: TextView?,
     ) {
-        if (actor.biography?.length!! > 450) {
+        if (actor.biography?.length!! > BIOGRAPHY_MAX_LENGTH) {
             tvBiographySeeMore?.visibility = View.VISIBLE
-            tvActorBiography?.maxLines = 15
+            tvActorBiography?.maxLines = BIOGRAPHY_MAX_LINE
             tvBiographySeeMore?.setOnClickListener {
-                if (tvActorBiography?.maxLines == 15) {
+                if (tvActorBiography?.maxLines == BIOGRAPHY_MAX_LINE) {
                     tvActorBiography.maxLines = Int.MAX_VALUE
                     tvBiographySeeMore.text = "See Less"
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_less_24)
                     tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
                 } else {
-                    tvActorBiography?.maxLines = 15
+                    tvActorBiography?.maxLines = BIOGRAPHY_MAX_LINE
                     tvBiographySeeMore.text = "See More"
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_more_24)
                     tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
@@ -326,5 +327,7 @@ class DetailFragment : Fragment() {
     companion object {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
+        private const val BIOGRAPHY_MAX_LENGTH = 400
+        private const val BIOGRAPHY_MAX_LINE = 15
     }
 }
