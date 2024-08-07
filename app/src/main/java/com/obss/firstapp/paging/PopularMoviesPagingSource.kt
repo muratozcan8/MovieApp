@@ -2,12 +2,14 @@ package com.obss.firstapp.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.obss.firstapp.ext.toLoadResultError
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.repository.MovieRepository
-import retrofit2.HttpException
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class PopularMoviesPagingSource(
     private val movieRepository: MovieRepository,
+    private val errorMessage: MutableStateFlow<String>,
 ) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? = null
 
@@ -23,9 +25,7 @@ class PopularMoviesPagingSource(
                 prevKey = if (currentPage == 1) null else -1,
                 nextKey = currentPage.plus(1),
             )
-        } catch (e: Exception) {
-            LoadResult.Error(e)
-        } catch (httpE: HttpException) {
-            LoadResult.Error(httpE)
+        } catch (exception: Exception) {
+            exception.toLoadResultError(errorMessage)
         }
 }

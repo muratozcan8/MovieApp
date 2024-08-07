@@ -46,52 +46,55 @@ class DetailViewModel
         private val _isLoadings = MutableStateFlow(false)
         val isLoadings: StateFlow<Boolean> = _isLoadings
 
+        private val _errorMessage = MutableStateFlow("")
+        val errorMessage: StateFlow<String> = _errorMessage
+
         fun getMovieDetails(movieId: Int) {
             viewModelScope.launch {
-                movieRepository.getMovieDetails(movieId, _movie, _isLoadings)
+                movieRepository.getMovieDetails(movieId, _movie, _isLoadings, _errorMessage)
             }
         }
 
         fun getMovieImages(movieId: Int) {
             viewModelScope.launch {
-                movieRepository.getMovieImages(movieId, _movieImages, _isLoadings)
+                movieRepository.getMovieImages(movieId, _movieImages, _isLoadings, _errorMessage)
             }
         }
 
         fun getMovieCasts(movieId: Int) {
             viewModelScope.launch {
-                movieRepository.getMovieCredits(movieId, _movieCasts, _isLoadings)
+                movieRepository.getMovieCredits(movieId, _movieCasts, _isLoadings, _errorMessage)
             }
         }
 
         fun getActorDetails(actorId: Int) {
             _actor.value = null
             viewModelScope.launch {
-                movieRepository.getActorDetails(actorId, _actor)
+                movieRepository.getActorDetails(actorId, _actor, _errorMessage)
             }
         }
 
         fun getRecommendationMovies(movieId: Int) {
             viewModelScope.launch {
-                movieRepository.getMovieRecommendations(movieId, _recommendationMovies, _isLoadings)
+                movieRepository.getMovieRecommendations(movieId, _recommendationMovies, _isLoadings, _errorMessage)
             }
         }
 
         fun getReviews(movieId: Int) {
             viewModelScope.launch {
-                movieRepository.getMovieReviews(movieId, _reviews, _isLoadings)
+                movieRepository.getMovieReviews(movieId, _reviews, _isLoadings, _errorMessage)
             }
         }
 
         fun addFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
-                movieRepository.insertMovie(favoriteMovie)
+                movieRepository.insertMovie(favoriteMovie, _errorMessage)
             }
         }
 
         fun removeFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
-                movieRepository.deleteMovie(favoriteMovie)
+                movieRepository.deleteMovie(favoriteMovie, _errorMessage)
             }
         }
 
@@ -101,7 +104,7 @@ class DetailViewModel
                     val response = movieRepository.getMovieById(movieId)
                     _favoriteMovie.value = response
                 } catch (exception: Exception) {
-                    movieRepository.catchException(exception)
+                    movieRepository.catchException(exception, _errorMessage)
                 }
             }
         }

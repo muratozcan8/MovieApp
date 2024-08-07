@@ -22,9 +22,12 @@ class ReviewViewModel
         private val _loadingStateFlow = MutableStateFlow(false)
         val loadingStateFlow: StateFlow<Boolean> = _loadingStateFlow
 
+        private val _errorMessage = MutableStateFlow("")
+        val errorMessage: StateFlow<String> = _errorMessage
+
         fun getReviews(movieId: Int) {
             viewModelScope.launch {
-                movieRepository.getMovieReviews(movieId, _reviewList, _loadingStateFlow)
+                movieRepository.getMovieReviews(movieId, _reviewList, _loadingStateFlow, _errorMessage)
             }
         }
     }

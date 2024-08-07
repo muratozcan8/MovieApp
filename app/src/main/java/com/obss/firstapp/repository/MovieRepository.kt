@@ -56,28 +56,37 @@ class MovieRepository
 
         suspend fun getMovieById(movieId: Int) = movieDao.getMovieById(movieId)
 
-        suspend fun insertMovie(favoriteMovie: FavoriteMovie) {
+        suspend fun insertMovie(
+            favoriteMovie: FavoriteMovie,
+            errorMessage: MutableStateFlow<String>,
+        ) {
             try {
                 movieDao.insertMovie(favoriteMovie)
             } catch (exception: Exception) {
-                catchException(exception)
+                catchException(exception, errorMessage)
             }
         }
 
-        suspend fun deleteMovie(favoriteMovie: FavoriteMovie) {
+        suspend fun deleteMovie(
+            favoriteMovie: FavoriteMovie,
+            errorMessage: MutableStateFlow<String>,
+        ) {
             try {
                 movieDao.deleteMovie(favoriteMovie)
             } catch (exception: Exception) {
-                catchException(exception)
+                catchException(exception, errorMessage)
             }
         }
 
-        suspend fun getFavoriteMovies(favoriteMovies: MutableStateFlow<List<FavoriteMovie>>) {
+        suspend fun getFavoriteMovies(
+            favoriteMovies: MutableStateFlow<List<FavoriteMovie>>,
+            errorMessage: MutableStateFlow<String>,
+        ) {
             try {
                 val response = movieDao.getAllFavorites()
                 favoriteMovies.value = response
             } catch (exception: Exception) {
-                catchException(exception)
+                catchException(exception, errorMessage)
             }
         }
 
@@ -85,6 +94,7 @@ class MovieRepository
             movieId: Int,
             movie: MutableStateFlow<MovieDetail?>,
             isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
             try {
@@ -92,8 +102,8 @@ class MovieRepository
                 val isFavorite = getMovieById(movieId) != null
                 val updatedMovie = response.copy(isFavorite = isFavorite)
                 movie.value = updatedMovie
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             } finally {
                 isLoading.value = false
             }
@@ -103,13 +113,14 @@ class MovieRepository
             movieId: Int,
             movieImages: MutableStateFlow<List<MoviePoster>>,
             isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
             try {
                 val response = movieApiService.getMovieImages(movieId)
                 movieImages.value = response.backdrops!!
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             } finally {
                 isLoading.value = false
             }
@@ -119,13 +130,14 @@ class MovieRepository
             movieId: Int,
             castList: MutableStateFlow<List<Cast>>,
             isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
             try {
                 val response = movieApiService.getMovieCredits(movieId)
                 castList.value = response.cast
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             } finally {
                 isLoading.value = false
             }
@@ -134,12 +146,13 @@ class MovieRepository
         suspend fun getActorDetails(
             actorId: Int,
             actor: MutableStateFlow<Actor?>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             try {
                 val response = movieApiService.getActorDetails(actorId)
                 actor.value = response
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             }
         }
 
@@ -147,13 +160,14 @@ class MovieRepository
             movieId: Int,
             recommendationsMovies: MutableStateFlow<List<Movie>>,
             isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
             try {
                 val response = movieApiService.getMovieRecommendations(movieId)
                 recommendationsMovies.value = response.results
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             } finally {
                 isLoading.value = false
             }
@@ -163,13 +177,14 @@ class MovieRepository
             movieId: Int,
             reviews: MutableStateFlow<List<ReviewResult>>,
             isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
             try {
                 val response = movieApiService.getMovieReviews(movieId)
                 reviews.value = response.results
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             } finally {
                 isLoading.value = false
             }
@@ -179,6 +194,7 @@ class MovieRepository
             query: String,
             searchedMovieList: MutableStateFlow<List<MovieSearch>>,
             isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
             try {
@@ -188,22 +204,30 @@ class MovieRepository
                     it.isFavorite = isFavorite
                 }
                 searchedMovieList.value = response.results
-            } catch (e: Exception) {
-                catchException(e)
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
             } finally {
                 isLoading.value = false
             }
         }
 
-        fun catchException(exception: Exception) {
+        fun catchException(
+            exception: Exception,
+            errorMessage: MutableStateFlow<String>,
+        ) {
             when (exception) {
                 is UnknownHostException -> {
+                    errorMessage.value = "No internet connection"
                     Log.e("network exception", "No internet connection")
                 }
                 is HttpException -> {
+                    errorMessage.value = "HTTP exception"
                     Log.e("network exception", "HTTP exception")
                 }
-                else -> Log.e("network exception", "Unknown: ${exception.message}")
+                else -> {
+                    errorMessage.value = "Unknown: ${exception.message}"
+                    Log.e("network exception", "Unknown: ${exception.message}")
+                }
             }
         }
     }

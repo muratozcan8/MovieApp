@@ -22,9 +22,12 @@ class SearchViewModel
         private val _loadingStateFlow = MutableStateFlow(false)
         val loadingStateFlow: StateFlow<Boolean> = _loadingStateFlow
 
+        private val _errorMessage = MutableStateFlow("")
+        val errorMessage: StateFlow<String> = _errorMessage
+
         fun searchMovies(query: String) {
             viewModelScope.launch {
-                movieRepository.searchMovies(query, _searchMovieList, _loadingStateFlow)
+                movieRepository.searchMovies(query, _searchMovieList, _loadingStateFlow, _errorMessage)
             }
         }
     }

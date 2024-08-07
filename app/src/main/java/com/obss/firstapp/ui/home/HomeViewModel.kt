@@ -1,6 +1,5 @@
 package com.obss.firstapp.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -14,8 +13,8 @@ import com.obss.firstapp.paging.TopRatedMoviesPagingSource
 import com.obss.firstapp.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import retrofit2.HttpException
-import java.net.UnknownHostException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,30 +23,21 @@ class HomeViewModel
     constructor(
         private val movieRepository: MovieRepository,
     ) : ViewModel() {
+        private val _errorMessage = MutableStateFlow("")
+        val errorMessage: StateFlow<String> = _errorMessage
+
         val popularMovieList: Flow<PagingData<Movie>> =
             Pager(PagingConfig(1)) {
-                PopularMoviesPagingSource(movieRepository)
+                PopularMoviesPagingSource(movieRepository, _errorMessage)
             }.flow.cachedIn(viewModelScope)
 
         val topRatedMovieList: Flow<PagingData<Movie>> =
             Pager(PagingConfig(1)) {
-                TopRatedMoviesPagingSource(movieRepository)
+                TopRatedMoviesPagingSource(movieRepository, _errorMessage)
             }.flow.cachedIn(viewModelScope)
 
         val nowPlayingMovieList: Flow<PagingData<Movie>> =
             Pager(PagingConfig(1)) {
-                NowPlayingMoviesPagingSource(movieRepository)
+                NowPlayingMoviesPagingSource(movieRepository, _errorMessage)
             }.flow.cachedIn(viewModelScope)
-
-        private fun catchException(exception: Exception) {
-            when (exception) {
-                is UnknownHostException -> {
-                    Log.e("network exception", "no network")
-                }
-                is HttpException -> {
-                    Log.e("network exception", "HTTP exception")
-                }
-                else -> Log.e("network exception", "unknown", exception)
-            }
-        }
     }

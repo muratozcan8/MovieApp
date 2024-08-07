@@ -19,9 +19,12 @@ class FavoriteViewModel
         private var _favoriteMovies = MutableStateFlow<List<FavoriteMovie>>(listOf())
         val favoriteMovies: StateFlow<List<FavoriteMovie>> = _favoriteMovies
 
+        private val _errorMessage = MutableStateFlow("")
+        val errorMessage: StateFlow<String> = _errorMessage
+
         fun getAllFavoriteMovies() {
             viewModelScope.launch {
-                movieRepository.getFavoriteMovies(_favoriteMovies)
+                movieRepository.getFavoriteMovies(_favoriteMovies, _errorMessage)
             }
         }
     }
