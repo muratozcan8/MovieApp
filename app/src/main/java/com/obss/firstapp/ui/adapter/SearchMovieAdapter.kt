@@ -34,6 +34,7 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>()
         holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${movie.posterPath}")
         holder.binding.tvMovieGrid.text = movie.title
         holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal()
+        holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) android.view.View.VISIBLE else android.view.View.GONE
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { it(movie) }
         }

@@ -183,6 +183,10 @@ class MovieRepository
             isLoading.value = true
             try {
                 val response = movieApiService.searchMovies(query)
+                response.results.forEach {
+                    val isFavorite = getMovieById(it.id!!) != null
+                    it.isFavorite = isFavorite
+                }
                 searchedMovieList.value = response.results
             } catch (e: Exception) {
                 catchException(e)
