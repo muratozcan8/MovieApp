@@ -1,16 +1,11 @@
 package com.obss.firstapp.ui.detail
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,14 +13,10 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
-import com.obss.firstapp.ext.formatAndCalculateAge
 import com.obss.firstapp.ext.roundToSingleDecimal
-import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movieDetail.Genre
 import com.obss.firstapp.model.movieDetail.MovieDetail
@@ -35,7 +26,6 @@ import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
-import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
@@ -84,10 +74,16 @@ class DetailFragment : Fragment() {
             binding.progressBarActorDetail.visibility = View.VISIBLE
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
-                    if (actorDetail != null && actor.id == actorDetail.id!!) {
-                        binding.progressBarActorDetail.visibility = View.GONE
-                        showActorDialog(actorDetail)
+                    try {
+                        if (actorDetail != null && actor.id == actorDetail.id!!) {
+                            binding.progressBarActorDetail.visibility = View.GONE
+                            DialogHelper.showActorDialog(requireContext(), actorDetail)
+                            cancel()
+                        }
+                    } catch (exception: Exception) {
                         cancel()
+                    } finally {
+                        binding.progressBarActorDetail.visibility = View.GONE
                     }
                 }
             }
@@ -148,6 +144,13 @@ class DetailFragment : Fragment() {
     private fun showErrorDialog() {
         collectFlow {
             viewModel.errorMessage.collect {
+                if (it.isNotEmpty()) {
+                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                }
+            }
+        }
+        collectFlow {
+            viewModel.errorMessageActorDetail.collect {
                 if (it.isNotEmpty()) {
                     DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
@@ -248,53 +251,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun showActorDialog(actor: Actor) {
-        val actorDialog = layoutInflater.inflate(R.layout.bottomsheet_dialog, null)
-        val dialog = BottomSheetDialog(requireContext(), R.style.DialogAnimation)
-        dialog.setContentView(actorDialog)
-        val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
-        val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("$IMAGE_BASE_URL${actor.profilePath}")
-        dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
-        dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text =
-            if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
-        dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text =
-            if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
-        dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
-        if (actor.biography.isNullOrEmpty()) {
-            tvActorBiography?.text = "-"
-        } else {
-            tvActorBiography?.text = actor.biography
-            setActorDetailsSeeMoreButton(actor, tvActorBiography, tvBiographySeeMore)
-        }
-        dialog.show()
-    }
-
-    private fun setActorDetailsSeeMoreButton(
-        actor: Actor,
-        tvActorBiography: TextView?,
-        tvBiographySeeMore: TextView?,
-    ) {
-        if (actor.biography?.length!! > BIOGRAPHY_MAX_LENGTH) {
-            tvBiographySeeMore?.visibility = View.VISIBLE
-            tvActorBiography?.maxLines = BIOGRAPHY_MAX_LINE
-            tvBiographySeeMore?.setOnClickListener {
-                if (tvActorBiography?.maxLines == BIOGRAPHY_MAX_LINE) {
-                    tvActorBiography.maxLines = Int.MAX_VALUE
-                    tvBiographySeeMore.text = resources.getString(R.string.see_less)
-                    val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_less_24)
-                    tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-                } else {
-                    tvActorBiography?.maxLines = BIOGRAPHY_MAX_LINE
-                    tvBiographySeeMore.text = resources.getString(R.string.see_more)
-                    val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.see_more_24)
-                    tvBiographySeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-                }
-            }
-        }
-    }
-
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
         collectFlow {
             delay(200)
@@ -340,7 +296,7 @@ class DetailFragment : Fragment() {
     companion object {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
-        private const val BIOGRAPHY_MAX_LENGTH = 400
-        private const val BIOGRAPHY_MAX_LINE = 15
+        const val BIOGRAPHY_MAX_LENGTH = 400
+        const val BIOGRAPHY_MAX_LINE = 15
     }
 }

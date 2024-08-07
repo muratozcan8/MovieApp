@@ -23,5 +23,6 @@ fun <Key : Any, Value : Any> Throwable.toLoadResultError(
             Log.e("network exception", "Unknown: ${this.message}", this)
         }
     }
+    errorMessage.value = ""
     return PagingSource.LoadResult.Error(this)
 }
