@@ -23,10 +23,11 @@
 
             <ImageView
                 android:id="@+id/iv_movie_app_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="start"
-                app:srcCompat="@drawable/movie_play_24"/>
+                android:padding="3dp"
+                app:srcCompat="@drawable/movie_app_icon_top"/>
 
             <View
                 android:layout_width="0dp"
@@ -53,7 +54,7 @@
                 android:id="@+id/ib_movie_home_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 app:srcCompat="@drawable/grid_view_24" />
 
