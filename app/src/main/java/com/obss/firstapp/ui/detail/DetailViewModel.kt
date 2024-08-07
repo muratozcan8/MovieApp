@@ -46,6 +46,9 @@ class DetailViewModel
         private val _isLoadings = MutableStateFlow(false)
         val isLoadings: StateFlow<Boolean> = _isLoadings
 
+        private val _isLoadingsActorDetail = MutableStateFlow(false)
+        val isLoadingsActorDetail: StateFlow<Boolean> = _isLoadingsActorDetail
+
         private val _errorMessage = MutableStateFlow("")
         val errorMessage: StateFlow<String> = _errorMessage
 
@@ -73,7 +76,7 @@ class DetailViewModel
         fun getActorDetails(actorId: Int) {
             _actor.value = null
             viewModelScope.launch {
-                movieRepository.getActorDetails(actorId, _actor, _errorMessageActorDetail)
+                movieRepository.getActorDetails(actorId, _actor, _isLoadingsActorDetail, _errorMessageActorDetail)
                 _errorMessageActorDetail.value = ""
             }
         }

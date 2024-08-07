@@ -146,13 +146,17 @@ class MovieRepository
         suspend fun getActorDetails(
             actorId: Int,
             actor: MutableStateFlow<Actor?>,
+            isLoading: MutableStateFlow<Boolean>,
             errorMessage: MutableStateFlow<String>,
         ) {
+            isLoading.value = true
             try {
                 val response = movieApiService.getActorDetails(actorId)
                 actor.value = response
             } catch (exception: Exception) {
                 catchException(exception, errorMessage)
+            } finally {
+                isLoading.value = false
             }
         }
 

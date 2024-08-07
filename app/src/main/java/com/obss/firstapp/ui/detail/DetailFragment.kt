@@ -69,21 +69,18 @@ class DetailFragment : Fragment() {
         val adapter = ActorListAdapter()
         binding.rvActors.adapter = adapter
         adapter.updateList(actorList)
+        collectFlow {
+            viewModel.isLoadingsActorDetail.collect {
+                binding.progressBarActorDetail.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        }
         adapter.setOnItemClickListener { actor ->
             viewModel.getActorDetails(actor.id!!)
-            binding.progressBarActorDetail.visibility = View.VISIBLE
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
-                    try {
-                        if (actorDetail != null && actor.id == actorDetail.id!!) {
-                            binding.progressBarActorDetail.visibility = View.GONE
-                            DialogHelper.showActorDialog(requireContext(), actorDetail)
-                            cancel()
-                        }
-                    } catch (exception: Exception) {
+                    if (actorDetail != null && actor.id == actorDetail.id!!) {
+                        DialogHelper.showActorDialog(requireContext(), actorDetail)
                         cancel()
-                    } finally {
-                        binding.progressBarActorDetail.visibility = View.GONE
                     }
                 }
             }
