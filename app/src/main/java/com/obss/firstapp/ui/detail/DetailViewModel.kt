@@ -9,9 +9,8 @@ import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.model.movieDetail.MoviePoster
 import com.obss.firstapp.model.review.ReviewResult
-import com.obss.firstapp.network.MovieApiService
+import com.obss.firstapp.repository.MovieRepository
 import com.obss.firstapp.room.FavoriteMovie
-import com.obss.firstapp.room.MovieDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +23,7 @@ import javax.inject.Inject
 class DetailViewModel
     @Inject
     constructor(
-        private val movieApi: MovieApiService,
-        private val movieDao: MovieDao,
+        private val movieRepository: MovieRepository,
     ) : ViewModel() {
         private val _movie = MutableStateFlow<MovieDetail?>(null)
         val movie: StateFlow<MovieDetail?> = _movie
@@ -55,10 +53,8 @@ class DetailViewModel
             _isLoadings.value = true
             viewModelScope.launch {
                 try {
-                    val response = movieApi.getMovieDetails(movieId)
-                    val isFavorite = movieDao.getMovieById(movieId) != null
-                    val updatedMovie = response.copy(isFavorite = isFavorite)
-                    _movie.value = updatedMovie
+                    val response = movieRepository.getMovieDetails(movieId)
+                    _movie.value = response
                 } catch (exception: Exception) {
                     catchException(exception)
                 } finally {
@@ -71,7 +67,7 @@ class DetailViewModel
             _isLoadings.value = true
             viewModelScope.launch {
                 try {
-                    val response = movieApi.getMovieImages(movieId)
+                    val response = movieRepository.getMovieImages(movieId)
                     _movieImages.value = response.backdrops!!
                 } catch (exception: Exception) {
                     catchException(exception)
@@ -85,7 +81,7 @@ class DetailViewModel
             _isLoadings.value = true
             viewModelScope.launch {
                 try {
-                    val response = movieApi.getMovieCredits(movieId)
+                    val response = movieRepository.getMovieCredits(movieId)
                     _movieCasts.value = response.cast
                 } catch (exception: Exception) {
                     catchException(exception)
@@ -99,7 +95,7 @@ class DetailViewModel
             _actor.value = null
             viewModelScope.launch {
                 try {
-                    val response = movieApi.getActorDetails(actorId)
+                    val response = movieRepository.getActorDetails(actorId)
                     _actor.value = response
                 } catch (exception: Exception) {
                     catchException(exception)
@@ -111,7 +107,7 @@ class DetailViewModel
             _isLoadings.value = true
             viewModelScope.launch {
                 try {
-                    val response = movieApi.getMovieRecommendations(movieId)
+                    val response = movieRepository.getMovieRecommendations(movieId)
                     _recommendationMovies.value = response.results
                 } catch (exception: Exception) {
                     catchException(exception)
@@ -125,7 +121,7 @@ class DetailViewModel
             _isLoadings.value = true
             viewModelScope.launch {
                 try {
-                    val response = movieApi.getMovieReviews(movieId)
+                    val response = movieRepository.getMovieReviews(movieId)
                     _reviews.value = response.results
                 } catch (exception: Exception) {
                     catchException(exception)
@@ -138,7 +134,7 @@ class DetailViewModel
         fun addFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
                 try {
-                    movieDao.insertMovie(favoriteMovie)
+                    movieRepository.insertMovie(favoriteMovie)
                 } catch (exception: Exception) {
                     catchException(exception)
                 }
@@ -148,7 +144,7 @@ class DetailViewModel
         fun removeFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
                 try {
-                    movieDao.deleteMovie(favoriteMovie)
+                    movieRepository.deleteMovie(favoriteMovie)
                 } catch (exception: Exception) {
                     catchException(exception)
                 }
@@ -158,7 +154,7 @@ class DetailViewModel
         fun getFavoriteMovie(movieId: Int) {
             viewModelScope.launch {
                 try {
-                    val response = movieDao.getMovieById(movieId)
+                    val response = movieRepository.getMovieById(movieId)
                     _favoriteMovie.value = response
                 } catch (exception: Exception) {
                     catchException(exception)
