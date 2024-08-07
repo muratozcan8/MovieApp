@@ -1,6 +1,5 @@
 package com.obss.firstapp.ui.favorite
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.obss.firstapp.repository.MovieRepository
@@ -22,12 +21,7 @@ class FavoriteViewModel
 
         fun getAllFavoriteMovies() {
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getFavoriteMovies()
-                    _favoriteMovies.value = response
-                } catch (exception: Exception) {
-                    Log.e("Exception", exception.toString())
-                }
+                movieRepository.getFavoriteMovies(_favoriteMovies)
             }
         }
     }

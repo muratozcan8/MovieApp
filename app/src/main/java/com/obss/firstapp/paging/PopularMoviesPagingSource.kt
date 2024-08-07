@@ -15,13 +15,8 @@ class PopularMoviesPagingSource(
         try {
             val currentPage = params.key ?: 1
             val response = movieRepository.getPopularMovies(currentPage)
-            val data = response.results
             val responseData = mutableListOf<Movie>()
-            data.forEach {
-                val isFavorite = movieRepository.getMovieById(it.id!!) != null
-                it.isFavorite = isFavorite
-            }
-            responseData.addAll(data)
+            responseData.addAll(response)
 
             LoadResult.Page(
                 data = responseData,

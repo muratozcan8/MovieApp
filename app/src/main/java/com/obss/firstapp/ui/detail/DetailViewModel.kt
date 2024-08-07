@@ -1,6 +1,5 @@
 package com.obss.firstapp.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.obss.firstapp.model.actor.Actor
@@ -15,8 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,104 +47,51 @@ class DetailViewModel
         val isLoadings: StateFlow<Boolean> = _isLoadings
 
         fun getMovieDetails(movieId: Int) {
-            _isLoadings.value = true
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getMovieDetails(movieId)
-                    _movie.value = response
-                } catch (exception: Exception) {
-                    catchException(exception)
-                } finally {
-                    _isLoadings.value = false
-                }
+                movieRepository.getMovieDetails(movieId, _movie, _isLoadings)
             }
         }
 
         fun getMovieImages(movieId: Int) {
-            _isLoadings.value = true
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getMovieImages(movieId)
-                    _movieImages.value = response.backdrops!!
-                } catch (exception: Exception) {
-                    catchException(exception)
-                } finally {
-                    _isLoadings.value = false
-                }
+                movieRepository.getMovieImages(movieId, _movieImages, _isLoadings)
             }
         }
 
         fun getMovieCasts(movieId: Int) {
-            _isLoadings.value = true
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getMovieCredits(movieId)
-                    _movieCasts.value = response.cast
-                } catch (exception: Exception) {
-                    catchException(exception)
-                } finally {
-                    _isLoadings.value = false
-                }
+                movieRepository.getMovieCredits(movieId, _movieCasts, _isLoadings)
             }
         }
 
         fun getActorDetails(actorId: Int) {
             _actor.value = null
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getActorDetails(actorId)
-                    _actor.value = response
-                } catch (exception: Exception) {
-                    catchException(exception)
-                }
+                movieRepository.getActorDetails(actorId, _actor)
             }
         }
 
         fun getRecommendationMovies(movieId: Int) {
-            _isLoadings.value = true
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getMovieRecommendations(movieId)
-                    _recommendationMovies.value = response.results
-                } catch (exception: Exception) {
-                    catchException(exception)
-                } finally {
-                    _isLoadings.value = false
-                }
+                movieRepository.getMovieRecommendations(movieId, _recommendationMovies, _isLoadings)
             }
         }
 
         fun getReviews(movieId: Int) {
-            _isLoadings.value = true
             viewModelScope.launch {
-                try {
-                    val response = movieRepository.getMovieReviews(movieId)
-                    _reviews.value = response.results
-                } catch (exception: Exception) {
-                    catchException(exception)
-                } finally {
-                    _isLoadings.value = false
-                }
+                movieRepository.getMovieReviews(movieId, _reviews, _isLoadings)
             }
         }
 
         fun addFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
-                try {
-                    movieRepository.insertMovie(favoriteMovie)
-                } catch (exception: Exception) {
-                    catchException(exception)
-                }
+                movieRepository.insertMovie(favoriteMovie)
             }
         }
 
         fun removeFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
-                try {
-                    movieRepository.deleteMovie(favoriteMovie)
-                } catch (exception: Exception) {
-                    catchException(exception)
-                }
+                movieRepository.deleteMovie(favoriteMovie)
             }
         }
 
@@ -157,20 +101,8 @@ class DetailViewModel
                     val response = movieRepository.getMovieById(movieId)
                     _favoriteMovie.value = response
                 } catch (exception: Exception) {
-                    catchException(exception)
+                    movieRepository.catchException(exception)
                 }
-            }
-        }
-
-        private fun catchException(exception: Exception) {
-            when (exception) {
-                is UnknownHostException -> {
-                    Log.e("network exception", "no network")
-                }
-                is HttpException -> {
-                    Log.e("network exception", "HTTP exception")
-                }
-                else -> Log.e("network exception", "unknown", exception)
             }
         }
     }
