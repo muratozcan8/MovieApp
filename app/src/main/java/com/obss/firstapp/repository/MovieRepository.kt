@@ -225,8 +225,8 @@ class MovieRepository
                     Log.e("network exception", "No internet connection")
                 }
                 is HttpException -> {
-                    errorMessage.value = "HTTP exception"
-                    Log.e("network exception", "HTTP exception")
+                    errorMessage.value = "Movie not found"
+                    Log.e("network exception", "HTTP exception: ${exception.message}")
                 }
                 else -> {
                     errorMessage.value = "Unknown: ${exception.message}"
