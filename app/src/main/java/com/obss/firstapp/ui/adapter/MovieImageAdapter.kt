@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
@@ -32,6 +33,7 @@ class MovieImageAdapter : RecyclerView.Adapter<MovieImageAdapter.ViewHolder>() {
         position: Int,
     ) {
         holder.view.findViewById<ImageView>(R.id.iv_slide).load("$IMAGE_BASE_URL${movieImageList[position].filePath}")
+        holder.view.findViewById<TextView>(R.id.tv_slide_count).text = "${position + 1}/${movieImageList.size}"
     }
 
     fun updateList(newList: List<MoviePoster>) {
