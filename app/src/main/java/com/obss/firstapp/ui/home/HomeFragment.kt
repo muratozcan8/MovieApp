@@ -122,6 +122,8 @@ class HomeFragment : Fragment() {
 
     private fun setMovieTypeButtons() {
         binding.toggleButton.check(binding.mBtnPopular.id)
+        binding.mBtnPopular.isClickable = false
+        binding.mBtnPopular.setTextColor(resources.getColor(R.color.black, null))
         getPopularMovies()
         MOVIE_TYPE = POPULAR
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -130,14 +132,17 @@ class HomeFragment : Fragment() {
                     R.id.m_btn_popular -> {
                         getPopularMovies()
                         MOVIE_TYPE = POPULAR
+                        setMovieTypeToggleButtons(MOVIE_TYPE)
                     }
                     R.id.m_btn_top_rated -> {
                         getTopRatedMovies()
                         MOVIE_TYPE = TOP_RATED
+                        setMovieTypeToggleButtons(MOVIE_TYPE)
                     }
                     R.id.m_btn_now_playing -> {
                         getNowPlayingMovies()
                         MOVIE_TYPE = NOW_PLAYING
+                        setMovieTypeToggleButtons(MOVIE_TYPE)
                     }
                 }
             }
@@ -179,6 +184,39 @@ class HomeFragment : Fragment() {
                     }
             }
         }
+    }
+
+    private fun setMovieTypeToggleButtons(movieType: String) {
+        binding.mBtnPopular.isClickable = movieType != POPULAR
+        binding.mBtnTopRated.isClickable = movieType != TOP_RATED
+        binding.mBtnNowPlaying.isClickable = movieType != NOW_PLAYING
+        binding.mBtnPopular.setTextColor(
+            if (movieType ==
+                POPULAR
+            ) {
+                resources.getColor(R.color.black, null)
+            } else {
+                resources.getColor(R.color.white, null)
+            },
+        )
+        binding.mBtnTopRated.setTextColor(
+            if (movieType ==
+                TOP_RATED
+            ) {
+                resources.getColor(R.color.black, null)
+            } else {
+                resources.getColor(R.color.white, null)
+            },
+        )
+        binding.mBtnNowPlaying.setTextColor(
+            if (movieType ==
+                NOW_PLAYING
+            ) {
+                resources.getColor(R.color.black, null)
+            } else {
+                resources.getColor(R.color.white, null)
+            },
+        )
     }
 
     private fun initRecyclerAdapter(popularMovieList: PagingData<Movie>) {

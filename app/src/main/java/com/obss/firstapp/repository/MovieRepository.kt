@@ -60,6 +60,7 @@ class MovieRepository
             favoriteMovie: FavoriteMovie,
             errorMessage: MutableStateFlow<String>,
         ) {
+            errorMessage.value = ""
             try {
                 movieDao.insertMovie(favoriteMovie)
             } catch (exception: Exception) {
@@ -71,6 +72,7 @@ class MovieRepository
             favoriteMovie: FavoriteMovie,
             errorMessage: MutableStateFlow<String>,
         ) {
+            errorMessage.value = ""
             try {
                 movieDao.deleteMovie(favoriteMovie)
             } catch (exception: Exception) {
@@ -82,6 +84,7 @@ class MovieRepository
             favoriteMovies: MutableStateFlow<List<FavoriteMovie>>,
             errorMessage: MutableStateFlow<String>,
         ) {
+            errorMessage.value = ""
             try {
                 val response = movieDao.getAllFavorites()
                 favoriteMovies.value = response
@@ -97,6 +100,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.getMovieDetails(movieId)
                 val isFavorite = getMovieById(movieId) != null
@@ -116,6 +120,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.getMovieImages(movieId)
                 movieImages.value = response.backdrops!!
@@ -133,6 +138,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.getMovieCredits(movieId)
                 castList.value = response.cast
@@ -150,6 +156,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.getActorDetails(actorId)
                 actor.value = response
@@ -167,6 +174,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.getMovieRecommendations(movieId)
                 recommendationsMovies.value = response.results
@@ -184,6 +192,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.getMovieReviews(movieId)
                 reviews.value = response.results
@@ -201,6 +210,7 @@ class MovieRepository
             errorMessage: MutableStateFlow<String>,
         ) {
             isLoading.value = true
+            errorMessage.value = ""
             try {
                 val response = movieApiService.searchMovies(query)
                 response.results.forEach {
