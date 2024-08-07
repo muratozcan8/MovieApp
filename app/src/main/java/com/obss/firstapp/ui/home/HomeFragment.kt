@@ -127,23 +127,30 @@ class HomeFragment : Fragment() {
         getPopularMovies()
         MOVIE_TYPE = POPULAR
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.m_btn_popular -> {
-                        getPopularMovies()
-                        MOVIE_TYPE = POPULAR
-                        setMovieTypeToggleButtons(MOVIE_TYPE)
-                    }
-                    R.id.m_btn_top_rated -> {
-                        getTopRatedMovies()
-                        MOVIE_TYPE = TOP_RATED
-                        setMovieTypeToggleButtons(MOVIE_TYPE)
-                    }
-                    R.id.m_btn_now_playing -> {
-                        getNowPlayingMovies()
-                        MOVIE_TYPE = NOW_PLAYING
-                        setMovieTypeToggleButtons(MOVIE_TYPE)
-                    }
+            setMovieTypeButton(checkedId, isChecked)
+        }
+    }
+
+    private fun setMovieTypeButton(
+        checkedId: Int,
+        isChecked: Boolean,
+    ) {
+        if (isChecked) {
+            when (checkedId) {
+                R.id.m_btn_popular -> {
+                    getPopularMovies()
+                    MOVIE_TYPE = POPULAR
+                    setMovieTypeButtonsVisibility(MOVIE_TYPE)
+                }
+                R.id.m_btn_top_rated -> {
+                    getTopRatedMovies()
+                    MOVIE_TYPE = TOP_RATED
+                    setMovieTypeButtonsVisibility(MOVIE_TYPE)
+                }
+                R.id.m_btn_now_playing -> {
+                    getNowPlayingMovies()
+                    MOVIE_TYPE = NOW_PLAYING
+                    setMovieTypeButtonsVisibility(MOVIE_TYPE)
                 }
             }
         }
@@ -186,7 +193,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setMovieTypeToggleButtons(movieType: String) {
+    private fun setMovieTypeButtonsVisibility(movieType: String) {
         binding.mBtnPopular.isClickable = movieType != POPULAR
         binding.mBtnTopRated.isClickable = movieType != TOP_RATED
         binding.mBtnNowPlaying.isClickable = movieType != NOW_PLAYING
