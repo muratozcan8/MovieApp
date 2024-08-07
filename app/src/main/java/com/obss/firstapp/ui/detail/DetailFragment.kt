@@ -35,7 +35,8 @@ import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -71,6 +72,7 @@ class DetailFragment : Fragment() {
         fillMovieImages()
         fillActorDetails()
         setBackButton()
+        showErrorDialog()
     }
 
     private fun initActorsRecyclerAdapter(actorList: List<Cast>) {
@@ -139,6 +141,16 @@ class DetailFragment : Fragment() {
                     }
                 }
                 setFavoriteButton(movie)
+            }
+        }
+    }
+
+    private fun showErrorDialog() {
+        collectFlow {
+            viewModel.errorMessage.collect {
+                if (it.isNotEmpty()) {
+                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                }
             }
         }
     }

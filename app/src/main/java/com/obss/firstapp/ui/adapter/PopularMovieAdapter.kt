@@ -12,7 +12,7 @@ import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
 import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.model.movie.Movie
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 import javax.inject.Inject
 
 class PopularMovieAdapter

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.databinding.ActorItemBinding
 import com.obss.firstapp.model.credit.Cast
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 
 class ActorListAdapter : RecyclerView.Adapter<ActorListAdapter.ViewHolder>() {
     private var actorList: List<Cast> = listOf()

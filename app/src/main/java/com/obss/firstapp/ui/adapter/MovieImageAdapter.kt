@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
 import com.obss.firstapp.model.movieDetail.MoviePoster
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 
 class MovieImageAdapter : RecyclerView.Adapter<MovieImageAdapter.ViewHolder>() {
     private var movieImageList: List<MoviePoster> = listOf()

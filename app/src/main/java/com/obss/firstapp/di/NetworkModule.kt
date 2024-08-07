@@ -1,8 +1,8 @@
 package com.obss.firstapp.di
 
 import com.obss.firstapp.network.MovieApiService
-import com.obss.firstapp.util.Constants
-import com.obss.firstapp.util.Constants.BEARER
+import com.obss.firstapp.utils.Constants
+import com.obss.firstapp.utils.Constants.BEARER
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,42 +16,39 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class NetworkModule @Inject constructor() {
+class NetworkModule
+    @Inject
+    constructor() {
+        @Provides
+        @Singleton
+        fun logging(): HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-    @Provides
-    @Singleton
-    fun logging(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        @Provides
+        @Singleton
+        fun client(): OkHttpClient =
+            OkHttpClient
+                .Builder()
+                .addInterceptor { chain ->
+                    val request =
+                        chain
+                            .request()
+                            .newBuilder()
+                            .addHeader("Authorization", "Bearer $BEARER")
+                            .build()
+                    chain.proceed(request)
+                }.build()
+
+        @Provides
+        @Singleton
+        fun retrofit(client: OkHttpClient): Retrofit =
+            Retrofit
+                .Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        @Provides
+        @Singleton
+        fun movieApiService(retrofit: Retrofit): MovieApiService = retrofit.create(MovieApiService::class.java)
     }
-
-    @Provides
-    @Singleton
-    fun client(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $BEARER")
-                    .build()
-                chain.proceed(request)
-            }
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun retrofit(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun movieApiService(retrofit: Retrofit): MovieApiService {
-        return retrofit.create(MovieApiService::class.java)
-    }
-
-
-}

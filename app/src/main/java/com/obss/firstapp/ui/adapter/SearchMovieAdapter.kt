@@ -7,7 +7,7 @@ import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.model.movieSearch.MovieSearch
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 
 class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>() {
     private var searchMovieList: List<MovieSearch> = listOf()

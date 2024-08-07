@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,50 +13,77 @@ import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
-import com.obss.firstapp.ui.home.HomeFragmentDirections
+import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
-
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
-
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).changeVisibilityBottomBar(true)
+        changeVisibilityBottomBar(true)
+        searchMovie()
+        setSearchMovieListAdapter()
+        setLoadingProgressBar()
+        showErrorDialog()
+    }
+
+    private fun showErrorDialog() {
+        collectFlow {
+            viewModel.errorMessage.collect {
+                if (it.isNotEmpty()) {
+                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                }
+            }
+        }
+    }
+
+    private fun searchMovie() {
         binding.etSearchMovie.addTextChangedListener { searchText ->
             collectFlow {
                 val text = searchText.toString()
-                delay(1000)
+                delay(800)
                 if (text == searchText.toString()) viewModel.searchMovies(searchText.toString())
             }
         }
+    }
 
+    private fun setSearchMovieListAdapter() {
         collectFlow {
             viewModel.searchMovieList.collect {
                 initRecyclerAdapter(it)
             }
         }
+    }
 
+    private fun setLoadingProgressBar() {
         collectFlow {
             viewModel.loadingStateFlow.collect {
-                binding.progressBarSearch.visibility = if(it) View.VISIBLE else View.GONE
+                binding.progressBarSearch.visibility = if (it) View.VISIBLE else View.GONE
             }
         }
     }
 
-    private fun initRecyclerAdapter(searchedMovieList : List<MovieSearch>) {
+    private fun changeVisibilityBottomBar(isVisible: Boolean) {
+        (activity as MainActivity).changeVisibilityBottomBar(isVisible)
+    }
+
+    private fun initRecyclerAdapter(searchedMovieList: List<MovieSearch>) {
         val adapter = SearchMovieAdapter()
         binding.rvSearchMovie.adapter = adapter
         adapter.updateList(searchedMovieList)
@@ -66,5 +92,4 @@ class SearchFragment : Fragment() {
             findNavController().navigate(direction)
         }
     }
-
 }

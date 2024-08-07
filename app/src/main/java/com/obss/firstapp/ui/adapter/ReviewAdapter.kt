@@ -11,7 +11,7 @@ import com.obss.firstapp.R
 import com.obss.firstapp.databinding.ReviewItemBinding
 import com.obss.firstapp.ext.formatToReadableDate
 import com.obss.firstapp.model.review.ReviewResult
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 
 class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     private var reviewList = listOf<ReviewResult>()

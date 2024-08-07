@@ -49,7 +49,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="40dp"
-            android:textColor="@color/gray"
+            android:textColor="@color/gray_bottom"
             android:fontFamily="@font/ubuntu_light"
             app:layout_constraintTop_toBottomOf="@id/tv_error_title_dialog"
             app:layout_constraintBottom_toBottomOf="parent"/>

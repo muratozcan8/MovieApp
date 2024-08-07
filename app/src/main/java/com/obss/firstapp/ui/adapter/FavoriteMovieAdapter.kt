@@ -8,7 +8,7 @@ import coil.load
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.room.FavoriteMovie
-import com.obss.firstapp.util.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 
 class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder>() {
     private var favoriteMovieList = listOf<FavoriteMovie>()

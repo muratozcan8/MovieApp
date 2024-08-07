@@ -22,6 +22,7 @@ import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.LoadMoreAdapter
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
+import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,6 +49,17 @@ class HomeFragment : Fragment() {
         setLayoutButton()
         setMovieTypeButtons()
         checkPopBackStack()
+        showErrorDialog()
+    }
+
+    private fun showErrorDialog() {
+        collectFlow {
+            viewModel.errorMessage.collect {
+                if (it.isNotEmpty()) {
+                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                }
+            }
+        }
     }
 
     private fun checkPopBackStack() {

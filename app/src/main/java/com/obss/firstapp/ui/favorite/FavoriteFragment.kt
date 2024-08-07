@@ -11,6 +11,7 @@ import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.FavoriteMovieAdapter
+import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,6 +35,7 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         changeVisibilityBottomBar(true)
         getFavoriteMovies()
+        showErrorDialog()
     }
 
     private fun getFavoriteMovies() {
@@ -46,6 +48,16 @@ class FavoriteFragment : Fragment() {
                 adapter.setOnItemClickListener {
                     val direction = FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(it.movieId!!)
                     findNavController().navigate(direction)
+                }
+            }
+        }
+    }
+
+    private fun showErrorDialog() {
+        collectFlow {
+            viewModel.errorMessage.collect {
+                if (it.isNotEmpty()) {
+                    DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }

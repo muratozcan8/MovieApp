@@ -1,4 +1,4 @@
-package com.obss.firstapp.util
+package com.obss.firstapp.utils
 
 object Constants {
     const val BASE_URL = "https://api.themoviedb.org/3/"

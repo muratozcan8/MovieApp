@@ -14,6 +14,7 @@ import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.review.ReviewResult
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.ReviewAdapter
+import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +40,7 @@ class ReviewFragment : Fragment() {
         setBackButton()
         setLoadingProgressBar()
         checkLandscape()
+        showErrorDialog()
     }
 
     private fun getAllReviews() {
@@ -71,6 +73,16 @@ class ReviewFragment : Fragment() {
                     binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.gold, null))
                 } else {
                     binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.red, null))
+                }
+            }
+        }
+    }
+
+    private fun showErrorDialog() {
+        collectFlow {
+            viewModel.errorMessage.collect {
+                if (it.isNotEmpty()) {
+                    DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }
