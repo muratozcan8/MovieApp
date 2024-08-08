@@ -1,7 +1,11 @@
 package com.obss.firstapp.ui.detail
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,6 +100,7 @@ class DetailFragment : Fragment() {
         viewModel.getMovieDetails(movieId!!)
         viewModel.getMovieImages(movieId)
         viewModel.getMovieCasts(movieId)
+        viewModel.getVideos(movieId)
     }
 
     @SuppressLint("SetTextI18n")
@@ -132,6 +137,29 @@ class DetailFragment : Fragment() {
                     }
                 }
                 setFavoriteButton(movie)
+            }
+        }
+        collectFlow {
+            viewModel.videos.collect {
+                if (it.isNotEmpty()) {
+                    Log.e("video", it.toString())
+                    for (video in it) {
+                        if (video.site == "YouTube" && video.type == "Trailer" && video.official == true) {
+                            binding.ivWatchButton.isVisible = true
+                            binding.ivWatchButton.setOnClickListener {
+                                val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${video.key}"))
+                                val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${video.key}"))
+
+                                try {
+                                    startActivity(intentApp)
+                                } catch (e: ActivityNotFoundException) {
+                                    startActivity(intentBrowser)
+                                }
+                            }
+                            break
+                        }
+                    }
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.model.movieDetail.MoviePoster
 import com.obss.firstapp.model.review.ReviewResult
+import com.obss.firstapp.model.video.VideoResult
 import com.obss.firstapp.repository.MovieRepository
 import com.obss.firstapp.room.FavoriteMovie
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,9 @@ class DetailViewModel
 
         private val _isLoadings = MutableStateFlow(false)
         val isLoadings: StateFlow<Boolean> = _isLoadings
+
+        private val _videos = MutableStateFlow<List<VideoResult>>(listOf())
+        val videos: StateFlow<List<VideoResult>> = _videos
 
         private val _isLoadingsActorDetail = MutableStateFlow(false)
         val isLoadingsActorDetail: StateFlow<Boolean> = _isLoadingsActorDetail
@@ -102,6 +106,12 @@ class DetailViewModel
         fun removeFavoriteMovie(favoriteMovie: FavoriteMovie) {
             viewModelScope.launch {
                 movieRepository.deleteMovie(favoriteMovie, _errorMessage)
+            }
+        }
+
+        fun getVideos(movieId: Int) {
+            viewModelScope.launch {
+                movieRepository.getMovieVideos(movieId, _videos, _isLoadings, _errorMessage)
             }
         }
 

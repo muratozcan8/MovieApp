@@ -8,6 +8,7 @@ import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.model.movieDetail.MoviePoster
 import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.model.review.ReviewResult
+import com.obss.firstapp.model.video.VideoResult
 import com.obss.firstapp.network.MovieApiService
 import com.obss.firstapp.room.FavoriteMovie
 import com.obss.firstapp.room.MovieDao
@@ -196,6 +197,24 @@ class MovieRepository
             try {
                 val response = movieApiService.getMovieReviews(movieId)
                 reviews.value = response.results
+            } catch (exception: Exception) {
+                catchException(exception, errorMessage)
+            } finally {
+                isLoading.value = false
+            }
+        }
+
+        suspend fun getMovieVideos(
+            movieId: Int,
+            videos: MutableStateFlow<List<VideoResult>>,
+            isLoading: MutableStateFlow<Boolean>,
+            errorMessage: MutableStateFlow<String>,
+        ) {
+            isLoading.value = true
+            errorMessage.value = ""
+            try {
+                val response = movieApiService.getMovieVideos(movieId)
+                videos.value = response.results
             } catch (exception: Exception) {
                 catchException(exception, errorMessage)
             } finally {
