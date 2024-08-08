@@ -40,6 +40,7 @@ class FavoriteFragment : Fragment() {
         changeVisibilityBottomBar(true)
         changeSpanCount()
         getFavoriteMovies()
+        setLayoutView()
         showErrorDialog()
         setLayoutButton()
     }
@@ -48,7 +49,7 @@ class FavoriteFragment : Fragment() {
         viewModel.getAllFavoriteMovies()
         collectFlow {
             viewModel.favoriteMovies.collect { favoriteMovieList ->
-                val adapter = FavoriteMovieAdapter(isGridLayout)
+                val adapter = FavoriteMovieAdapter(isGridLayoutFavorite)
                 binding.rvFavoriteMovie.adapter = adapter
                 adapter.updateList(favoriteMovieList)
                 adapter.setOnItemClickListener {
@@ -71,7 +72,7 @@ class FavoriteFragment : Fragment() {
 
     private fun setLayoutButton() {
         binding.ibMovieFavoriteLayout.setOnClickListener {
-            isGridLayout = !isGridLayout
+            isGridLayoutFavorite = !isGridLayoutFavorite
             collectFlow {
                 viewModel.favoriteMovies.collect {
                     setLayoutView()
@@ -82,9 +83,9 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setLayoutView() {
-        if (isGridLayout) {
+        if (isGridLayoutFavorite) {
             binding.ibMovieFavoriteLayout.setImageResource(R.drawable.linear_view_24)
-            binding.rvFavoriteMovie.layoutManager = GridLayoutManager(context, SPAN_COUNT)
+            binding.rvFavoriteMovie.layoutManager = GridLayoutManager(context, SPAN_COUNT_FAVORITE)
         } else {
             binding.ibMovieFavoriteLayout.setImageResource(R.drawable.grid_view_24)
             binding.rvFavoriteMovie.layoutManager = LinearLayoutManager(context)
@@ -95,7 +96,7 @@ class FavoriteFragment : Fragment() {
     private fun changeSpanCount() {
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
+        SPAN_COUNT_FAVORITE = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_FAVORITE else SPAN_COUNT_GRID_FAVORITE
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
@@ -103,9 +104,9 @@ class FavoriteFragment : Fragment() {
     }
 
     companion object {
-        var isGridLayout = true
-        private var SPAN_COUNT = 3
-        private var SPAN_COUNT_GRID = 3
-        private var SPAN_COUNT_LANDSCAPE_GRID = 6
+        var isGridLayoutFavorite = true
+        private var SPAN_COUNT_FAVORITE = 3
+        private var SPAN_COUNT_GRID_FAVORITE = 3
+        private var SPAN_COUNT_LANDSCAPE_GRID_FAVORITE = 6
     }
 }
