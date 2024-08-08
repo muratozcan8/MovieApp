@@ -2,8 +2,10 @@ package com.obss.firstapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.obss.firstapp.R
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.model.movieSearch.MovieSearch
@@ -31,7 +33,14 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>()
         position: Int,
     ) {
         val movie = searchMovieList[position]
-        holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${movie.posterPath}")
+        if (movie.posterPath != null) {
+            holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${movie.posterPath}")
+        } else {
+            holder.binding.ivMovieGrid.setImageResource(
+                R.drawable.image_not_supported_24,
+            )
+            holder.binding.ivMovieGrid.scaleType = ImageView.ScaleType.FIT_CENTER
+        }
         holder.binding.tvMovieGrid.text = movie.title
         holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal() ?: "-"
         holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) android.view.View.VISIBLE else android.view.View.GONE

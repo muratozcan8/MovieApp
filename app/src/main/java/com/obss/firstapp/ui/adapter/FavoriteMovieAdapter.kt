@@ -3,8 +3,10 @@ package com.obss.firstapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.obss.firstapp.R
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
 import com.obss.firstapp.ext.roundToSingleDecimal
@@ -49,12 +51,26 @@ class FavoriteMovieAdapter
         ) {
             val favoriteMovie = favoriteMovieList[position]
             if (holder is GridViewHolder) {
-                holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${favoriteMovie.posterPath}")
+                if (favoriteMovie.posterPath != null) {
+                    holder.binding.ivMovieGrid.load("$IMAGE_BASE_URL${favoriteMovie.posterPath}")
+                } else {
+                    holder.binding.ivMovieGrid.setImageResource(
+                        R.drawable.image_not_supported_24,
+                    )
+                    holder.binding.ivMovieGrid.scaleType = ImageView.ScaleType.FIT_CENTER
+                }
                 holder.binding.tvMovieGrid.text = favoriteMovie.title
                 holder.binding.tvMovieScoreGrid.text = favoriteMovie.averageVote?.roundToSingleDecimal()
                 holder.binding.ibMovieFavGrid.visibility = View.VISIBLE
             } else if (holder is LinearViewHolder) {
-                holder.binding.ivMovieLinear.load("${IMAGE_BASE_URL}${favoriteMovie.posterPath}")
+                if (favoriteMovie?.posterPath != null) {
+                    holder.binding.ivMovieLinear.load("$IMAGE_BASE_URL${favoriteMovie.posterPath}")
+                } else {
+                    holder.binding.ivMovieLinear.setImageResource(
+                        R.drawable.image_not_supported_24,
+                    )
+                    holder.binding.ivMovieLinear.scaleType = ImageView.ScaleType.FIT_CENTER
+                }
                 holder.binding.tvMovieLinear.text = favoriteMovie.title
                 holder.binding.tvMovieScoreLinear.text = favoriteMovie.averageVote?.roundToSingleDecimal()
                 holder.binding.ibMovieFavLinear.visibility = View.VISIBLE

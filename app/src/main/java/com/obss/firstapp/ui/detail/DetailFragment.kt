@@ -2,6 +2,7 @@ package com.obss.firstapp.ui.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -184,6 +185,7 @@ class DetailFragment : Fragment() {
     private fun fillMovieImages() {
         collectFlow {
             viewModel.movieImages.collect { images ->
+                Log.e("images", "$images")
                 val adapter = MovieImageAdapter()
                 binding.ivMovie.adapter = adapter
                 binding.ivMovie.offscreenPageLimit = 3

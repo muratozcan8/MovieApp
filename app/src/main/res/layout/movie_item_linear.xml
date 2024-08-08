@@ -31,7 +31,7 @@
                 android:layout_width="90dp"
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars"
+                android:src="@drawable/image_not_supported_24"
                 android:layout_gravity="top|center"/>
 
             <LinearLayout
