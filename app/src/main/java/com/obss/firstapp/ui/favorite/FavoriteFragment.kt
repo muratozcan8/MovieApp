@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.ui.MainActivity
@@ -39,15 +41,15 @@ class FavoriteFragment : Fragment() {
         changeSpanCount()
         getFavoriteMovies()
         showErrorDialog()
+        setLayoutButton()
     }
 
     private fun getFavoriteMovies() {
         viewModel.getAllFavoriteMovies()
         collectFlow {
             viewModel.favoriteMovies.collect { favoriteMovieList ->
-                val adapter = FavoriteMovieAdapter()
+                val adapter = FavoriteMovieAdapter(isGridLayout)
                 binding.rvFavoriteMovie.adapter = adapter
-                binding.rvFavoriteMovie.layoutManager = GridLayoutManager(context, SPAN_COUNT)
                 adapter.updateList(favoriteMovieList)
                 adapter.setOnItemClickListener {
                     val direction = FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(it.movieId!!)
@@ -65,6 +67,29 @@ class FavoriteFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setLayoutButton() {
+        binding.ibMovieFavoriteLayout.setOnClickListener {
+            isGridLayout = !isGridLayout
+            collectFlow {
+                viewModel.favoriteMovies.collect {
+                    setLayoutView()
+                    getFavoriteMovies()
+                }
+            }
+        }
+    }
+
+    private fun setLayoutView() {
+        if (isGridLayout) {
+            binding.ibMovieFavoriteLayout.setImageResource(R.drawable.linear_view_24)
+            binding.rvFavoriteMovie.layoutManager = GridLayoutManager(context, SPAN_COUNT)
+        } else {
+            binding.ibMovieFavoriteLayout.setImageResource(R.drawable.grid_view_24)
+            binding.rvFavoriteMovie.layoutManager = LinearLayoutManager(context)
+        }
+        getFavoriteMovies()
     }
 
     private fun changeSpanCount() {

@@ -40,9 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="23sp"
-                android:fontFamily="@font/ubuntu_bold"
+                android:fontFamily="@font/eduhand_bold"
                 android:text="@string/movie_app"
-                android:textColor="@color/gray"/>
+                android:textColor="@color/white"/>
 
             <View
                 android:layout_width="0dp"
