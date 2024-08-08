@@ -1,5 +1,6 @@
 package com.obss.firstapp.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,9 +26,9 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        hideSystemBars()
         if (savedInstanceState == null) {
             binding.bnvMain.visibility = View.GONE
-            hideSystemBars()
             Handler(Looper.getMainLooper()).postDelayed({
                 showSystemBars()
                 findNavController(R.id.fragmentContainerView).navigate(R.id.homeFragment)
@@ -40,6 +41,18 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val windowInsetsController = WindowCompat.getInsetsController(this.window, binding.root)
+            windowInsetsController.let {
+                it.hide(WindowInsetsCompat.Type.statusBars())
+                it.hide(WindowInsetsCompat.Type.navigationBars())
+                it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+            binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size_landscape).toInt()
+        } else {
+            binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size).toInt()
+        }
+
         window.statusBarColor = ContextCompat.getColor(this, R.color.gray_top)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.gray_bottom)
         setupBottomNavigation()

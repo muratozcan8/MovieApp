@@ -5,7 +5,6 @@
         <item name="colorPrimary">@color/gray_bottom</item>
         <item name="colorPrimaryVariant">@color/gray_bottom</item>
         <item name="android:statusBarColor">@color/gray_bottom</item>
-        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="Theme.FirstApp" parent="Base.Theme.FirstApp" />
