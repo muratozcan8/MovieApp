@@ -27,6 +27,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         hideSystemBars()
+        setSplashScreen(savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        setLandscapeMode()
+        setBarsColors()
+        setupBottomNavigation()
+    }
+
+    private fun setSplashScreen(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             binding.bnvMain.visibility = View.GONE
             Handler(Looper.getMainLooper()).postDelayed({
@@ -36,11 +48,9 @@ class MainActivity : AppCompatActivity() {
                 changeVisibilityBottomBar(true)
             }, 2000)
         }
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    }
+
+    private fun setLandscapeMode() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val windowInsetsController = WindowCompat.getInsetsController(this.window, binding.root)
             windowInsetsController.let {
@@ -52,10 +62,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size).toInt()
         }
+    }
 
+    private fun setBarsColors() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.gray_top)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.gray_bottom)
-        setupBottomNavigation()
     }
 
     private fun setupBottomNavigation() {
