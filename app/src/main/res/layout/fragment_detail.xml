@@ -58,6 +58,20 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/iv_watch_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/oval_btn_background"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:src="@drawable/play_circle_outline_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginHorizontal="4dp"
+                    app:layout_constraintEnd_toStartOf="@id/iv_fav_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <ImageView
                     android:id="@+id/iv_fav_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -162,6 +176,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout_score_time"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout_score_time" />
+
+
             
             <TextView
                 android:id="@+id/tv_summary_title"
@@ -201,9 +217,11 @@
                 android:padding="8dp"
                 android:background="@drawable/rounded_text_background_reviews"
                 android:textSize="16sp"
+                android:drawablePadding="5dp"
                 android:visibility="gone"
                 android:fontFamily="@font/ubuntu_medium"
                 android:textColor="@color/white"
+                app:drawableStartCompat="@drawable/review_24"
                 app:layout_constraintTop_toBottomOf="@+id/tv_summary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -278,7 +296,7 @@
         android:id="@+id/progress_bar_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:indeterminate="true"
         app:trackColor="@color/black"
         app:indicatorColor="@color/red"
@@ -293,7 +311,7 @@
         android:id="@+id/progress_bar_actor_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:indeterminate="true"
         app:trackColor="@color/black"
         app:indicatorColor="@color/red"

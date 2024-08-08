@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -255,19 +253,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun hideSystemBars() {
-        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
-        windowInsetsController.let {
-            it.hide(WindowInsetsCompat.Type.statusBars())
-            it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-    }
-
-    private fun showSystemBars() {
-        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
-        windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
-    }
-
     private fun setBackButton() {
         binding.ivBackButton.setOnClickListener {
             parentFragmentManager.setFragmentResult("popBackStackResult", bundleOf("isPopBackStack" to isAddFavorite))
@@ -293,7 +278,7 @@ class DetailFragment : Fragment() {
     companion object {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
-        const val BIOGRAPHY_MAX_LENGTH = 400
-        const val BIOGRAPHY_MAX_LINE = 15
+        const val BIOGRAPHY_MAX_LENGTH = 750
+        const val BIOGRAPHY_MAX_LINE = 20
     }
 }
