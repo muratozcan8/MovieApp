@@ -2,8 +2,24 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.FirstApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/gray_bottom</item>
+        <item name="colorPrimaryVariant">@color/gray_bottom</item>
+        <item name="android:statusBarColor">@color/gray_bottom</item>
     </style>
 
     <style name="Theme.FirstApp" parent="Base.Theme.FirstApp" />
+
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/red_bottom</item>
+    </style>
+    
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
 </resources>

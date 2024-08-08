@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">FirstApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="search_movies">Search Movies...</string>
+    <string name="movie_app">Movie App</string>
+    <string name="oppps_please_try_again">Oppps! please try again!</string>
+    <string name="retry">Retry</string>
+    <string name="summary">Summary</string>
+    <string name="actors">Actors</string>
+    <string name="biography">Biography</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="see_more">See More</string>
+    <string name="see_less">See Less</string>
+    <string name="see_reviews">See Reviews</string>
+    <string name="removed_movie">Removed from favorites</string>
+    <string name="added_movie">Added to favorites</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="error">Error</string>
+    <string name="close">Close</string>
+    <string name="slide_count">1/12</string>
+    <string name="watch">Watch</string>
 </resources>

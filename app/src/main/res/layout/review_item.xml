@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_author"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/baseline_person_24"
+        android:background="@color/gray"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tv_author_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ubuntu_bold"
+        android:layout_marginStart="10dp"
+        android:padding="5dp"
+        android:text="username"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_author"
+        app:layout_constraintTop_toTopOf="@+id/iv_author" />
+
+    <TextView
+        android:id="@+id/tv_review_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:fontFamily="@font/ubuntu_bold"
+        android:gravity="center"
+        android:text="95%"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/stars_24"
+        app:drawableTint="@color/gold"
+        app:layout_constraintStart_toStartOf="@+id/tv_author_username"
+        app:layout_constraintTop_toBottomOf="@+id/tv_author_username" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcw_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_author"
+        app:layout_constraintStart_toStartOf="@+id/iv_author"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray_bottom"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_review_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/ubuntu_light"
+                android:padding="5dp"
+                android:text="Deadpool and Wolverine is a movie that I truly believe the Marvel Cinematic Universe (MCU) has needed for a while. After years of lackluster installments, this film is a breath of fresh air. Ryan Reynolds, Hugh Jackman, and director Shawn Levy approached this project with care and a deep understanding of what fans want. The film feels like it was crafted by fans for fans, particularly those who have been frustrated by the recent phases of the MCU."
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_review_see_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:fontFamily="@font/ubuntu_light"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:text="@string/see_more"
+                android:textAlignment="center"
+                android:textColor="@color/gray"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/see_more_24"
+                app:drawableTint="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_review_content" />
+
+            <TextView
+                android:id="@+id/tv_review_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginVertical="3dp"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/tv_review_see_more"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="July 30, 2024"
+                android:textSize="14sp"
+                android:layout_gravity="end"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
