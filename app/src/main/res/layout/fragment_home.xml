@@ -27,7 +27,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="start"
                 android:padding="3dp"
-                app:srcCompat="@drawable/movie_app_icon_top"/>
+                app:srcCompat="@drawable/movie_app_icon"/>
 
             <View
                 android:layout_width="0dp"
