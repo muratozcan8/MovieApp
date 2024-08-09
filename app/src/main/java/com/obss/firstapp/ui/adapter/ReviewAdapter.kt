@@ -94,6 +94,6 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     }
 
     companion object {
-        private const val MAX_LENGTH = 450
+        var MAX_LENGTH = 450
     }
 }

@@ -27,7 +27,7 @@
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
                 android:layout_margin="15dp"
-                app:srcCompat="@drawable/ic_launcher_background"
+                app:srcCompat="@drawable/face_male_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
@@ -80,21 +80,15 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_actor_birthday"
                 app:layout_constraintTop_toBottomOf="@+id/tv_actor_birthday" />
 
-            <TextView
-                android:id="@+id/tv_actor_webpage"
-                android:layout_width="0dp"
+            <ImageButton
+                android:id="@+id/ib_actor_webpage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:drawablePadding="5dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/ubuntu_medium"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="wwww.google.com"
-                android:textAlignment="viewStart"
-                android:textSize="14sp"
-                app:drawableTint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/webpage_24"
                 app:drawableStartCompat="@drawable/webpage_24"
                 app:layout_constraintStart_toStartOf="@+id/tv_place_of_birth"
                 app:layout_constraintTop_toBottomOf="@+id/tv_place_of_birth"
@@ -109,13 +103,13 @@
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:gravity="center"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/biography"
                 android:textSize="15sp"
                 app:drawableStartCompat="@drawable/book_24"
                 app:drawableTint="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/iv_actor_profile"
-                app:layout_constraintTop_toBottomOf="@+id/tv_actor_webpage" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_actor_profile" />
 
             <TextView
                 android:id="@+id/tv_actor_biography"

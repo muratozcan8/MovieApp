@@ -27,4 +27,6 @@
     <string name="close">Close</string>
     <string name="slide_count">1/12</string>
     <string name="watch">Watch</string>
+    <string name="no_favorite_movie">No Favorite Movie</string>
+    <string name="no_movie_found">No Movie Found</string>
 </resources>

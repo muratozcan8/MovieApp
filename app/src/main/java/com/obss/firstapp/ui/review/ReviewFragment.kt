@@ -14,6 +14,7 @@ import com.obss.firstapp.ext.collectFlow
 import com.obss.firstapp.model.review.ReviewResult
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.ReviewAdapter
+import com.obss.firstapp.ui.adapter.ReviewAdapter.Companion.MAX_LENGTH
 import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,17 +65,21 @@ class ReviewFragment : Fragment() {
                     } else {
                         "-"
                     }
-                val progress = (it.map { it.authorDetails.rating * 10 }.average()).toInt()
-                binding.progressBarReviewScore.progress = progress
-
-                if (progress >= 80) {
-                    binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.green, null))
-                } else if (progress >= 60) {
-                    binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.gold, null))
-                } else {
-                    binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.red, null))
-                }
+                setReviewPercentProgressBar(it)
             }
+        }
+    }
+
+    private fun setReviewPercentProgressBar(reviewList: List<ReviewResult>) {
+        val progress = (reviewList.map { it.authorDetails.rating * 10 }.average()).toInt()
+        binding.progressBarReviewScore.progress = progress
+
+        if (progress >= 80) {
+            binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.green, null))
+        } else if (progress >= 60) {
+            binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.gold, null))
+        } else {
+            binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.red, null))
         }
     }
 
@@ -116,7 +121,12 @@ class ReviewFragment : Fragment() {
     private fun checkLandscape() {
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        if (isLandscape) changeVisibilityBottomBar(false)
+        if (isLandscape) {
+            changeVisibilityBottomBar(false)
+            MAX_LENGTH = 2250
+        } else {
+            MAX_LENGTH = 750
+        }
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {

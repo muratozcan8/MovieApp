@@ -3,18 +3,20 @@ package com.obss.firstapp.ui.detail
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
@@ -28,6 +30,8 @@ import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
+import com.obss.firstapp.utils.Constants.YOUTUBE_APP
+import com.obss.firstapp.utils.Constants.YOUTUBE_BASE_URL
 import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
@@ -40,6 +44,7 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModels()
     private var movieName = ""
     private var isAddFavorite = false
+    private var dialog: BottomSheetDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +70,7 @@ class DetailFragment : Fragment() {
         fillActorDetails()
         setBackButton()
         showErrorDialog()
+        setActorBiographyLineCount()
     }
 
     private fun initActorsRecyclerAdapter(actorList: List<Cast>) {
@@ -81,12 +87,32 @@ class DetailFragment : Fragment() {
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
                     if (actorDetail != null && actor.id == actorDetail.id!!) {
-                        DialogHelper.showActorDialog(requireContext(), actorDetail)
+                        showSystemBars()
+                        if (dialog?.isShowing == true) {
+                            dialog?.dismiss()
+                        }
+                        dialog =
+                            DialogHelper.showActorDialog(
+                                requireContext(),
+                                actorDetail,
+                                onDismissAction = { if (checkLandscapeMode()) hideSystemBars() },
+                            )
+                        dialog!!.show()
                         cancel()
                     }
                 }
             }
         }
+    }
+
+    private fun showSystemBars() {
+        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
+    }
+
+    private fun hideSystemBars() {
+        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
     }
 
     private fun initGenresRecyclerAdapter(categoryList: List<Genre>) {
@@ -139,16 +165,19 @@ class DetailFragment : Fragment() {
                 setFavoriteButton(movie)
             }
         }
+        setMovieVideos()
+    }
+
+    private fun setMovieVideos() {
         collectFlow {
             viewModel.videos.collect {
                 if (it.isNotEmpty()) {
-                    Log.e("video", it.toString())
                     for (video in it) {
-                        if (video.site == "YouTube" && video.type == "Trailer" && video.official == true) {
+                        if (video.site == YOUTUBE && video.type == TRAILER && video.official == true) {
                             binding.ivWatchButton.isVisible = true
                             binding.ivWatchButton.setOnClickListener {
-                                val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${video.key}"))
-                                val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${video.key}"))
+                                val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("$YOUTUBE_APP${video.key}"))
+                                val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("$YOUTUBE_BASE_URL${video.key}"))
 
                                 try {
                                     startActivity(intentApp)
@@ -196,12 +225,17 @@ class DetailFragment : Fragment() {
                             }
                         }
                     }
-                    Toast.makeText(requireContext(), resources.getString(R.string.removed_movie), Toast.LENGTH_SHORT).show()
+                    DialogHelper.showToastMessage(
+                        requireContext(),
+                        resources.getString(R.string.removed_movie),
+                        R.drawable.custom_toast_red_background,
+                        R.drawable.remove_movie_24,
+                    )
                 } else {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
                     viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
                     movie.isFavorite = true
-                    Toast.makeText(requireContext(), resources.getString(R.string.added_movie), Toast.LENGTH_SHORT).show()
+                    DialogHelper.showToastMessage(requireContext(), resources.getString(R.string.added_movie))
                 }
             }
         }
@@ -217,6 +251,20 @@ class DetailFragment : Fragment() {
                 binding.ivMovie.setPadding(0, 0, 0, 0)
                 adapter.updateList(images)
             }
+        }
+    }
+
+    private fun checkLandscapeMode(): Boolean {
+        val isLandscape =
+            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        return isLandscape
+    }
+
+    private fun setActorBiographyLineCount() {
+        if (checkLandscapeMode()) {
+            BIOGRAPHY_MAX_LENGTH = 2250
+        } else {
+            BIOGRAPHY_MAX_LENGTH = 750
         }
     }
 
@@ -306,7 +354,9 @@ class DetailFragment : Fragment() {
     companion object {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
-        const val BIOGRAPHY_MAX_LENGTH = 750
+        var BIOGRAPHY_MAX_LENGTH = 750
         const val BIOGRAPHY_MAX_LINE = 20
+        private const val YOUTUBE = "YouTube"
+        private const val TRAILER = "Trailer"
     }
 }

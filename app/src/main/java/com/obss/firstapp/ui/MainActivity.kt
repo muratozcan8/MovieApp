@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.forEach
 import androidx.navigation.findNavController
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.ActivityMainBinding
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setLandscapeMode() {
+        val layoutParams = binding.bnvMain.layoutParams
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val windowInsetsController = WindowCompat.getInsetsController(this.window, binding.root)
             windowInsetsController.let {
@@ -59,9 +61,15 @@ class MainActivity : AppCompatActivity() {
                 it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
             binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size_landscape).toInt()
+            layoutParams.height = resources.getDimension(R.dimen.bottom_menu_height_landscape).toInt()
+            binding.bnvMain.menu.forEach {
+                it.title = ""
+            }
         } else {
             binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size).toInt()
+            layoutParams.height = resources.getDimension(R.dimen.bottom_menu_height).toInt()
         }
+        binding.bnvMain.layoutParams = layoutParams
     }
 
     private fun setBarsColors() {
