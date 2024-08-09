@@ -5,11 +5,12 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,6 +28,8 @@ import com.obss.firstapp.ui.adapter.ActorListAdapter
 import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
+import com.obss.firstapp.utils.Constants.YOUTUBE_APP
+import com.obss.firstapp.utils.Constants.YOUTUBE_BASE_URL
 import com.obss.firstapp.utils.DialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
@@ -80,12 +83,23 @@ class DetailFragment : Fragment() {
             collectFlow {
                 viewModel.actor.collect { actorDetail ->
                     if (actorDetail != null && actor.id == actorDetail.id!!) {
-                        DialogHelper.showActorDialog(requireContext(), actorDetail)
+                        showSystemBars()
+                        DialogHelper.showActorDialog(requireContext(), actorDetail, onDismissAction = { hideSystemBars() })
                         cancel()
                     }
                 }
             }
         }
+    }
+
+    private fun showSystemBars() {
+        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
+    }
+
+    private fun hideSystemBars() {
+        val windowInsetsController = WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
     }
 
     private fun initGenresRecyclerAdapter(categoryList: List<Genre>) {
@@ -138,16 +152,19 @@ class DetailFragment : Fragment() {
                 setFavoriteButton(movie)
             }
         }
+        setMovieVideos()
+    }
+
+    private fun setMovieVideos() {
         collectFlow {
             viewModel.videos.collect {
                 if (it.isNotEmpty()) {
-                    Log.e("video", it.toString())
                     for (video in it) {
-                        if (video.site == "YouTube" && video.type == "Trailer" && video.official == true) {
+                        if (video.site == YOUTUBE && video.type == TRAILER && video.official == true) {
                             binding.ivWatchButton.isVisible = true
                             binding.ivWatchButton.setOnClickListener {
-                                val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${video.key}"))
-                                val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${video.key}"))
+                                val intentApp = Intent(Intent.ACTION_VIEW, Uri.parse("$YOUTUBE_APP${video.key}"))
+                                val intentBrowser = Intent(Intent.ACTION_VIEW, Uri.parse("$YOUTUBE_BASE_URL${video.key}"))
 
                                 try {
                                     startActivity(intentApp)
@@ -312,5 +329,7 @@ class DetailFragment : Fragment() {
         private const val DATE_LENGTH = 4
         const val BIOGRAPHY_MAX_LENGTH = 750
         const val BIOGRAPHY_MAX_LINE = 20
+        private const val YOUTUBE = "YouTube"
+        private const val TRAILER = "Trailer"
     }
 }

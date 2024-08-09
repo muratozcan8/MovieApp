@@ -49,12 +49,16 @@ object DialogHelper {
     fun showActorDialog(
         context: Context,
         actor: Actor,
+        onDismissAction: () -> Unit,
     ) {
         val actorDialog = LayoutInflater.from(context).inflate(R.layout.bottomsheet_dialog, null)
         val dialog = BottomSheetDialog(context, R.style.DialogAnimation)
         val behavior = dialog.behavior
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.setContentView(actorDialog)
+        dialog.setOnDismissListener {
+            onDismissAction()
+        }
         val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
         val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
