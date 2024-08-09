@@ -69,6 +69,11 @@ class SearchFragment : Fragment() {
     private fun setSearchMovieListAdapter() {
         collectFlow {
             viewModel.searchMovieList.collect {
+                if (it.isEmpty() && binding.etSearchMovie.text.isNotEmpty()) {
+                    binding.tvTempSearchMovie.visibility = View.VISIBLE
+                } else {
+                    binding.tvTempSearchMovie.visibility = View.GONE
+                }
                 initRecyclerAdapter(it)
             }
         }
