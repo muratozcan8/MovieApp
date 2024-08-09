@@ -50,9 +50,9 @@ class FavoriteFragment : Fragment() {
         collectFlow {
             viewModel.favoriteMovies.collect { favoriteMovieList ->
                 if (favoriteMovieList.isEmpty()) {
-                    binding.tvTempFavoriteMovie.visibility = View.VISIBLE
+                    binding.llTempFavoriteMovie.visibility = View.VISIBLE
                 } else {
-                    binding.tvTempFavoriteMovie.visibility = View.GONE
+                    binding.llTempFavoriteMovie.visibility = View.GONE
                 }
                 val adapter = FavoriteMovieAdapter(isGridLayoutFavorite)
                 binding.rvFavoriteMovie.adapter = adapter

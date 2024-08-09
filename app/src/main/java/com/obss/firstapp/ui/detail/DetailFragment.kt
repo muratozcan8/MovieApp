@@ -16,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentDetailBinding
 import com.obss.firstapp.ext.collectFlow
@@ -43,6 +44,7 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModels()
     private var movieName = ""
     private var isAddFavorite = false
+    private var dialog: BottomSheetDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,11 +88,16 @@ class DetailFragment : Fragment() {
                 viewModel.actor.collect { actorDetail ->
                     if (actorDetail != null && actor.id == actorDetail.id!!) {
                         showSystemBars()
-                        DialogHelper.showActorDialog(
-                            requireContext(),
-                            actorDetail,
-                            onDismissAction = { if (checkLandscapeMode()) hideSystemBars() },
-                        )
+                        if (dialog?.isShowing == true) {
+                            dialog?.dismiss()
+                        }
+                        dialog =
+                            DialogHelper.showActorDialog(
+                                requireContext(),
+                                actorDetail,
+                                onDismissAction = { if (checkLandscapeMode()) hideSystemBars() },
+                            )
+                        dialog!!.show()
                         cancel()
                     }
                 }

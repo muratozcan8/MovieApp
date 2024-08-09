@@ -2,15 +2,19 @@ package com.obss.firstapp.utils
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -50,18 +54,18 @@ object DialogHelper {
         context: Context,
         actor: Actor,
         onDismissAction: () -> Unit,
-    ) {
+    ): BottomSheetDialog {
         val actorDialog = LayoutInflater.from(context).inflate(R.layout.bottomsheet_dialog, null)
         val dialog = BottomSheetDialog(context, R.style.DialogAnimation)
         val behavior = dialog.behavior
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.setContentView(actorDialog)
-        dialog.setOnDismissListener {
-            onDismissAction()
-        }
         val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
         val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setOnDismissListener {
+            onDismissAction()
+        }
         if (actor.profilePath.isNullOrEmpty()) {
             if (actor.gender == 1) {
                 dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.setImageResource(R.drawable.face_female_24)
@@ -76,14 +80,20 @@ object DialogHelper {
             if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
         dialog.findViewById<TextView>(R.id.tv_place_of_birth)?.text =
             if (actor.placeOfBirth.isNullOrEmpty()) "-" else actor.placeOfBirth.toString()
-        dialog.findViewById<TextView>(R.id.tv_actor_webpage)?.text = if (actor.homepage == null) "-" else actor.homepage.toString()
+        val ibActorWebsite = dialog.findViewById<ImageButton>(R.id.ib_actor_webpage)
+        ibActorWebsite?.isVisible = actor.homepage != null
+        ibActorWebsite?.setOnClickListener {
+            val url = actor.homepage.toString()
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
         if (actor.biography.isNullOrEmpty()) {
             tvActorBiography?.text = "-"
         } else {
             tvActorBiography?.text = actor.biography
             setActorDetailsSeeMoreButton(context, actor, tvActorBiography, tvBiographySeeMore)
         }
-        dialog.show()
+        return dialog
     }
 
     private fun setActorDetailsSeeMoreButton(
