@@ -64,21 +64,43 @@
         app:layout_constraintTop_toBottomOf="@+id/constraint_layout_top_search"
         />
 
-    <TextView
-        android:id="@+id/tv_temp_search_movie"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <LinearLayout
+        android:id="@+id/ll_not_found_searched_movie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="100dp"
-        android:layout_marginHorizontal="5dp"
-        android:gravity="center"
         android:visibility="gone"
-        android:textColor="@color/gray"
-        android:textSize="20sp"
-        android:text="@string/no_movie_found"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search_movie"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/constraint_layout_top_search">
+
+        <ImageView
+            android:id="@+id/iv_temp_search_movie"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/not_searched_movie"
+            />
+
+        <TextView
+            android:id="@+id/tv_temp_search_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:text="@string/no_movie_found"
+
+            />
+
+    </LinearLayout>
+
+
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_bar_search"

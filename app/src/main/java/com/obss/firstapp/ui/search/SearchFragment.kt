@@ -71,9 +71,9 @@ class SearchFragment : Fragment() {
         collectFlow {
             viewModel.searchMovieList.collect {
                 if (it.isEmpty() && binding.etSearchMovie.text.isNotEmpty()) {
-                    binding.tvTempSearchMovie.visibility = View.VISIBLE
+                    binding.llNotFoundSearchedMovie.visibility = View.VISIBLE
                 } else {
-                    binding.tvTempSearchMovie.visibility = View.GONE
+                    binding.llNotFoundSearchedMovie.visibility = View.GONE
                 }
                 initRecyclerAdapter(it)
             }
@@ -86,6 +86,7 @@ class SearchFragment : Fragment() {
                 binding.ivSearchMovieCancel.visibility = View.VISIBLE
             } else {
                 binding.ivSearchMovieCancel.visibility = View.GONE
+                binding.llNotFoundSearchedMovie.visibility = View.GONE
             }
         }
         binding.ivSearchMovieCancel.setOnClickListener {
