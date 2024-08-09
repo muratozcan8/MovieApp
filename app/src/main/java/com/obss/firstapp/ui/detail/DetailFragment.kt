@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -196,12 +195,17 @@ class DetailFragment : Fragment() {
                             }
                         }
                     }
-                    Toast.makeText(requireContext(), resources.getString(R.string.removed_movie), Toast.LENGTH_SHORT).show()
+                    DialogHelper.showToastMessage(
+                        requireContext(),
+                        resources.getString(R.string.removed_movie),
+                        R.drawable.custom_toast_red_background,
+                        R.drawable.remove_movie_24,
+                    )
                 } else {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
                     viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
                     movie.isFavorite = true
-                    Toast.makeText(requireContext(), resources.getString(R.string.added_movie), Toast.LENGTH_SHORT).show()
+                    DialogHelper.showToastMessage(requireContext(), resources.getString(R.string.added_movie))
                 }
             }
         }

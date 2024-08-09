@@ -9,8 +9,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
 import com.obss.firstapp.ext.formatAndCalculateAge
@@ -50,6 +52,8 @@ object DialogHelper {
     ) {
         val actorDialog = LayoutInflater.from(context).inflate(R.layout.bottomsheet_dialog, null)
         val dialog = BottomSheetDialog(context, R.style.DialogAnimation)
+        val behavior = dialog.behavior
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.setContentView(actorDialog)
         val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
         val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
@@ -93,5 +97,24 @@ object DialogHelper {
                 }
             }
         }
+    }
+
+    fun showToastMessage(
+        context: Context,
+        message: String,
+        drawable: Int = R.drawable.custom_toast_background,
+        icon: Int = R.drawable.add_movie_24,
+    ) {
+        val view = LayoutInflater.from(context).inflate(R.layout.toast_background, null)
+        view.background = ContextCompat.getDrawable(context, drawable)
+        val toastMessage = view.findViewById<TextView>(R.id.tv_toast_message)
+        val toastIcon = view.findViewById<ImageView>(R.id.iv_toast_icon)
+        toastMessage.text = message
+        toastIcon.setImageResource(icon)
+
+        val toast = Toast(context)
+        toast.view = view
+        toast.duration = Toast.LENGTH_SHORT
+        toast.show()
     }
 }
