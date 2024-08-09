@@ -44,6 +44,7 @@ class SearchFragment : Fragment() {
         setSearchMovieListAdapter()
         setLoadingProgressBar()
         showErrorDialog()
+        setCancelButton()
     }
 
     private fun showErrorDialog() {
@@ -76,6 +77,19 @@ class SearchFragment : Fragment() {
                 }
                 initRecyclerAdapter(it)
             }
+        }
+    }
+
+    private fun setCancelButton() {
+        binding.etSearchMovie.addTextChangedListener {
+            if (binding.etSearchMovie.text.isNotEmpty()) {
+                binding.ivSearchMovieCancel.visibility = View.VISIBLE
+            } else {
+                binding.ivSearchMovieCancel.visibility = View.GONE
+            }
+        }
+        binding.ivSearchMovieCancel.setOnClickListener {
+            binding.etSearchMovie.text.clear()
         }
     }
 
