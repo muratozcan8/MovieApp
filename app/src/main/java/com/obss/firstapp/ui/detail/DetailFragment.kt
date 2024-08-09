@@ -68,6 +68,7 @@ class DetailFragment : Fragment() {
         fillActorDetails()
         setBackButton()
         showErrorDialog()
+        setActorBiographyLineCount()
     }
 
     private fun initActorsRecyclerAdapter(actorList: List<Cast>) {
@@ -252,6 +253,14 @@ class DetailFragment : Fragment() {
         return isLandscape
     }
 
+    private fun setActorBiographyLineCount() {
+        if (checkLandscapeMode()) {
+            BIOGRAPHY_MAX_LENGTH = 2250
+        } else {
+            BIOGRAPHY_MAX_LENGTH = 750
+        }
+    }
+
     private fun getRecommendationMovies() {
         val movieId = arguments?.getInt("movieId")
         viewModel.getRecommendationMovies(movieId!!)
@@ -338,7 +347,7 @@ class DetailFragment : Fragment() {
     companion object {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
-        const val BIOGRAPHY_MAX_LENGTH = 750
+        var BIOGRAPHY_MAX_LENGTH = 750
         const val BIOGRAPHY_MAX_LINE = 20
         private const val YOUTUBE = "YouTube"
         private const val TRAILER = "Trailer"
