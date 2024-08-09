@@ -27,7 +27,7 @@
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
                 android:layout_margin="15dp"
-                app:srcCompat="@drawable/ic_launcher_background"
+                app:srcCompat="@drawable/face_male_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageView"

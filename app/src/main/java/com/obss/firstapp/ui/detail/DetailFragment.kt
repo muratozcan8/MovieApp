@@ -3,6 +3,7 @@ package com.obss.firstapp.ui.detail
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -84,7 +85,11 @@ class DetailFragment : Fragment() {
                 viewModel.actor.collect { actorDetail ->
                     if (actorDetail != null && actor.id == actorDetail.id!!) {
                         showSystemBars()
-                        DialogHelper.showActorDialog(requireContext(), actorDetail, onDismissAction = { hideSystemBars() })
+                        DialogHelper.showActorDialog(
+                            requireContext(),
+                            actorDetail,
+                            onDismissAction = { if (checkLandscapeMode()) hideSystemBars() },
+                        )
                         cancel()
                     }
                 }
@@ -239,6 +244,12 @@ class DetailFragment : Fragment() {
                 adapter.updateList(images)
             }
         }
+    }
+
+    private fun checkLandscapeMode(): Boolean {
+        val isLandscape =
+            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        return isLandscape
     }
 
     private fun getRecommendationMovies() {

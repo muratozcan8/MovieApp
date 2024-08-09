@@ -62,7 +62,15 @@ object DialogHelper {
         val tvActorBiography = dialog.findViewById<TextView>(R.id.tv_actor_biography)
         val tvBiographySeeMore = dialog.findViewById<TextView>(R.id.tv_actor_biography_see_more)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("$IMAGE_BASE_URL${actor.profilePath}")
+        if (actor.profilePath.isNullOrEmpty()) {
+            if (actor.gender == 1) {
+                dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.setImageResource(R.drawable.face_female_24)
+            } else {
+                dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.setImageResource(R.drawable.face_male_24)
+            }
+        } else {
+            dialog.findViewById<ImageView>(R.id.iv_actor_profile)?.load("$IMAGE_BASE_URL${actor.profilePath}")
+        }
         dialog.findViewById<TextView>(R.id.tv_actor_name)?.text = actor.name
         dialog.findViewById<TextView>(R.id.tv_actor_birthday)?.text =
             if (actor.birthday.isNullOrEmpty()) "-" else actor.birthday.formatAndCalculateAge()
