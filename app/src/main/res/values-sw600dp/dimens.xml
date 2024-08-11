@@ -8,10 +8,13 @@
 
     <!-- Home Fragment -->
     <dimen name="toggle_button_text_size">18sp</dimen>
+    <dimen name="rv_margin_horizontal">52dp</dimen>
 
     <!--Movie Grid Item-->
+    <dimen name="movie_grid_item_margin_horizontal">9dp</dimen>
     <dimen name="movie_grid_item_width">210dp</dimen>
     <dimen name="movie_grid_item_height">315dp</dimen>
     <dimen name="movie_grid_item_text_size">20sp</dimen>
     <dimen name="movie_grid_item_margin_bottom">15dp</dimen>
+    <dimen name="movie_grid_item_stroke_width">3dp</dimen>
 </resources>

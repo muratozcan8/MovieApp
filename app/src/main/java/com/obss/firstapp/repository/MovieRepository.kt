@@ -258,7 +258,7 @@ class MovieRepository
                     Log.e("network exception", "HTTP exception: ${exception.message}")
                 }
                 else -> {
-                    errorMessage.value = "Unknown: ${exception.message}"
+                    errorMessage.value = "An error occurred while connecting to the server"
                     Log.e("network exception", "Unknown: ${exception.message}")
                 }
             }

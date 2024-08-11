@@ -19,7 +19,7 @@ fun <Key : Any, Value : Any> Throwable.toLoadResultError(
             Log.e("network exception", "HTTP exception", this)
         }
         else -> {
-            errorMessage.value = "Unknown: ${this.message}"
+            errorMessage.value = "An error occurred while connecting to the server"
             Log.e("network exception", "Unknown: ${this.message}", this)
         }
     }

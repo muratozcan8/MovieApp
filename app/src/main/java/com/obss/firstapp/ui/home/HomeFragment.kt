@@ -66,9 +66,6 @@ class HomeFragment : Fragment() {
         setMovieTypeButtons()
         checkPopBackStack()
         showErrorDialog()
-        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
-        val screenHeight = ScreenSetting.getScreenHeight(requireContext())
-        Log.e("Screen Settings", "Width: ${screenWidth.pxToDp(requireContext())}, Height: ${screenHeight.pxToDp(requireContext())}")
     }
 
     override fun onDestroy() {
@@ -182,9 +179,52 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeSpanCount() {
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val screenHeight = ScreenSetting.getScreenHeight(requireContext())
+        val spanCount =
+            (
+                context
+                    ?.resources
+                    ?.getDimension(R.dimen.movie_grid_item_width)
+                    ?.toInt()
+                    ?.pxToDp(requireContext())!!
+            ).toInt()
+
+        SPAN_COUNT_GRID =
+            (
+                (
+                    screenWidth.pxToDp(requireContext()).toInt() -
+                        context
+                            ?.resources
+                            ?.getDimension(R.dimen.rv_margin_horizontal)
+                            ?.toInt()
+                            ?.pxToDp(requireContext())!! * 2
+                ) /
+                    spanCount
+            ).toInt()
+        SPAN_COUNT_LANDSCAPE_GRID =
+            (
+                (
+                    screenWidth.pxToDp(requireContext()).toInt() -
+                        context
+                            ?.resources
+                            ?.getDimension(R.dimen.rv_margin_horizontal)
+                            ?.toInt()
+                            ?.pxToDp(requireContext())!! * 2
+                ) /
+                    spanCount
+            ).toInt()
+
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
+
+        Log.e(
+            "Screen Settings",
+            "SpanCount: $SPAN_COUNT_GRID, Width: ${screenWidth.pxToDp(
+                requireContext(),
+            )}, SpanCountLandscape: ${SPAN_COUNT_LANDSCAPE_GRID}, Height: ${screenHeight.pxToDp(requireContext())}",
+        )
     }
 
     private fun setLayoutButton() {
