@@ -10,9 +10,9 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcv_movie_linear"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="@dimen/movie_linear_item_height"
         app:cardElevation="20dp"
-        app:strokeWidth="1dp"
+        app:strokeWidth="@dimen/movie_grid_item_stroke_width"
         app:cardCornerRadius="10dp"
         android:backgroundTint="@color/gray_background"
         android:layout_margin="3dp"
@@ -28,8 +28,8 @@
             android:orientation="horizontal">
             <ImageView
                 android:id="@+id/iv_movie_linear"
-                android:layout_width="90dp"
-                android:layout_height="120dp"
+                android:layout_width="@dimen/movie_linear_item_width"
+                android:layout_height="@dimen/movie_linear_item_height"
                 android:scaleType="centerCrop"
                 android:src="@drawable/image_not_supported_24"
                 android:layout_gravity="top|center"/>
@@ -52,7 +52,7 @@
                     android:text="Movie Name"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/movie_linear_item_text_size" />
 
             </LinearLayout>
 
@@ -64,8 +64,8 @@
                 android:layout_margin="8dp">
                 <ImageView
                     android:id="@+id/iv_movie_score_linear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/movie_linear_icon_size"
+                    android:layout_height="@dimen/movie_linear_icon_size"
                     app:srcCompat="@drawable/star_24"
                     android:layout_gravity="end"
                     android:layout_marginStart="6dp"
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="8.5"
                     android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/movie_linear_item_text_size"
                     android:layout_gravity="end"
                     android:textColor="@color/white"
                     android:textAlignment="textEnd" />
@@ -88,8 +88,8 @@
 
                 <ImageView
                     android:id="@+id/ib_movie_fav_linear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/movie_linear_icon_size"
+                    android:layout_height="@dimen/movie_linear_icon_size"
                     android:layout_gravity="end"
                     app:srcCompat="@drawable/favorite_24"
                     app:tint="@color/white" />

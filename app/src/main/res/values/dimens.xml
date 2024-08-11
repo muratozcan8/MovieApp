@@ -9,6 +9,7 @@
     <!-- Home Fragment -->
     <dimen name="toggle_button_text_size">12sp</dimen>
     <dimen name="rv_margin_horizontal">7dp</dimen>
+    <dimen name="movie_app_text_size">23sp</dimen>
 
     <!--Movie Grid Item-->
     <dimen name="movie_grid_item_margin_horizontal">3dp</dimen>
@@ -17,4 +18,12 @@
     <dimen name="movie_grid_item_text_size">14sp</dimen>
     <dimen name="movie_grid_item_margin_bottom">6dp</dimen>
     <dimen name="movie_grid_item_stroke_width">1dp</dimen>
+
+    <!--Movie Linear Item-->
+    <dimen name="movie_linear_item_width">90dp</dimen>
+    <dimen name="movie_linear_item_height">120dp</dimen>
+    <dimen name="movie_linear_item_text_size">14sp</dimen>
+    <dimen name="movie_linear_icon_size">18dp</dimen>
+
+
 </resources>

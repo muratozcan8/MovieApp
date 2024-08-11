@@ -7,8 +7,9 @@
     <dimen name="bottom_menu_height_landscape">60dp</dimen>
 
     <!-- Home Fragment -->
-    <dimen name="toggle_button_text_size">18sp</dimen>
+    <dimen name="toggle_button_text_size">20sp</dimen>
     <dimen name="rv_margin_horizontal">52dp</dimen>
+    <dimen name="movie_app_text_size">36sp</dimen>
 
     <!--Movie Grid Item-->
     <dimen name="movie_grid_item_margin_horizontal">9dp</dimen>
@@ -17,4 +18,11 @@
     <dimen name="movie_grid_item_text_size">20sp</dimen>
     <dimen name="movie_grid_item_margin_bottom">15dp</dimen>
     <dimen name="movie_grid_item_stroke_width">3dp</dimen>
+
+    <!--Movie Linear Item-->
+    <dimen name="movie_linear_item_width">150dp</dimen>
+    <dimen name="movie_linear_item_height">200dp</dimen>
+    <dimen name="movie_linear_item_text_size">24sp</dimen>
+    <dimen name="movie_linear_icon_size">28dp</dimen>
+
 </resources>
