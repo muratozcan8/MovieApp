@@ -1,5 +1,6 @@
 package com.obss.firstapp.ui.home
 
+import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private var dialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +65,17 @@ class HomeFragment : Fragment() {
         showErrorDialog()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        dialog?.dismiss()
+        dialog = null
+    }
+
     private fun showErrorDialog() {
         collectFlow {
             viewModel.errorMessage.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    dialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }

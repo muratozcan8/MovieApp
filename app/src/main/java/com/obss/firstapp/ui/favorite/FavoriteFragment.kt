@@ -1,5 +1,6 @@
 package com.obss.firstapp.ui.favorite
 
+import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteBinding
     private val viewModel: FavoriteViewModel by viewModels()
+    private var errorDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +45,12 @@ class FavoriteFragment : Fragment() {
         setLayoutView()
         showErrorDialog()
         setLayoutButton()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        errorDialog?.dismiss()
+        errorDialog = null
     }
 
     private fun getFavoriteMovies() {
@@ -69,7 +77,7 @@ class FavoriteFragment : Fragment() {
         collectFlow {
             viewModel.errorMessage.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    errorDialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }

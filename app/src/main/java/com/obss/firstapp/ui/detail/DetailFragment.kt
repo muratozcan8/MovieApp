@@ -1,6 +1,7 @@
 package com.obss.firstapp.ui.detail
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
@@ -45,6 +46,7 @@ class DetailFragment : Fragment() {
     private var movieName = ""
     private var isAddFavorite = false
     private var dialog: BottomSheetDialog? = null
+    private var errorDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +75,12 @@ class DetailFragment : Fragment() {
         setActorBiographyLineCount()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        errorDialog?.dismiss()
+        errorDialog = null
+    }
+
     private fun initActorsRecyclerAdapter(actorList: List<Cast>) {
         val adapter = ActorListAdapter()
         binding.rvActors.adapter = adapter
@@ -82,6 +90,10 @@ class DetailFragment : Fragment() {
                 binding.progressBarActorDetail.visibility = if (it) View.VISIBLE else View.GONE
             }
         }
+        setActorAdapterListener(adapter)
+    }
+
+    private fun setActorAdapterListener(adapter: ActorListAdapter) {
         adapter.setOnItemClickListener { actor ->
             viewModel.getActorDetails(actor.id!!)
             collectFlow {
@@ -197,14 +209,14 @@ class DetailFragment : Fragment() {
         collectFlow {
             viewModel.errorMessage.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    errorDialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }
         collectFlow {
             viewModel.errorMessageActorDetail.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    errorDialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }

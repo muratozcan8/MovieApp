@@ -1,5 +1,6 @@
 package com.obss.firstapp.ui.search
 
+import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import kotlinx.coroutines.delay
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
+    private var errorDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +49,17 @@ class SearchFragment : Fragment() {
         setCancelButton()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        errorDialog?.dismiss()
+        errorDialog = null
+    }
+
     private fun showErrorDialog() {
         collectFlow {
             viewModel.errorMessage.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    errorDialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }
