@@ -3,6 +3,7 @@ package com.obss.firstapp.ui.home
 import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentHomeBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.ext.pxToDp
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.LoadMoreAdapter
 import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import com.obss.firstapp.utils.DialogHelper
+import com.obss.firstapp.utils.ScreenSetting
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,6 +66,9 @@ class HomeFragment : Fragment() {
         setMovieTypeButtons()
         checkPopBackStack()
         showErrorDialog()
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val screenHeight = ScreenSetting.getScreenHeight(requireContext())
+        Log.e("Screen Settings", "Width: ${screenWidth.pxToDp(requireContext())}, Height: ${screenHeight.pxToDp(requireContext())}")
     }
 
     override fun onDestroy() {
