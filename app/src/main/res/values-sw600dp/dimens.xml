@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <dimen name="bottom_menu_icon_size_landscape">25dp</dimen>
+    <dimen name="bottom_menu_icon_size">30dp</dimen>
+    <dimen name="bottom_menu_height">80dp</dimen>
+    <dimen name="bottom_menu_height_landscape">60dp</dimen>
+
+    <!-- Home Fragment -->
+    <dimen name="toggle_button_text_size">18sp</dimen>
+
+    <!--Movie Grid Item-->
+    <dimen name="movie_grid_item_width">210dp</dimen>
+    <dimen name="movie_grid_item_height">315dp</dimen>
+    <dimen name="movie_grid_item_text_size">20sp</dimen>
+    <dimen name="movie_grid_item_margin_bottom">15dp</dimen>
+</resources>

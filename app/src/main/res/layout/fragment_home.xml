@@ -77,6 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/popular_24"
+                android:textSize="@dimen/toggle_button_text_size"
                 android:text="@string/popular"
                 />
             <Button
@@ -86,6 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/stars_24"
+                android:textSize="@dimen/toggle_button_text_size"
                 android:text="@string/top_rated"
                 />
             <Button
@@ -94,6 +96,7 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 app:icon="@drawable/now_movie_24"
+                android:textSize="@dimen/toggle_button_text_size"
                 android:layout_height="wrap_content"
                 android:text="@string/now_playing"
                 />
@@ -112,7 +115,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_movie_top_bar"
-        android:layout_marginHorizontal="5dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="5dp"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
