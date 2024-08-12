@@ -15,7 +15,7 @@ fun <Key : Any, Value : Any> Throwable.toLoadResultError(
             Log.e("network exception", "No internet connection", this)
         }
         is HttpException -> {
-            errorMessage.value = "HTTP exception"
+            errorMessage.value = "An error occurred while fetching movies"
             Log.e("network exception", "HTTP exception", this)
         }
         else -> {

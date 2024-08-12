@@ -55,6 +55,19 @@ class MovieRepository
             return data
         }
 
+        suspend fun searchMoviesHome(
+            page: Int,
+            query: String,
+        ): List<Movie> {
+            val response = movieApiService.searchMoviesHome(page, query)
+            val data = response.results
+            data.forEach {
+                val isFavorite = getMovieById(it.id!!) != null
+                it.isFavorite = isFavorite
+            }
+            return data
+        }
+
         suspend fun getMovieById(movieId: Int) = movieDao.getMovieById(movieId)
 
         suspend fun insertMovie(

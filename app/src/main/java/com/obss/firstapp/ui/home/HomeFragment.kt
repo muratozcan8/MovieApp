@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -29,6 +30,7 @@ import com.obss.firstapp.ui.adapter.PopularMovieAdapter
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ScreenSetting
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -66,6 +68,9 @@ class HomeFragment : Fragment() {
         setMovieTypeButtons()
         checkPopBackStack()
         showErrorDialog()
+        setCancelButton()
+        setSearchButton()
+        setSearchMovieListAdapter()
     }
 
     override fun onDestroy() {
@@ -142,14 +147,46 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun searchMovie() {
+        collectFlow {
+            viewModel.searchMovieList.collect {
+                initRecyclerAdapter(it)
+                setLayoutView(it)
+            }
+        }
+    }
+
+    private fun setSearchMovieListAdapter() {
+        if (binding.etHomeSearchMovie.isVisible) {
+            MOVIE_TYPE = SEARCH
+            binding.etHomeSearchMovie.addTextChangedListener { searchText ->
+                collectFlow {
+                    val text = searchText.toString()
+                    delay(500)
+                    if (text == searchText.toString() && text.isNotEmpty()) {
+                        viewModel.updateQuery(text)
+                        searchMovie()
+                    }
+                }
+            }
+        }
+    }
+
     private fun setMovieTypeButtons() {
-        binding.toggleButton.check(binding.mBtnPopular.id)
-        binding.mBtnPopular.isClickable = false
-        binding.mBtnPopular.setTextColor(resources.getColor(R.color.black, null))
-        getPopularMovies()
-        MOVIE_TYPE = POPULAR
-        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            setMovieTypeButton(checkedId, isChecked)
+        if (!isSearch) {
+            binding.constraintLayoutTopHomeSearch.visibility = View.GONE
+            binding.toggleButton.check(binding.mBtnPopular.id)
+            binding.mBtnPopular.isClickable = false
+            binding.mBtnPopular.setTextColor(resources.getColor(R.color.black, null))
+            getPopularMovies()
+            MOVIE_TYPE = POPULAR
+            binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+                setMovieTypeButton(checkedId, isChecked)
+            }
+        } else {
+            MOVIE_TYPE = SEARCH
+            binding.toggleButton.visibility = View.GONE
+            binding.constraintLayoutTopHomeSearch.visibility = View.VISIBLE
         }
     }
 
@@ -218,13 +255,39 @@ class HomeFragment : Fragment() {
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
+    }
 
-        Log.e(
-            "Screen Settings",
-            "SpanCount: $SPAN_COUNT_GRID, Width: ${screenWidth.pxToDp(
-                requireContext(),
-            )}, SpanCountLandscape: ${SPAN_COUNT_LANDSCAPE_GRID}, Height: ${screenHeight.pxToDp(requireContext())}",
-        )
+    private fun setSearchButton() {
+        binding.ibMovieHomeSearch.setOnClickListener {
+            if (binding.toggleButton.visibility == View.VISIBLE) {
+                initRecyclerAdapter(PagingData.empty())
+                binding.toggleButton.visibility = View.GONE
+                binding.constraintLayoutTopHomeSearch.visibility = View.VISIBLE
+                MOVIE_TYPE = SEARCH
+                isSearch = true
+            } else {
+                binding.toggleButton.visibility = View.VISIBLE
+                binding.constraintLayoutTopHomeSearch.visibility = View.GONE
+                binding.etHomeSearchMovie.text.clear()
+                isSearch = false
+                MOVIE_TYPE = POPULAR
+                setMovieTypeButtons()
+            }
+        }
+    }
+
+    private fun setCancelButton() {
+        binding.etHomeSearchMovie.addTextChangedListener {
+            if (binding.etHomeSearchMovie.text.isNotEmpty()) {
+                binding.ivHomeSearchMovieCancel.visibility = View.VISIBLE
+            } else {
+                binding.ivHomeSearchMovieCancel.visibility = View.GONE
+            }
+        }
+        binding.ivHomeSearchMovieCancel.setOnClickListener {
+            binding.etHomeSearchMovie.text.clear()
+            initRecyclerAdapter(PagingData.empty())
+        }
     }
 
     private fun setLayoutButton() {
@@ -241,6 +304,7 @@ class HomeFragment : Fragment() {
 
     private fun getMoviesWithMovieType() {
         collectFlow {
+            Log.e("TAG", "Movie Type: $MOVIE_TYPE")
             when (MOVIE_TYPE) {
                 POPULAR ->
                     viewModel.popularMovieList.collect {
@@ -252,6 +316,10 @@ class HomeFragment : Fragment() {
                     }
                 NOW_PLAYING ->
                     viewModel.nowPlayingMovieList.collect {
+                        setLayoutView(it)
+                    }
+                SEARCH ->
+                    viewModel.searchMovieList.collect {
                         setLayoutView(it)
                     }
             }
@@ -291,7 +359,7 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private fun initRecyclerAdapter(popularMovieList: PagingData<Movie>) {
+    private fun initRecyclerAdapter(movieList: PagingData<Movie>) {
         val adapter = PopularMovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
         adapter.setOnItemClickListener { movie ->
@@ -299,7 +367,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(direction)
         }
         collectFlow {
-            adapter.submitData(popularMovieList)
+            adapter.submitData(movieList)
         }
         collectFlow {
             adapter.loadStateFlow.collect {
@@ -316,6 +384,7 @@ class HomeFragment : Fragment() {
 
     companion object {
         var isGridLayout = true
+        private var isSearch = false
         private var SPAN_COUNT = 3
         private var SPAN_COUNT_GRID = 3
         private var SPAN_COUNT_LANDSCAPE_GRID = 6
@@ -323,5 +392,6 @@ class HomeFragment : Fragment() {
         private var POPULAR = "popular"
         private var TOP_RATED = "top_rated"
         private var NOW_PLAYING = "now_playing"
+        private var SEARCH = "search"
     }
 }
