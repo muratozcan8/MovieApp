@@ -12,6 +12,7 @@
     <dimen name="movie_app_text_size">23sp</dimen>
     <dimen name="movie_app_icon_size">50dp</dimen>
     <dimen name="layout_button_size">45dp</dimen>
+    <dimen name="top_bar_layout_icon_size">24dp</dimen>
 
     <!--Movie Grid Item-->
     <dimen name="movie_grid_item_margin_horizontal">3dp</dimen>
@@ -55,9 +56,12 @@
     <dimen name="review_indicator_text_size">18sp</dimen>
     <dimen name="review_movie_name_text_size">20sp</dimen>
 
-
-
-
+    <!--Actor Bottom Sheet Dialog-->
+    <dimen name="actor_profile_size">120dp</dimen>
+    <dimen name="actor_name_text_size">20sp</dimen>
+    <dimen name="actor_birthday_text_size">15sp</dimen>
+    <dimen name="actor_biography_title_text_size">16sp</dimen>
+    <dimen name="actor_biography_text_size">15sp</dimen>
 
 
 
