@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.ext.pxToDp
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.FavoriteMovieAdapter
 import com.obss.firstapp.utils.DialogHelper
+import com.obss.firstapp.utils.ScreenSetting
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -107,6 +109,41 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun changeSpanCount() {
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val spanCount =
+            (
+                context
+                    ?.resources
+                    ?.getDimension(R.dimen.movie_grid_item_width)
+                    ?.toInt()
+                    ?.pxToDp(requireContext())!!
+            ).toInt()
+
+        SPAN_COUNT_GRID_FAVORITE =
+            (
+                (
+                    screenWidth.pxToDp(requireContext()).toInt() -
+                        context
+                            ?.resources
+                            ?.getDimension(R.dimen.rv_margin_horizontal)
+                            ?.toInt()
+                            ?.pxToDp(requireContext())!! * 2
+                ) /
+                    spanCount
+            ).toInt()
+        SPAN_COUNT_LANDSCAPE_GRID_FAVORITE =
+            (
+                (
+                    screenWidth.pxToDp(requireContext()).toInt() -
+                        context
+                            ?.resources
+                            ?.getDimension(R.dimen.rv_margin_horizontal)
+                            ?.toInt()
+                            ?.pxToDp(requireContext())!! * 2
+                ) /
+                    spanCount
+            ).toInt()
+
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         SPAN_COUNT_FAVORITE = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_FAVORITE else SPAN_COUNT_GRID_FAVORITE

@@ -18,10 +18,10 @@
 
         <ImageView
             android:id="@+id/iv_movie_app_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/movie_app_icon_size"
+            android:layout_height="@dimen/movie_app_icon_size"
             android:layout_gravity="start"
-            android:padding="3dp"
+            android:padding="5dp"
             app:srcCompat="@drawable/movie_app_icon"/>
 
         <View
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="23sp"
+            android:textSize="@dimen/movie_app_text_size"
             android:fontFamily="@font/eduhand_bold"
             android:text="@string/movie_app"
             android:textColor="@color/white"/>
@@ -47,11 +47,11 @@
 
         <ImageButton
             android:id="@+id/ib_movie_favorite_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/layout_button_size"
+            android:layout_height="@dimen/layout_button_size"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            app:srcCompat="@drawable/linear_view_24" />
+            app:srcCompat="@drawable/grid_view_24"/>
 
 
     </LinearLayout>
@@ -63,7 +63,7 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="@dimen/rv_margin_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
