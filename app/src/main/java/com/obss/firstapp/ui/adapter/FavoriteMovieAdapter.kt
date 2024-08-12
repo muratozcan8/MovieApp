@@ -11,8 +11,6 @@ import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
 import com.obss.firstapp.ext.roundToSingleDecimal
 import com.obss.firstapp.room.FavoriteMovie
-import com.obss.firstapp.ui.adapter.PopularMovieAdapter.GridViewHolder
-import com.obss.firstapp.ui.adapter.PopularMovieAdapter.LinearViewHolder
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 import javax.inject.Inject
 

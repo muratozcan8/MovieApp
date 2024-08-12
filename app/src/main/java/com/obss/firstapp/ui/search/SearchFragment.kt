@@ -1,5 +1,6 @@
 package com.obss.firstapp.ui.search
 
+import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ext.collectFlow
+import com.obss.firstapp.ext.pxToDp
 import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
 import com.obss.firstapp.utils.DialogHelper
+import com.obss.firstapp.utils.ScreenSetting
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -23,6 +27,7 @@ import kotlinx.coroutines.delay
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
+    private var errorDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +52,17 @@ class SearchFragment : Fragment() {
         setCancelButton()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        errorDialog?.dismiss()
+        errorDialog = null
+    }
+
     private fun showErrorDialog() {
         collectFlow {
             viewModel.errorMessage.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    errorDialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }
@@ -107,6 +118,41 @@ class SearchFragment : Fragment() {
     }
 
     private fun changeSpanCount() {
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val spanCount =
+            (
+                context
+                    ?.resources
+                    ?.getDimension(R.dimen.movie_grid_item_width)
+                    ?.toInt()
+                    ?.pxToDp(requireContext())!!
+            ).toInt()
+
+        SPAN_COUNT_GRID_SEARCH =
+            (
+                (
+                    screenWidth.pxToDp(requireContext()).toInt() -
+                        context
+                            ?.resources
+                            ?.getDimension(R.dimen.rv_margin_horizontal)
+                            ?.toInt()
+                            ?.pxToDp(requireContext())!! * 2
+                ) /
+                    spanCount
+            ).toInt()
+        SPAN_COUNT_LANDSCAPE_GRID_SEARCH =
+            (
+                (
+                    screenWidth.pxToDp(requireContext()).toInt() -
+                        context
+                            ?.resources
+                            ?.getDimension(R.dimen.rv_margin_horizontal)
+                            ?.toInt()
+                            ?.pxToDp(requireContext())!! * 2
+                ) /
+                    spanCount
+            ).toInt()
+
         val isLandscape =
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         SPAN_COUNT_SEARCH = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_SEARCH else SPAN_COUNT_GRID_SEARCH

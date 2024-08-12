@@ -1,5 +1,6 @@
 package com.obss.firstapp.ui.review
 
+import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding
     private val viewModel: ReviewViewModel by viewModels()
+    private var errorDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +44,12 @@ class ReviewFragment : Fragment() {
         setLoadingProgressBar()
         checkLandscape()
         showErrorDialog()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        errorDialog?.dismiss()
+        errorDialog = null
     }
 
     private fun getAllReviews() {
@@ -87,7 +95,7 @@ class ReviewFragment : Fragment() {
         collectFlow {
             viewModel.errorMessage.collect {
                 if (it.isNotEmpty()) {
-                    DialogHelper.showCustomAlertDialog(requireContext(), it)
+                    errorDialog = DialogHelper.showCustomAlertDialog(requireContext(), it)
                 }
             }
         }

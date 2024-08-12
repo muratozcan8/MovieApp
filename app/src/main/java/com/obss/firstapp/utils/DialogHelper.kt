@@ -1,6 +1,7 @@
 package com.obss.firstapp.utils
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -29,7 +30,7 @@ object DialogHelper {
     fun showCustomAlertDialog(
         context: Context,
         message: String,
-    ) {
+    ): Dialog {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.error_dialog, null)
 
         val alertDialogBuilder =
@@ -48,6 +49,7 @@ object DialogHelper {
         closeButton.setOnClickListener {
             alertDialog.dismiss()
         }
+        return alertDialog
     }
 
     fun showActorDialog(

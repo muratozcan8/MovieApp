@@ -7,8 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_actor"
-        android:layout_width="69dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/actor_item_size"
+        android:layout_height="@dimen/actor_item_size"
         android:layout_margin="5dp"
         android:background="@color/gray"
         android:scaleType="centerCrop"

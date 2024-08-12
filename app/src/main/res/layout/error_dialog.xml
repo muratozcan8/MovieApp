@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraint_layout_error"
-    android:layout_width="300dp"
+    android:layout_width="@dimen/error_dialog_width"
     android:layout_height="wrap_content">
     
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_error_dialog"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/error_dialog_width"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_alert_background"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/iv_error_dialog"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/error_dialog_icon_size"
+            android:layout_height="@dimen/error_dialog_icon_size"
             android:src="@drawable/error_24"
             app:tint="@color/white"
             android:layout_marginEnd="10dp"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/something_went_wrong"
-            android:textSize="16sp"
+            android:textSize="@dimen/error_dialog_text_size"
             android:gravity="center_horizontal"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="18dp"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/close"
-        android:textSize="14sp"
+        android:textSize="@dimen/error_dialog_button_text_size"
         app:cornerRadius="12dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"

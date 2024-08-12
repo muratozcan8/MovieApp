@@ -9,12 +9,14 @@ import androidx.paging.cachedIn
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.paging.NowPlayingMoviesPagingSource
 import com.obss.firstapp.paging.PopularMoviesPagingSource
+import com.obss.firstapp.paging.SearchMoviePagingSource
 import com.obss.firstapp.paging.TopRatedMoviesPagingSource
 import com.obss.firstapp.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +27,9 @@ class HomeViewModel
     ) : ViewModel() {
         private val _errorMessage = MutableStateFlow("")
         val errorMessage: StateFlow<String> = _errorMessage
+
+        private val _query = MutableStateFlow("")
+        val query: StateFlow<String> = _query
 
         val popularMovieList: Flow<PagingData<Movie>> =
             Pager(PagingConfig(1)) {
@@ -40,4 +45,15 @@ class HomeViewModel
             Pager(PagingConfig(1)) {
                 NowPlayingMoviesPagingSource(movieRepository, _errorMessage)
             }.flow.cachedIn(viewModelScope)
+
+        val searchMovieList: Flow<PagingData<Movie>> =
+            _query.flatMapLatest { queryValue ->
+                Pager(PagingConfig(pageSize = 1)) {
+                    SearchMoviePagingSource(movieRepository, _errorMessage, queryValue)
+                }.flow.cachedIn(viewModelScope)
+            }
+
+        fun updateQuery(newQuery: String) {
+            _query.value = newQuery
+        }
     }

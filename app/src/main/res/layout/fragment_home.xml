@@ -23,10 +23,11 @@
 
             <ImageView
                 android:id="@+id/iv_movie_app_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/movie_app_icon_size"
+                android:layout_height="@dimen/movie_app_icon_size"
                 android:layout_gravity="start"
-                android:padding="3dp"
+                android:layout_marginStart="5dp"
+                android:padding="5dp"
                 app:srcCompat="@drawable/movie_app_icon"/>
 
             <View
@@ -39,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="23sp"
+                android:textSize="@dimen/movie_app_text_size"
                 android:fontFamily="@font/eduhand_bold"
                 android:text="@string/movie_app"
                 android:textColor="@color/white"/>
@@ -51,13 +52,19 @@
                 android:layout_weight="1"/>
 
             <ImageButton
-                android:id="@+id/ib_movie_home_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/ib_movie_home_search"
+                android:layout_width="@dimen/layout_button_size"
+                android:layout_height="@dimen/layout_button_size"
                 android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/grid_view_24" />
+                app:srcCompat="@drawable/search_24" />
 
+            <ImageButton
+                android:id="@+id/ib_movie_home_layout"
+                android:layout_width="@dimen/layout_button_size"
+                android:layout_height="@dimen/layout_button_size"
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                app:srcCompat="@drawable/grid_view_24" />
 
         </LinearLayout>
 
@@ -67,6 +74,7 @@
             android:id="@+id/toggleButton"
             android:layout_marginTop="3dp"
             app:singleSelection="true"
+            android:visibility="visible"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -77,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/popular_24"
+                android:textSize="@dimen/toggle_button_text_size"
                 android:text="@string/popular"
                 />
             <Button
@@ -86,6 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/stars_24"
+                android:textSize="@dimen/toggle_button_text_size"
                 android:text="@string/top_rated"
                 />
             <Button
@@ -94,10 +104,56 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 app:icon="@drawable/now_movie_24"
+                android:textSize="@dimen/toggle_button_text_size"
                 android:layout_height="wrap_content"
                 android:text="@string/now_playing"
                 />
         </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_top_home_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/et_home_search_movie"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/et_search_height"
+                android:layout_margin="10dp"
+                android:hint="@string/search_movies"
+                android:textSize="@dimen/et_search_text_size"
+                android:drawableStart="@drawable/search"
+                android:ems="10"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_transparent"
+                android:padding="14dp"
+                android:drawablePadding="@dimen/et_search_drawable_padding"
+                android:inputType="text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/search_edit_background"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/iv_home_search_movie_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="26dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/cancel_24"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
 
 
@@ -112,7 +168,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_movie_top_bar"
-        android:layout_marginHorizontal="5dp"
+        android:layout_marginHorizontal="@dimen/rv_margin_horizontal"
         android:layout_marginTop="5dp"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator

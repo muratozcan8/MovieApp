@@ -17,7 +17,7 @@ import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 import javax.inject.Inject
 
-class PopularMovieAdapter
+class MovieAdapter
     @Inject
     constructor(
         private var isGridLayout: Boolean,
