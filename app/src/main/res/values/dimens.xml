@@ -10,6 +10,8 @@
     <dimen name="toggle_button_text_size">12sp</dimen>
     <dimen name="rv_margin_horizontal">7dp</dimen>
     <dimen name="movie_app_text_size">23sp</dimen>
+    <dimen name="movie_app_icon_size">50dp</dimen>
+    <dimen name="layout_button_size">45dp</dimen>
 
     <!--Movie Grid Item-->
     <dimen name="movie_grid_item_margin_horizontal">3dp</dimen>
