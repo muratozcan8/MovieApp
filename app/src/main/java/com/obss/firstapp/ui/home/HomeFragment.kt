@@ -13,7 +13,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -26,7 +25,7 @@ import com.obss.firstapp.ext.pxToDp
 import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.ui.adapter.LoadMoreAdapter
-import com.obss.firstapp.ui.adapter.PopularMovieAdapter
+import com.obss.firstapp.ui.adapter.MovieAdapter
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ScreenSetting
 import dagger.hilt.android.AndroidEntryPoint
@@ -109,7 +108,7 @@ class HomeFragment : Fragment() {
         initRecyclerAdapter(movieList)
     }
 
-    private fun checkLoadMoreMovie(adapter: PopularMovieAdapter) {
+    private fun checkLoadMoreMovie(adapter: MovieAdapter) {
         collectFlow {
             binding.rvPopularMovies.adapter =
                 adapter.withLoadStateFooter(
@@ -360,7 +359,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerAdapter(movieList: PagingData<Movie>) {
-        val adapter = PopularMovieAdapter(isGridLayout)
+        val adapter = MovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
         adapter.setOnItemClickListener { movie ->
             val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id!!)
