@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="12dp"
+    android:padding="@dimen/toast_padding"
     android:orientation="horizontal"
     android:background="@drawable/custom_toast_background">
 
     <ImageView
         android:id="@+id/iv_toast_icon"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/toast_icon_size"
+        android:layout_height="@dimen/toast_icon_size"
         android:src="@drawable/add_movie_24"
         />
 
@@ -17,9 +17,10 @@
         android:id="@+id/tv_toast_message"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
+        android:layout_gravity="center"
         android:text="Custom Toast Message"
         android:gravity="center"
-        android:textSize="16sp"
+        android:textSize="@dimen/toast_text_size"
         android:paddingStart="10dp"
         android:textColor="@color/white"
         android:fontFamily="@font/ubuntu_bold"

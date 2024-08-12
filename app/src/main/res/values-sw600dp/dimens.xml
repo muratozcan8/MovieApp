@@ -77,4 +77,13 @@
     <dimen name="load_more_progress_width">50dp</dimen>
     <dimen name="load_more_error_text_size">15sp</dimen>
 
+    <!--Toast-->
+    <dimen name="toast_padding">18dp</dimen>
+    <dimen name="toast_icon_size">40dp</dimen>
+    <dimen name="toast_text_size">22sp</dimen>
+
+
+
+
+
 </resources>

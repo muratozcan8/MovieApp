@@ -78,9 +78,10 @@
     <dimen name="load_more_error_text_size">12sp</dimen>
 
 
-
-
-
+    <!--Toast-->
+    <dimen name="toast_padding">12dp</dimen>
+    <dimen name="toast_icon_size">25dp</dimen>
+    <dimen name="toast_text_size">16sp</dimen>
 
 
 </resources>
