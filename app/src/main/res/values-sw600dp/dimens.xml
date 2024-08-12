@@ -40,7 +40,7 @@
     <dimen name="movie_detail_iv_view_height">225dp</dimen>
     <dimen name="movie_name_text_size">36sp</dimen>
     <dimen name="movie_info_text_size">23sp</dimen>
-    <dimen name="movie_category_text_size">18sp</dimen>
+    <dimen name="movie_category_text_size">19sp</dimen>
     <dimen name="movie_detail_title">26sp</dimen>
     <dimen name="movie_detail_text_size">22sp</dimen>
     <dimen name="actor_item_size">100dp</dimen>
@@ -63,14 +63,18 @@
     <dimen name="actor_birthday_text_size">20sp</dimen>
     <dimen name="actor_biography_title_text_size">24sp</dimen>
     <dimen name="actor_biography_text_size">22sp</dimen>
+    <dimen name="actor_website_icon_size">70dp</dimen>
 
 
+    <!--Error Dialog-->
+    <dimen name="error_dialog_width">450dp</dimen>
+    <dimen name="error_dialog_icon_size">40dp</dimen>
+    <dimen name="error_dialog_text_size">22sp</dimen>
+    <dimen name="error_dialog_button_text_size">18sp</dimen>
 
-
-
-
-
-
-
+    <!--Load More-->
+    <dimen name="load_more_text_size">18sp</dimen>
+    <dimen name="load_more_progress_width">50dp</dimen>
+    <dimen name="load_more_error_text_size">15sp</dimen>
 
 </resources>

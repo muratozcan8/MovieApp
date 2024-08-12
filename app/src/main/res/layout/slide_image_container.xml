@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/slide_count"
-        android:textSize="18sp"
+        android:textSize="@dimen/movie_detail_text_size"
         android:padding="5dp"
         android:layout_marginBottom="3dp"
         android:layout_marginEnd="3dp"

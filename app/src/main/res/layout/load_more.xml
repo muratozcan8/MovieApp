@@ -7,8 +7,8 @@
 
     <ProgressBar
         android:id="@+id/prgBar_load_more"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="@dimen/load_more_progress_width"
+        android:layout_height="@dimen/load_more_progress_width"
         android:background="@drawable/bg_circle_white"
         android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +22,7 @@
         android:fontFamily="sans-serif-light"
         android:text="@string/oppps_please_try_again"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="@dimen/load_more_error_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/prgBar_load_more" />
@@ -36,7 +36,7 @@
         android:fontFamily="sans-serif-light"
         android:text="@string/retry"
         android:textAllCaps="false"
-        android:textSize="14sp"
+        android:textSize="@dimen/load_more_text_size"
         app:cornerRadius="10dp"
         app:drawableTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
