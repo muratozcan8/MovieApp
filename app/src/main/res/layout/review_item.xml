@@ -27,7 +27,7 @@
         android:padding="5dp"
         android:text="username"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/review_text_size"
         app:layout_constraintStart_toEndOf="@+id/iv_author"
         app:layout_constraintTop_toTopOf="@+id/iv_author" />
 
@@ -40,7 +40,7 @@
         android:gravity="center"
         android:text="95%"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="@dimen/review_text_size"
         app:drawableStartCompat="@drawable/stars_24"
         app:drawableTint="@color/gold"
         app:layout_constraintStart_toStartOf="@+id/tv_author_username"
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/review_card_margin"
         app:layout_constraintTop_toBottomOf="@+id/iv_author"
         app:layout_constraintStart_toStartOf="@+id/iv_author"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -75,7 +75,7 @@
                 android:text="Deadpool and Wolverine is a movie that I truly believe the Marvel Cinematic Universe (MCU) has needed for a while. After years of lackluster installments, this film is a breath of fresh air. Ryan Reynolds, Hugh Jackman, and director Shawn Levy approached this project with care and a deep understanding of what fans want. The film feels like it was crafted by fans for fans, particularly those who have been frustrated by the recent phases of the MCU."
                 android:textAlignment="viewStart"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="@dimen/review_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -88,11 +88,11 @@
                 android:layout_marginHorizontal="5dp"
                 android:fontFamily="@font/ubuntu_light"
                 android:padding="5dp"
-                android:visibility="gone"
                 android:text="@string/see_more"
                 android:textAlignment="center"
                 android:textColor="@color/gray"
-                android:textSize="18sp"
+                android:textSize="@dimen/review_text_size"
+                android:visibility="gone"
                 app:drawableStartCompat="@drawable/see_more_24"
                 app:drawableTint="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,17 +103,16 @@
                 android:id="@+id/tv_review_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginVertical="3dp"
-                android:padding="5dp"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/tv_review_see_more"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:fontFamily="@font/ubuntu_medium"
-                android:text="July 30, 2024"
-                android:textSize="14sp"
                 android:layout_gravity="end"
-                />
+                android:layout_marginVertical="3dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/ubuntu_medium"
+                android:padding="5dp"
+                android:text="July 30, 2024"
+                android:textColor="@color/white"
+                android:textSize="@dimen/review_date_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_review_see_more" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

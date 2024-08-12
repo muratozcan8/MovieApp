@@ -33,5 +33,43 @@
     <dimen name="et_search_text_size">18sp</dimen>
     <dimen name="et_search_drawable_padding">8dp</dimen>
 
+    <!--Detail Fragment-->
+    <dimen name="top_bar_icon_size">40dp</dimen>
+    <dimen name="movie_detail_iv_height">250dp</dimen>
+    <dimen name="movie_detail_iv_view_height">125dp</dimen>
+    <dimen name="movie_name_text_size">26sp</dimen>
+    <dimen name="movie_info_text_size">17sp</dimen>
+    <dimen name="movie_category_text_size">15sp</dimen>
+    <dimen name="movie_detail_title">18sp</dimen>
+    <dimen name="movie_detail_text_size">16sp</dimen>
+    <dimen name="actor_item_size">70dp</dimen>
+    <dimen name="movie_review_button_padding">8dp</dimen>
+
+
+    <!--Review Fragment-->
+    <dimen name="review_top_bar_icon_size">40dp</dimen>
+    <dimen name="review_text_size">18sp</dimen>
+    <dimen name="review_date_text_size">16sp</dimen>
+    <dimen name="review_card_margin">10dp</dimen>
+    <dimen name="review_indicator_size">50dp</dimen>
+    <dimen name="review_indicator_text_size">18sp</dimen>
+    <dimen name="review_movie_name_text_size">20sp</dimen>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </resources>
