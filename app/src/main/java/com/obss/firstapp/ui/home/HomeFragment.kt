@@ -3,7 +3,6 @@ package com.obss.firstapp.ui.home
 import android.app.Dialog
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +64,6 @@ class HomeFragment : Fragment() {
         changeSpanCount()
         setLayoutButton()
         setMovieTypeButtons()
-        checkPopBackStack()
         showErrorDialog()
         setCancelButton()
         setSearchButton()
@@ -88,11 +86,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun checkPopBackStack() {
+    private fun checkPopBackStack(adapter: MovieAdapter) {
         setFragmentResultListener("popBackStackResult") { _, bundle ->
             val result = bundle.getBoolean("isPopBackStack")
             if (result) {
-                findNavController().navigate(R.id.homeFragment)
+                adapter.refresh()
             }
         }
     }
@@ -303,7 +301,6 @@ class HomeFragment : Fragment() {
 
     private fun getMoviesWithMovieType() {
         collectFlow {
-            Log.e("TAG", "Movie Type: $MOVIE_TYPE")
             when (MOVIE_TYPE) {
                 POPULAR ->
                     viewModel.popularMovieList.collect {
@@ -375,6 +372,7 @@ class HomeFragment : Fragment() {
             }
         }
         checkLoadMoreMovie(adapter)
+        checkPopBackStack(adapter)
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
