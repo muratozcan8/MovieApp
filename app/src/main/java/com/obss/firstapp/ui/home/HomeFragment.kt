@@ -361,6 +361,14 @@ class HomeFragment : Fragment() {
         setLoadStateListener(adapter)
         checkLoadMoreMovie(adapter)
         checkPopBackStack(adapter)
+        setRefreshListener(adapter)
+    }
+
+    private fun setRefreshListener(adapter: MovieAdapter) {
+        binding.srlMovies.setOnRefreshListener {
+            adapter.refresh()
+            binding.srlMovies.isRefreshing = false
+        }
     }
 
     private fun setLoadStateListener(adapter: MovieAdapter) {

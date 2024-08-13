@@ -11,12 +11,12 @@ fun <Key : Any, Value : Any> Throwable.toLoadResultError(
 ): PagingSource.LoadResult.Error<Key, Value> {
     when (this) {
         is UnknownHostException -> {
-            errorMessage.value = "No internet connection"
-            Log.e("network exception", "No internet connection", this)
+            errorMessage.value = "No Internet Connection"
+            Log.e("network exception", "No Internet Connection", this)
         }
         is HttpException -> {
             errorMessage.value = "An error occurred while fetching movies"
-            Log.e("network exception", "HTTP exception", this)
+            Log.e("network exception", "HTTP Exception", this)
         }
         else -> {
             errorMessage.value = "An error occurred while connecting to the server"

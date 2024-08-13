@@ -264,12 +264,12 @@ class MovieRepository
         ) {
             when (exception) {
                 is UnknownHostException -> {
-                    errorMessage.value = "No internet connection"
+                    errorMessage.value = "No Internet Connection"
                     Log.e("network exception", "No internet connection")
                 }
                 is HttpException -> {
-                    errorMessage.value = "Movie not found"
-                    Log.e("network exception", "HTTP exception: ${exception.message}")
+                    errorMessage.value = "Movie Not Found"
+                    Log.e("network exception", "HTTP Exception: ${exception.message}")
                 }
                 else -> {
                     errorMessage.value = "An error occurred while connecting to the server"
