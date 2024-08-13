@@ -67,11 +67,15 @@ class FavoriteFragment : Fragment() {
                 val adapter = FavoriteMovieAdapter(isGridLayoutFavorite)
                 binding.rvFavoriteMovie.adapter = adapter
                 adapter.updateList(favoriteMovieList)
-                adapter.setOnItemClickListener {
-                    val direction = FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(it.movieId!!)
-                    findNavController().navigate(direction)
-                }
+                setFavoriteMovieClickListener(adapter)
             }
+        }
+    }
+
+    private fun setFavoriteMovieClickListener(adapter: FavoriteMovieAdapter) {
+        adapter.setOnItemClickListener {
+            val direction = FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(it.movieId!!)
+            findNavController().navigate(direction)
         }
     }
 

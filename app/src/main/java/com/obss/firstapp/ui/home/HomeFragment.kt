@@ -62,8 +62,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         changeVisibilityBottomBar(true)
         changeSpanCount()
-        setLayoutButton()
-        setMovieTypeButtons()
+        setLayoutButtonClickListener()
+        setTopBarVisibility()
         showErrorDialog()
         setCancelButtonVisibility()
         setSearchButtonClickListener()
@@ -93,17 +93,6 @@ class HomeFragment : Fragment() {
                 adapter.refresh()
             }
         }
-    }
-
-    private fun setLayoutView(movieList: PagingData<Movie>) {
-        if (isGridLayout) {
-            binding.ibMovieHomeLayout.setImageResource(R.drawable.linear_view_24)
-            binding.rvPopularMovies.layoutManager = GridLayoutManager(context, SPAN_COUNT)
-        } else {
-            binding.ibMovieHomeLayout.setImageResource(R.drawable.grid_view_24)
-            binding.rvPopularMovies.layoutManager = LinearLayoutManager(context)
-        }
-        initRecyclerAdapter(movieList)
     }
 
     private fun checkLoadMoreMovie(adapter: MovieAdapter) {
@@ -154,36 +143,38 @@ class HomeFragment : Fragment() {
     }
 
     private fun searchMovie() {
-        if (binding.etHomeSearchMovie.isVisible) {
-            MOVIE_TYPE = SEARCH
-            binding.etHomeSearchMovie.addTextChangedListener { searchText ->
-                collectFlow {
-                    val text = searchText.toString()
-                    delay(DELAY_TIME)
-                    if (text == searchText.toString() && text.isNotEmpty()) {
-                        viewModel.updateQuery(text)
-                        setSearchMovieListAdapter()
-                    }
+        MOVIE_TYPE = if (binding.constraintLayoutTopHomeSearch.isVisible) SEARCH else POPULAR
+        binding.etHomeSearchMovie.addTextChangedListener { searchText ->
+            collectFlow {
+                val text = searchText.toString()
+                delay(DELAY_TIME)
+                if (text == searchText.toString() && text.isNotEmpty()) {
+                    viewModel.updateQuery(text)
+                    setSearchMovieListAdapter()
                 }
             }
         }
     }
 
-    private fun setMovieTypeButtons() {
+    private fun setTopBarVisibility() {
         if (!isSearch) {
+            getPopularMovies()
+            MOVIE_TYPE = POPULAR
             binding.constraintLayoutTopHomeSearch.visibility = View.GONE
             binding.toggleButton.check(binding.mBtnPopular.id)
             binding.mBtnPopular.isClickable = false
             binding.mBtnPopular.setTextColor(resources.getColor(R.color.black, null))
-            getPopularMovies()
-            MOVIE_TYPE = POPULAR
-            binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
-                setMovieTypeButton(checkedId, isChecked)
-            }
+            setMovieTypeToggleButtonsListener()
         } else {
             MOVIE_TYPE = SEARCH
             binding.toggleButton.visibility = View.GONE
             binding.constraintLayoutTopHomeSearch.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setMovieTypeToggleButtonsListener() {
+        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            setMovieTypeButton(checkedId, isChecked)
         }
     }
 
@@ -252,16 +243,16 @@ class HomeFragment : Fragment() {
         binding.ibMovieHomeSearch.setOnClickListener {
             if (binding.toggleButton.visibility == View.VISIBLE) {
                 initRecyclerAdapter(PagingData.empty())
-                changeVisibilitySearchBar(true)
+                changeSearchBarVisibility(true)
             } else {
-                changeVisibilitySearchBar(false)
+                changeSearchBarVisibility(false)
                 binding.etHomeSearchMovie.text.clear()
-                setMovieTypeButtons()
+                setTopBarVisibility()
             }
         }
     }
 
-    private fun changeVisibilitySearchBar(isVisible: Boolean) {
+    private fun changeSearchBarVisibility(isVisible: Boolean) {
         isSearch = isVisible
         MOVIE_TYPE = if (isVisible) SEARCH else POPULAR
         binding.toggleButton.visibility = if (isVisible) View.GONE else View.VISIBLE
@@ -286,16 +277,22 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setLayoutButton() {
+    private fun setLayoutButtonClickListener() {
         binding.ibMovieHomeLayout.setOnClickListener {
             isGridLayout = !isGridLayout
-            collectFlow {
-                viewModel.popularMovieList.collect {
-                    setLayoutView(it)
-                    getMoviesWithMovieType()
-                }
-            }
+            getMoviesWithMovieType()
         }
+    }
+
+    private fun setLayoutView(movieList: PagingData<Movie>) {
+        if (isGridLayout) {
+            binding.ibMovieHomeLayout.setImageResource(R.drawable.linear_view_24)
+            binding.rvPopularMovies.layoutManager = GridLayoutManager(context, SPAN_COUNT)
+        } else {
+            binding.ibMovieHomeLayout.setImageResource(R.drawable.grid_view_24)
+            binding.rvPopularMovies.layoutManager = LinearLayoutManager(context)
+        }
+        initRecyclerAdapter(movieList)
     }
 
     private fun getMoviesWithMovieType() {
@@ -392,7 +389,7 @@ class HomeFragment : Fragment() {
         private var SPAN_COUNT = 3
         private var SPAN_COUNT_GRID = 3
         private var SPAN_COUNT_LANDSCAPE_GRID = 6
-        private var MOVIE_TYPE = "movie_type"
+        private var MOVIE_TYPE = "popular"
         private var POPULAR = "popular"
         private var TOP_RATED = "top_rated"
         private var NOW_PLAYING = "now_playing"
