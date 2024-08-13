@@ -65,9 +65,9 @@ class HomeFragment : Fragment() {
         setLayoutButton()
         setMovieTypeButtons()
         showErrorDialog()
-        setCancelButton()
-        setSearchButton()
-        setSearchMovieListAdapter()
+        setCancelButtonVisibility()
+        setSearchButtonClickListener()
+        searchMovie()
     }
 
     override fun onDestroy() {
@@ -144,7 +144,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun searchMovie() {
+    private fun setSearchMovieListAdapter() {
         collectFlow {
             viewModel.searchMovieList.collect {
                 initRecyclerAdapter(it)
@@ -153,7 +153,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setSearchMovieListAdapter() {
+    private fun searchMovie() {
         if (binding.etHomeSearchMovie.isVisible) {
             MOVIE_TYPE = SEARCH
             binding.etHomeSearchMovie.addTextChangedListener { searchText ->
@@ -162,7 +162,7 @@ class HomeFragment : Fragment() {
                     delay(DELAY_TIME)
                     if (text == searchText.toString() && text.isNotEmpty()) {
                         viewModel.updateQuery(text)
-                        searchMovie()
+                        setSearchMovieListAdapter()
                     }
                 }
             }
@@ -213,9 +213,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeSpanCount() {
-        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
-        val screenHeight = ScreenSetting.getScreenHeight(requireContext())
-        val spanCount =
+        val spanCount = getMovieItemWidth()
+        SPAN_COUNT_GRID = getScreenWidthDp() / spanCount
+        SPAN_COUNT_LANDSCAPE_GRID = getScreenWidthDp() / spanCount
+        val isLandscape =
+            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
+    }
+
+    private fun getMovieItemWidth(): Int {
+        val movieItemWidth =
             (
                 context
                     ?.resources
@@ -224,56 +231,44 @@ class HomeFragment : Fragment() {
                     ?.pxToDp(requireContext())!!
             ).toInt()
 
-        SPAN_COUNT_GRID =
-            (
-                (
-                    screenWidth.pxToDp(requireContext()).toInt() -
-                        context
-                            ?.resources
-                            ?.getDimension(R.dimen.rv_margin_horizontal)
-                            ?.toInt()
-                            ?.pxToDp(requireContext())!! * 2
-                ) /
-                    spanCount
-            ).toInt()
-        SPAN_COUNT_LANDSCAPE_GRID =
-            (
-                (
-                    screenWidth.pxToDp(requireContext()).toInt() -
-                        context
-                            ?.resources
-                            ?.getDimension(R.dimen.rv_margin_horizontal)
-                            ?.toInt()
-                            ?.pxToDp(requireContext())!! * 2
-                ) /
-                    spanCount
-            ).toInt()
-
-        val isLandscape =
-            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        SPAN_COUNT = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID else SPAN_COUNT_GRID
+        return movieItemWidth
     }
 
-    private fun setSearchButton() {
+    private fun getScreenWidthDp(): Int {
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val screenWidthDp =
+            (
+                screenWidth.pxToDp(requireContext()).toInt() -
+                    context
+                        ?.resources
+                        ?.getDimension(R.dimen.rv_margin_horizontal)
+                        ?.toInt()
+                        ?.pxToDp(requireContext())!! * 2
+            ).toInt()
+        return screenWidthDp
+    }
+
+    private fun setSearchButtonClickListener() {
         binding.ibMovieHomeSearch.setOnClickListener {
             if (binding.toggleButton.visibility == View.VISIBLE) {
                 initRecyclerAdapter(PagingData.empty())
-                binding.toggleButton.visibility = View.GONE
-                binding.constraintLayoutTopHomeSearch.visibility = View.VISIBLE
-                MOVIE_TYPE = SEARCH
-                isSearch = true
+                changeVisibilitySearchBar(true)
             } else {
-                binding.toggleButton.visibility = View.VISIBLE
-                binding.constraintLayoutTopHomeSearch.visibility = View.GONE
+                changeVisibilitySearchBar(false)
                 binding.etHomeSearchMovie.text.clear()
-                isSearch = false
-                MOVIE_TYPE = POPULAR
                 setMovieTypeButtons()
             }
         }
     }
 
-    private fun setCancelButton() {
+    private fun changeVisibilitySearchBar(isVisible: Boolean) {
+        isSearch = isVisible
+        MOVIE_TYPE = if (isVisible) SEARCH else POPULAR
+        binding.toggleButton.visibility = if (isVisible) View.GONE else View.VISIBLE
+        binding.constraintLayoutTopHomeSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+
+    private fun setCancelButtonVisibility() {
         binding.etHomeSearchMovie.addTextChangedListener {
             if (binding.etHomeSearchMovie.text.isNotEmpty()) {
                 binding.ivHomeSearchMovieCancel.visibility = View.VISIBLE
@@ -281,6 +276,10 @@ class HomeFragment : Fragment() {
                 binding.ivHomeSearchMovieCancel.visibility = View.GONE
             }
         }
+        setCancelButtonClickListener()
+    }
+
+    private fun setCancelButtonClickListener() {
         binding.ivHomeSearchMovieCancel.setOnClickListener {
             binding.etHomeSearchMovie.text.clear()
             initRecyclerAdapter(PagingData.empty())
@@ -358,21 +357,29 @@ class HomeFragment : Fragment() {
     private fun initRecyclerAdapter(movieList: PagingData<Movie>) {
         val adapter = MovieAdapter(isGridLayout)
         binding.rvPopularMovies.adapter = adapter
-        adapter.setOnItemClickListener { movie ->
-            val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id!!)
-            findNavController().navigate(direction)
-        }
+        setMovieClickListener(adapter)
         collectFlow {
             adapter.submitData(movieList)
         }
+        setLoadStateListener(adapter)
+        checkLoadMoreMovie(adapter)
+        checkPopBackStack(adapter)
+    }
+
+    private fun setLoadStateListener(adapter: MovieAdapter) {
         collectFlow {
             adapter.loadStateFlow.collect {
                 val state = it.refresh
                 binding.progressBarHome.isVisible = state is LoadState.Loading
             }
         }
-        checkLoadMoreMovie(adapter)
-        checkPopBackStack(adapter)
+    }
+
+    private fun setMovieClickListener(adapter: MovieAdapter) {
+        adapter.setOnItemClickListener { movie ->
+            val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie.id!!)
+            findNavController().navigate(direction)
+        }
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
