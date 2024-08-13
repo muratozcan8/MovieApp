@@ -49,7 +49,7 @@ class SearchFragment : Fragment() {
         setSearchMovieListAdapter()
         setLoadingProgressBar()
         showErrorDialog()
-        setCancelButton()
+        setCancelButtonVisibility()
     }
 
     override fun onDestroy() {
@@ -91,7 +91,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun setCancelButton() {
+    private fun setCancelButtonVisibility() {
         binding.etSearchMovie.addTextChangedListener {
             if (binding.etSearchMovie.text.isNotEmpty()) {
                 binding.ivSearchMovieCancel.visibility = View.VISIBLE
@@ -100,6 +100,10 @@ class SearchFragment : Fragment() {
                 binding.llNotFoundSearchedMovie.visibility = View.GONE
             }
         }
+        setCancelButtonListener()
+    }
+
+    private fun setCancelButtonListener() {
         binding.ivSearchMovieCancel.setOnClickListener {
             binding.etSearchMovie.text.clear()
         }
@@ -118,8 +122,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun changeSpanCount() {
-        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
-        val spanCount =
+        val spanCount = getMovieItemWidth()
+        SPAN_COUNT_GRID_SEARCH = getScreenWidthDp() / spanCount
+        SPAN_COUNT_LANDSCAPE_GRID_SEARCH = getScreenWidthDp() / spanCount
+        val isLandscape =
+            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        SPAN_COUNT_SEARCH = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_SEARCH else SPAN_COUNT_GRID_SEARCH
+    }
+
+    private fun getMovieItemWidth(): Int {
+        val movieItemWidth =
             (
                 context
                     ?.resources
@@ -128,34 +140,21 @@ class SearchFragment : Fragment() {
                     ?.pxToDp(requireContext())!!
             ).toInt()
 
-        SPAN_COUNT_GRID_SEARCH =
-            (
-                (
-                    screenWidth.pxToDp(requireContext()).toInt() -
-                        context
-                            ?.resources
-                            ?.getDimension(R.dimen.rv_margin_horizontal)
-                            ?.toInt()
-                            ?.pxToDp(requireContext())!! * 2
-                ) /
-                    spanCount
-            ).toInt()
-        SPAN_COUNT_LANDSCAPE_GRID_SEARCH =
-            (
-                (
-                    screenWidth.pxToDp(requireContext()).toInt() -
-                        context
-                            ?.resources
-                            ?.getDimension(R.dimen.rv_margin_horizontal)
-                            ?.toInt()
-                            ?.pxToDp(requireContext())!! * 2
-                ) /
-                    spanCount
-            ).toInt()
+        return movieItemWidth
+    }
 
-        val isLandscape =
-            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        SPAN_COUNT_SEARCH = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_SEARCH else SPAN_COUNT_GRID_SEARCH
+    private fun getScreenWidthDp(): Int {
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val screenWidthDp =
+            (
+                screenWidth.pxToDp(requireContext()).toInt() -
+                    context
+                        ?.resources
+                        ?.getDimension(R.dimen.rv_margin_horizontal)
+                        ?.toInt()
+                        ?.pxToDp(requireContext())!! * 2
+            ).toInt()
+        return screenWidthDp
     }
 
     private fun initRecyclerAdapter(searchedMovieList: List<MovieSearch>) {
@@ -163,6 +162,10 @@ class SearchFragment : Fragment() {
         binding.rvSearchMovie.adapter = adapter
         binding.rvSearchMovie.layoutManager = GridLayoutManager(context, SPAN_COUNT_SEARCH)
         adapter.updateList(searchedMovieList)
+        setMovieClickListener(adapter)
+    }
+
+    private fun setMovieClickListener(adapter: SearchMovieAdapter) {
         adapter.setOnItemClickListener { movie ->
             val direction = SearchFragmentDirections.actionSearchFragmentToDetailFragment(movie.id!!)
             findNavController().navigate(direction)

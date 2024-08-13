@@ -109,8 +109,16 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun changeSpanCount() {
-        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
-        val spanCount =
+        val spanCount = getMovieItemWidth()
+        SPAN_COUNT_GRID_FAVORITE = getScreenWidthDp() / spanCount
+        SPAN_COUNT_LANDSCAPE_GRID_FAVORITE = getScreenWidthDp() / spanCount
+        val isLandscape =
+            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        SPAN_COUNT_FAVORITE = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_FAVORITE else SPAN_COUNT_GRID_FAVORITE
+    }
+
+    private fun getMovieItemWidth(): Int {
+        val movieItemWidth =
             (
                 context
                     ?.resources
@@ -119,34 +127,21 @@ class FavoriteFragment : Fragment() {
                     ?.pxToDp(requireContext())!!
             ).toInt()
 
-        SPAN_COUNT_GRID_FAVORITE =
-            (
-                (
-                    screenWidth.pxToDp(requireContext()).toInt() -
-                        context
-                            ?.resources
-                            ?.getDimension(R.dimen.rv_margin_horizontal)
-                            ?.toInt()
-                            ?.pxToDp(requireContext())!! * 2
-                ) /
-                    spanCount
-            ).toInt()
-        SPAN_COUNT_LANDSCAPE_GRID_FAVORITE =
-            (
-                (
-                    screenWidth.pxToDp(requireContext()).toInt() -
-                        context
-                            ?.resources
-                            ?.getDimension(R.dimen.rv_margin_horizontal)
-                            ?.toInt()
-                            ?.pxToDp(requireContext())!! * 2
-                ) /
-                    spanCount
-            ).toInt()
+        return movieItemWidth
+    }
 
-        val isLandscape =
-            resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        SPAN_COUNT_FAVORITE = if (isLandscape) SPAN_COUNT_LANDSCAPE_GRID_FAVORITE else SPAN_COUNT_GRID_FAVORITE
+    private fun getScreenWidthDp(): Int {
+        val screenWidth = ScreenSetting.getScreenWidth(requireContext())
+        val screenWidthDp =
+            (
+                screenWidth.pxToDp(requireContext()).toInt() -
+                    context
+                        ?.resources
+                        ?.getDimension(R.dimen.rv_margin_horizontal)
+                        ?.toInt()
+                        ?.pxToDp(requireContext())!! * 2
+            ).toInt()
+        return screenWidthDp
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {

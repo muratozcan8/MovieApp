@@ -62,20 +62,24 @@ class ReviewFragment : Fragment() {
         viewModel.getReviews(movieId!!)
         collectFlow {
             viewModel.reviewList.collect {
-                initGenresRecyclerAdapter(it)
-                binding.tvReviewScore.text =
-                    if (it.isNotEmpty()) {
-                        it
-                            .map { it.authorDetails.rating * 10 }
-                            .average()
-                            .toInt()
-                            .toString()
-                    } else {
-                        "-"
-                    }
+                initReviewAdapter(it)
+                calculateReviewScore(it)
                 setReviewPercentProgressBar(it)
             }
         }
+    }
+
+    private fun calculateReviewScore(reviewList: List<ReviewResult>) {
+        binding.tvReviewScore.text =
+            if (reviewList.isNotEmpty()) {
+                reviewList
+                    .map { it.authorDetails.rating * 10 }
+                    .average()
+                    .toInt()
+                    .toString()
+            } else {
+                "-"
+            }
     }
 
     private fun setReviewPercentProgressBar(reviewList: List<ReviewResult>) {
@@ -120,7 +124,7 @@ class ReviewFragment : Fragment() {
         }
     }
 
-    private fun initGenresRecyclerAdapter(categoryList: List<ReviewResult>) {
+    private fun initReviewAdapter(categoryList: List<ReviewResult>) {
         val adapter = ReviewAdapter()
         binding.rvReviews.adapter = adapter
         adapter.updateList(categoryList)
