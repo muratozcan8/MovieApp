@@ -19,12 +19,14 @@ class SearchMoviePagingSource(
             val currentPage = params.key ?: 1
             val response = movieRepository.searchMoviesHome(currentPage, query)
             val responseData = mutableListOf<Movie>()
-            responseData.addAll(response)
+            responseData.addAll(response.results)
+
+            val totalPages = response.totalPages
 
             LoadResult.Page(
                 data = responseData,
-                prevKey = if (currentPage == 1) null else -1,
-                nextKey = currentPage.plus(1),
+                prevKey = if (currentPage == 1) null else currentPage - 1,
+                nextKey = if (currentPage < totalPages) currentPage + 1 else null,
             )
         } catch (exception: Exception) {
             exception.toLoadResultError(errorMessage)

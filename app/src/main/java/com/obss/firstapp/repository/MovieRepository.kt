@@ -4,6 +4,7 @@ import android.util.Log
 import com.obss.firstapp.model.actor.Actor
 import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.model.movie.Movie
+import com.obss.firstapp.model.movie.MovieList
 import com.obss.firstapp.model.movieDetail.MovieDetail
 import com.obss.firstapp.model.movieDetail.MoviePoster
 import com.obss.firstapp.model.movieSearch.MovieSearch
@@ -58,14 +59,14 @@ class MovieRepository
         suspend fun searchMoviesHome(
             page: Int,
             query: String,
-        ): List<Movie> {
+        ): MovieList {
             val response = movieApiService.searchMoviesHome(page, query)
             val data = response.results
             data.forEach {
                 val isFavorite = getMovieById(it.id!!) != null
                 it.isFavorite = isFavorite
             }
-            return data
+            return response
         }
 
         suspend fun getMovieById(movieId: Int) = movieDao.getMovieById(movieId)

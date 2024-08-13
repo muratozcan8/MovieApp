@@ -159,7 +159,7 @@ class HomeFragment : Fragment() {
             binding.etHomeSearchMovie.addTextChangedListener { searchText ->
                 collectFlow {
                     val text = searchText.toString()
-                    delay(500)
+                    delay(DELAY_TIME)
                     if (text == searchText.toString() && text.isNotEmpty()) {
                         viewModel.updateQuery(text)
                         searchMovie()
@@ -390,5 +390,6 @@ class HomeFragment : Fragment() {
         private var TOP_RATED = "top_rated"
         private var NOW_PLAYING = "now_playing"
         private var SEARCH = "search"
+        private const val DELAY_TIME = 500L
     }
 }

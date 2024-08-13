@@ -72,7 +72,7 @@ class SearchFragment : Fragment() {
         binding.etSearchMovie.addTextChangedListener { searchText ->
             collectFlow {
                 val text = searchText.toString()
-                delay(800)
+                delay(DELAY_TIME)
                 if (text == searchText.toString()) viewModel.searchMovies(searchText.toString())
             }
         }
@@ -173,5 +173,6 @@ class SearchFragment : Fragment() {
         private var SPAN_COUNT_SEARCH = 3
         private var SPAN_COUNT_GRID_SEARCH = 3
         private var SPAN_COUNT_LANDSCAPE_GRID_SEARCH = 6
+        private const val DELAY_TIME = 800L
     }
 }
