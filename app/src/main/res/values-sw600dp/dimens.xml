@@ -13,6 +13,7 @@
     <dimen name="movie_app_icon_size">80dp</dimen>
     <dimen name="layout_button_size">65dp</dimen>
     <dimen name="top_bar_layout_icon_size">36dp</dimen>
+    <dimen name="top_bar_height">80dp</dimen>
 
     <!--Movie Grid Item-->
     <dimen name="movie_grid_item_margin_horizontal">9dp</dimen>
@@ -22,6 +23,8 @@
     <dimen name="movie_grid_item_text_size">20sp</dimen>
     <dimen name="movie_grid_item_margin_bottom">15dp</dimen>
     <dimen name="movie_grid_item_stroke_width">3dp</dimen>
+    <dimen name="movie_grid_item_icon_margin_bottom">12dp</dimen>
+    <dimen name="movie_grid_item_text_margin_horizontal">9dp</dimen>
 
     <!--Movie Linear Item-->
     <dimen name="movie_linear_item_width">150dp</dimen>

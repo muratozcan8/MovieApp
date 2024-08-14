@@ -8,10 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
+import com.obss.firstapp.data.model.review.ReviewResult
 import com.obss.firstapp.databinding.ReviewItemBinding
-import com.obss.firstapp.ext.formatToReadableDate
-import com.obss.firstapp.model.review.ReviewResult
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.ext.formatToReadableDate
 
 class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     private var reviewList = listOf<ReviewResult>()

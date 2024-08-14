@@ -6,10 +6,10 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
+import com.obss.firstapp.data.model.movieSearch.MovieSearch
 import com.obss.firstapp.databinding.MovieGridItemBinding
-import com.obss.firstapp.ext.roundToSingleDecimal
-import com.obss.firstapp.model.movieSearch.MovieSearch
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.ext.roundToSingleDecimal
 
 class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>() {
     private var searchMovieList: List<MovieSearch> = listOf()

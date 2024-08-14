@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.view.home.HomeFragment">
 
     <LinearLayout
         android:id="@+id/ll_movie_top_bar"
@@ -17,56 +17,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/top_bar_height">
 
             <ImageView
                 android:id="@+id/iv_movie_app_icon"
                 android:layout_width="@dimen/movie_app_icon_size"
                 android:layout_height="@dimen/movie_app_icon_size"
                 android:layout_gravity="start"
-                android:layout_marginStart="5dp"
                 android:padding="5dp"
-                app:srcCompat="@drawable/movie_app_icon"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/movie_app_icon" />
 
             <View
+                android:id="@+id/view2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="@dimen/movie_app_text_size"
                 android:fontFamily="@font/eduhand_bold"
                 android:text="@string/movie_app"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="@dimen/movie_app_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"/>
 
             <ImageButton
                 android:id="@+id/ib_movie_home_search"
                 android:layout_width="@dimen/layout_button_size"
                 android:layout_height="@dimen/layout_button_size"
-                android:layout_gravity="center"
+                android:background="@drawable/search_edit_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/ib_movie_home_layout"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/search_24" />
 
             <ImageButton
                 android:id="@+id/ib_movie_home_layout"
                 android:layout_width="@dimen/layout_button_size"
                 android:layout_height="@dimen/layout_button_size"
-                android:layout_gravity="center"
-                android:layout_marginStart="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:backgroundTint="@color/gray"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/grid_view_24" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
@@ -157,19 +166,70 @@
     </LinearLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_popular_movies"
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_movies"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        android:paddingTop="5dp"
+        android:layout_marginHorizontal="@dimen/rv_margin_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_movie_top_bar"
-        android:layout_marginHorizontal="@dimen/rv_margin_horizontal"
-        android:layout_marginTop="5dp"/>
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_popular_movies"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            android:paddingTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_movie_top_bar"
+            android:layout_marginTop="5dp"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_not_found_home_searched_movie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="80dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_movie_top_bar">
+
+        <ImageView
+            android:id="@+id/iv_temp_search_movie"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/not_searched_movie"
+            />
+
+        <TextView
+            android:id="@+id/tv_temp_search_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:text="@string/no_movie_found"
+
+            />
+
+    </LinearLayout>
+
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_bar_home"

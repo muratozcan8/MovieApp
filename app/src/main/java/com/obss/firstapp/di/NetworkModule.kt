@@ -1,6 +1,6 @@
 package com.obss.firstapp.di
 
-import com.obss.firstapp.network.MovieApiService
+import com.obss.firstapp.data.network.MovieApiService
 import com.obss.firstapp.utils.Constants
 import com.obss.firstapp.utils.Constants.BEARER
 import dagger.Module

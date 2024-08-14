@@ -7,10 +7,10 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
+import com.obss.firstapp.data.model.movie.Movie
 import com.obss.firstapp.databinding.MovieGridItemBinding
-import com.obss.firstapp.ext.roundToSingleDecimal
-import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.ext.roundToSingleDecimal
 
 class RecommendationMovieAdapter : RecyclerView.Adapter<RecommendationMovieAdapter.ViewHolder>() {
     private var recommendationMovieList = listOf<Movie>()
@@ -42,6 +42,7 @@ class RecommendationMovieAdapter : RecyclerView.Adapter<RecommendationMovieAdapt
             )
             holder.binding.ivMovieGrid.scaleType = ImageView.ScaleType.FIT_CENTER
         }
+        holder.itemView.setPadding(10, 10, 10, 10)
         holder.binding.tvMovieGrid.text = movie.title
         holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal()
         holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE

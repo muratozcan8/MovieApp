@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.obss.firstapp.data.model.credit.Cast
 import com.obss.firstapp.databinding.ActorItemBinding
-import com.obss.firstapp.model.credit.Cast
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
 
 class ActorListAdapter : RecyclerView.Adapter<ActorListAdapter.ViewHolder>() {

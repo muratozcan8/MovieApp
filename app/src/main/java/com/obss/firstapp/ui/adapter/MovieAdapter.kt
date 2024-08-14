@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.obss.firstapp.R
+import com.obss.firstapp.data.model.movie.Movie
 import com.obss.firstapp.databinding.MovieGridItemBinding
 import com.obss.firstapp.databinding.MovieItemLinearBinding
-import com.obss.firstapp.ext.roundToSingleDecimal
-import com.obss.firstapp.model.movie.Movie
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.ext.roundToSingleDecimal
 import javax.inject.Inject
 
 class MovieAdapter
