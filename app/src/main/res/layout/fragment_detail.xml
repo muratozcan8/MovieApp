@@ -21,12 +21,13 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/iv_movie"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/movie_detail_iv_height"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="W,0.56"/>
 
             <View
                 android:id="@+id/view"
