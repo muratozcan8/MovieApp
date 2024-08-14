@@ -11,11 +11,4 @@ object ScreenSetting {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
-
-    fun getScreenHeight(context: Context): Int {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.heightPixels
-    }
 }

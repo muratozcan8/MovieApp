@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_background"
-    tools:context=".ui.favorite.FavoriteFragment">
+    tools:context=".ui.view.favorite.FavoriteFragment">
 
     <LinearLayout
         android:id="@+id/linear_layout_top"

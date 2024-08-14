@@ -20,11 +20,11 @@ import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
-import com.obss.firstapp.ext.formatAndCalculateAge
-import com.obss.firstapp.model.actor.Actor
-import com.obss.firstapp.ui.detail.DetailFragment.Companion.BIOGRAPHY_MAX_LENGTH
-import com.obss.firstapp.ui.detail.DetailFragment.Companion.BIOGRAPHY_MAX_LINE
+import com.obss.firstapp.data.model.actor.Actor
+import com.obss.firstapp.ui.view.detail.DetailFragment.Companion.BIOGRAPHY_MAX_LENGTH
+import com.obss.firstapp.ui.view.detail.DetailFragment.Companion.BIOGRAPHY_MAX_LINE
 import com.obss.firstapp.utils.Constants.IMAGE_BASE_URL
+import com.obss.firstapp.utils.ext.formatAndCalculateAge
 
 object DialogHelper {
     fun showCustomAlertDialog(
