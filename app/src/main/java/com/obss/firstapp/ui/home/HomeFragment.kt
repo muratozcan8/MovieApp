@@ -109,7 +109,6 @@ class HomeFragment : Fragment() {
     private fun getPopularMovies() {
         collectFlow {
             viewModel.popularMovieList.collect {
-                initRecyclerAdapter(it)
                 setLayoutView(it)
             }
         }
@@ -118,7 +117,6 @@ class HomeFragment : Fragment() {
     private fun getTopRatedMovies() {
         collectFlow {
             viewModel.topRatedMovieList.collect {
-                initRecyclerAdapter(it)
                 setLayoutView(it)
             }
         }
@@ -127,7 +125,6 @@ class HomeFragment : Fragment() {
     private fun getNowPlayingMovies() {
         collectFlow {
             viewModel.nowPlayingMovieList.collect {
-                initRecyclerAdapter(it)
                 setLayoutView(it)
             }
         }
@@ -136,7 +133,6 @@ class HomeFragment : Fragment() {
     private fun setSearchMovieListAdapter() {
         collectFlow {
             viewModel.searchMovieList.collect {
-                initRecyclerAdapter(it)
                 setLayoutView(it)
             }
         }
@@ -378,13 +374,20 @@ class HomeFragment : Fragment() {
             adapter.loadStateFlow.collect {
                 val state = it.refresh
                 binding.progressBarHome.isVisible = state is LoadState.Loading
-                if (state is LoadState.NotLoading && MOVIE_TYPE == SEARCH) {
-                    if (adapter.itemCount == 0) {
-                        binding.llNotFoundHomeSearchedMovie.visibility = View.VISIBLE
-                    } else {
-                        binding.llNotFoundHomeSearchedMovie.visibility = View.GONE
-                    }
-                }
+                setNoFoundMovieVisibility(state, adapter)
+            }
+        }
+    }
+
+    private fun setNoFoundMovieVisibility(
+        state: LoadState,
+        adapter: MovieAdapter,
+    ) {
+        if (state is LoadState.NotLoading && MOVIE_TYPE == SEARCH) {
+            if (adapter.itemCount == 0) {
+                binding.llNotFoundHomeSearchedMovie.visibility = View.VISIBLE
+            } else {
+                binding.llNotFoundHomeSearchedMovie.visibility = View.GONE
             }
         }
     }
