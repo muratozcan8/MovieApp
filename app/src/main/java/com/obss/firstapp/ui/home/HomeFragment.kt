@@ -241,6 +241,7 @@ class HomeFragment : Fragment() {
 
     private fun setSearchButtonClickListener() {
         binding.ibMovieHomeSearch.setOnClickListener {
+            binding.llNotFoundHomeSearchedMovie.visibility = View.GONE
             if (binding.toggleButton.visibility == View.VISIBLE) {
                 initRecyclerAdapter(PagingData.empty())
                 changeSearchBarVisibility(true)
@@ -274,6 +275,7 @@ class HomeFragment : Fragment() {
         binding.ivHomeSearchMovieCancel.setOnClickListener {
             binding.etHomeSearchMovie.text.clear()
             initRecyclerAdapter(PagingData.empty())
+            binding.llNotFoundHomeSearchedMovie.visibility = View.GONE
         }
     }
 
@@ -376,6 +378,13 @@ class HomeFragment : Fragment() {
             adapter.loadStateFlow.collect {
                 val state = it.refresh
                 binding.progressBarHome.isVisible = state is LoadState.Loading
+                if (state is LoadState.NotLoading && MOVIE_TYPE == SEARCH) {
+                    if (adapter.itemCount == 0) {
+                        binding.llNotFoundHomeSearchedMovie.visibility = View.VISIBLE
+                    } else {
+                        binding.llNotFoundHomeSearchedMovie.visibility = View.GONE
+                    }
+                }
             }
         }
     }

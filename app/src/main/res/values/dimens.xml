@@ -29,7 +29,7 @@
     <!--Movie Linear Item-->
     <dimen name="movie_linear_item_width">90dp</dimen>
     <dimen name="movie_linear_item_height">120dp</dimen>
-    <dimen name="movie_linear_item_text_size">14sp</dimen>
+    <dimen name="movie_linear_item_text_size">16sp</dimen>
     <dimen name="movie_linear_icon_size">18dp</dimen>
 
     <!--Search Fragment-->
