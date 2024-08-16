@@ -15,6 +15,8 @@ import com.obss.firstapp.databinding.FragmentReviewBinding
 import com.obss.firstapp.ui.adapter.ReviewAdapter
 import com.obss.firstapp.ui.adapter.ReviewAdapter.Companion.MAX_LENGTH
 import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.utils.Constants.MOVIE_ID
+import com.obss.firstapp.utils.Constants.MOVIE_NAME
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ext.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,7 +60,7 @@ class ReviewFragment : Fragment() {
     }
 
     private fun getReviews() {
-        val movieId = arguments?.getInt("movieId")
+        val movieId = arguments?.getInt(MOVIE_ID)
         viewModel.getReviews(movieId!!)
         collectFlow {
             viewModel.reviewList.collect {
@@ -73,22 +75,22 @@ class ReviewFragment : Fragment() {
         binding.tvReviewScore.text =
             if (reviewList.isNotEmpty()) {
                 reviewList
-                    .map { it.authorDetails.rating * 10 }
+                    .map { it.authorDetails.rating * SCORE_MULTIPLE }
                     .average()
                     .toInt()
                     .toString()
             } else {
-                "-"
+                EMPTY
             }
     }
 
     private fun setReviewPercentProgressBar(reviewList: List<ReviewResult>) {
-        val progress = (reviewList.map { it.authorDetails.rating * 10 }.average()).toInt()
+        val progress = (reviewList.map { it.authorDetails.rating * SCORE_MULTIPLE }.average()).toInt()
         binding.progressBarReviewScore.progress = progress
 
-        if (progress >= 80) {
+        if (progress >= PROGRESS_BAR_GREEN) {
             binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.green, null))
-        } else if (progress >= 60) {
+        } else if (progress >= PROGRESS_BAR_YELLOW) {
             binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.gold, null))
         } else {
             binding.progressBarReviewScore.setIndicatorColor(resources.getColor(R.color.red, null))
@@ -106,7 +108,7 @@ class ReviewFragment : Fragment() {
     }
 
     private fun setMovieName() {
-        val movieName = arguments?.getString("movieName")
+        val movieName = arguments?.getString(MOVIE_NAME)
         binding.tvReviewMovieName.text = movieName
     }
 
@@ -135,13 +137,22 @@ class ReviewFragment : Fragment() {
             resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         if (isLandscape) {
             changeVisibilityBottomBar(false)
-            MAX_LENGTH = 2250
+            MAX_LENGTH = MAX_LENGTH_LANDSCAPE
         } else {
-            MAX_LENGTH = 750
+            MAX_LENGTH = MAX_LENGTH_PORTRAIT
         }
     }
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
         (activity as MainActivity).changeVisibilityBottomBar(isVisible)
+    }
+
+    companion object {
+        private const val SCORE_MULTIPLE = 10
+        private const val EMPTY = "-"
+        private const val MAX_LENGTH_LANDSCAPE = 2250
+        private const val MAX_LENGTH_PORTRAIT = 750
+        private const val PROGRESS_BAR_GREEN = 80
+        private const val PROGRESS_BAR_YELLOW = 60
     }
 }

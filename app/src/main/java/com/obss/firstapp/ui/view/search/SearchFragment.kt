@@ -16,6 +16,7 @@ import com.obss.firstapp.data.model.movieSearch.MovieSearch
 import com.obss.firstapp.databinding.FragmentSearchBinding
 import com.obss.firstapp.ui.adapter.SearchMovieAdapter
 import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.utils.Constants.MARGIN_COUNT
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ScreenSetting
 import com.obss.firstapp.utils.ext.collectFlow
@@ -152,7 +153,7 @@ class SearchFragment : Fragment() {
                         ?.resources
                         ?.getDimension(R.dimen.rv_margin_horizontal)
                         ?.toInt()
-                        ?.pxToDp(requireContext())!! * 2
+                        ?.pxToDp(requireContext())!! * MARGIN_COUNT
             ).toInt()
         return screenWidthDp
     }

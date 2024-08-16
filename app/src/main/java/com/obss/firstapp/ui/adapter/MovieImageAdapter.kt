@@ -33,11 +33,18 @@ class MovieImageAdapter : RecyclerView.Adapter<MovieImageAdapter.ViewHolder>() {
         position: Int,
     ) {
         holder.view.findViewById<ImageView>(R.id.iv_slide).load("$IMAGE_BASE_URL${movieImageList[position].filePath}")
-        holder.view.findViewById<TextView>(R.id.tv_slide_count).text = "${position + 1}/${movieImageList.size}"
+        holder.view.findViewById<TextView>(R.id.tv_slide_count).text = getImageCount(position, movieImageList.size)
     }
 
     fun updateList(newList: List<MoviePoster>) {
         movieImageList = newList
         notifyDataSetChanged()
+    }
+
+    companion object {
+        fun getImageCount(
+            position: Int,
+            size: Int,
+        ): String = "${position + 1}/$size"
     }
 }

@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 findNavController(R.id.fragmentContainerView).navigate(R.id.homeFragment)
                 binding.bnvMain.visibility = View.VISIBLE
                 changeVisibilityBottomBar(true)
-            }, 2000)
+            }, SPLASH_DELAY_TIME)
         }
     }
 
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size_landscape).toInt()
             layoutParams.height = resources.getDimension(R.dimen.bottom_menu_height_landscape).toInt()
             binding.bnvMain.menu.forEach {
-                it.title = ""
+                it.title = EMPTY
             }
         } else {
             binding.bnvMain.itemIconSize = resources.getDimension(R.dimen.bottom_menu_icon_size).toInt()
@@ -112,5 +112,10 @@ class MainActivity : AppCompatActivity() {
     private fun showSystemBars() {
         val windowInsetsController = WindowCompat.getInsetsController(this.window, binding.root)
         windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
+    }
+
+    companion object {
+        private const val SPLASH_DELAY_TIME = 2000L
+        private const val EMPTY = ""
     }
 }

@@ -1,6 +1,5 @@
 package com.obss.firstapp.ui.view.detail
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -17,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.obss.firstapp.R
 import com.obss.firstapp.data.local.FavoriteMovie
@@ -29,6 +29,9 @@ import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
 import com.obss.firstapp.ui.adapter.MovieImageAdapter
 import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
 import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.utils.Constants.IS_POP_BACK_STACK
+import com.obss.firstapp.utils.Constants.MOVIE_ID
+import com.obss.firstapp.utils.Constants.POP_BACK_STACK_RESULT
 import com.obss.firstapp.utils.Constants.YOUTUBE_APP
 import com.obss.firstapp.utils.Constants.YOUTUBE_BASE_URL
 import com.obss.firstapp.utils.DialogHelper
@@ -134,14 +137,13 @@ class DetailFragment : Fragment() {
     }
 
     private fun getMovieDetailsInfo() {
-        val movieId = arguments?.getInt("movieId")
+        val movieId = arguments?.getInt(MOVIE_ID)
         viewModel.getMovieDetails(movieId!!)
         viewModel.getMovieImages(movieId)
         viewModel.getMovieCasts(movieId)
         viewModel.getVideos(movieId)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun fillMovieDetails() {
         collectFlow {
             viewModel.movie.collect { movie ->
@@ -151,21 +153,21 @@ class DetailFragment : Fragment() {
                     if (movie?.voteAverage != null) {
                         movie.voteAverage.roundToSingleDecimal()
                     } else {
-                        "-"
+                        EMPTY
                     }
                 binding.tvMovieDate.text =
                     if (movie?.releaseDate.isNullOrEmpty()) {
-                        "-"
+                        EMPTY
                     } else {
                         movie?.releaseDate?.take(DATE_LENGTH)
                     }
                 binding.tvMovieTime.text =
                     if (movie?.runtime != null) {
-                        movie.runtime.roundToInt().toString() + " min"
+                        movie.runtime.roundToInt().toString() + MIN
                     } else {
-                        "-"
+                        EMPTY
                     }
-                binding.tvSummary.text = if (movie?.overview.isNullOrEmpty()) "-" else movie?.overview
+                binding.tvSummary.text = if (movie?.overview.isNullOrEmpty()) EMPTY else movie?.overview
                 if (movie?.genres != null) initGenresRecyclerAdapter(movie.genres)
                 if (movie != null) {
                     if (movie.isFavorite) {
@@ -245,7 +247,9 @@ class DetailFragment : Fragment() {
                     )
                 } else {
                     binding.ivFavButton.setImageResource(R.drawable.favorite_24)
-                    viewModel.addFavoriteMovie(FavoriteMovie(0, movie.id, movie.title, movie.posterPath, movie.voteAverage))
+                    viewModel.addFavoriteMovie(
+                        FavoriteMovie(DEFAULT_FAVORITE_MOVIE_ID, movie.id, movie.title, movie.posterPath, movie.voteAverage),
+                    )
                     movie.isFavorite = true
                     DialogHelper.showToastMessage(requireContext(), resources.getString(R.string.added_movie))
                 }
@@ -258,9 +262,9 @@ class DetailFragment : Fragment() {
             viewModel.movieImages.collect { images ->
                 val adapter = MovieImageAdapter()
                 binding.ivMovie.adapter = adapter
-                binding.ivMovie.offscreenPageLimit = 3
+                binding.ivMovie.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
                 binding.ivMovie.clipToPadding = false
-                binding.ivMovie.setPadding(0, 0, 0, 0)
+                binding.ivMovie.setPadding(PADDING_VIEWPAGER, PADDING_VIEWPAGER, PADDING_VIEWPAGER, PADDING_VIEWPAGER)
                 adapter.updateList(images)
             }
         }
@@ -274,14 +278,14 @@ class DetailFragment : Fragment() {
 
     private fun setActorBiographyLineCount() {
         if (checkLandscapeMode()) {
-            BIOGRAPHY_MAX_LENGTH = 2250
+            BIOGRAPHY_MAX_LENGTH = BIOGRAPHY_MAX_LENGTH_LANDSCAPE
         } else {
-            BIOGRAPHY_MAX_LENGTH = 750
+            BIOGRAPHY_MAX_LENGTH = BIOGRAPHY_MAX_LENGTH_PORTRAIT
         }
     }
 
     private fun getRecommendationMovies() {
-        val movieId = arguments?.getInt("movieId")
+        val movieId = arguments?.getInt(MOVIE_ID)
         viewModel.getRecommendationMovies(movieId!!)
         collectFlow {
             viewModel.recommendationMovies.collect { movies ->
@@ -304,13 +308,13 @@ class DetailFragment : Fragment() {
     }
 
     private fun setReviewButton() {
-        val movieId = arguments?.getInt("movieId")
+        val movieId = arguments?.getInt(MOVIE_ID)
         viewModel.getReviews(movieId!!)
         collectFlow {
             viewModel.reviews.collect {
                 if (it.isNotEmpty()) {
                     binding.tvReviewSee.visibility = View.VISIBLE
-                    binding.tvReviewSee.text = "${resources.getString(R.string.see_reviews)} (${it.size})"
+                    binding.tvReviewSee.text = getReviewButtonText(resources.getString(R.string.see_reviews), it.size)
                 }
                 binding.tvReviewSee.setOnClickListener {
                     val direction = DetailFragmentDirections.actionDetailFragmentToReviewFragment(movieId, getMovieName())
@@ -320,15 +324,14 @@ class DetailFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun fillActorDetails() {
         collectFlow {
             viewModel.movieCasts.collect { casts ->
                 if (casts.isNotEmpty()) {
                     initActorsRecyclerAdapter(casts.take(ACTOR_COUNT))
-                    binding.tvActors.text = casts.take(ACTOR_COUNT).joinToString(", ") { it.name.toString() }
+                    binding.tvActors.text = casts.take(ACTOR_COUNT).joinToString(SEPARATOR) { it.name.toString() }
                 } else {
-                    binding.tvActors.text = "-"
+                    binding.tvActors.text = EMPTY
                 }
             }
         }
@@ -336,14 +339,14 @@ class DetailFragment : Fragment() {
 
     private fun changeVisibilityBottomBar(isVisible: Boolean) {
         collectFlow {
-            delay(200)
+            delay(DELAY_TIME)
             (activity as MainActivity).changeVisibilityBottomBar(isVisible)
         }
     }
 
     private fun setBackButton() {
         binding.ivBackButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult("popBackStackResult", bundleOf("isPopBackStack" to isAddFavorite))
+            parentFragmentManager.setFragmentResult(POP_BACK_STACK_RESULT, bundleOf(IS_POP_BACK_STACK to isAddFavorite))
             findNavController().popBackStack()
         }
     }
@@ -367,8 +370,21 @@ class DetailFragment : Fragment() {
         private const val ACTOR_COUNT = 3
         private const val DATE_LENGTH = 4
         var BIOGRAPHY_MAX_LENGTH = 750
+        const val BIOGRAPHY_MAX_LENGTH_PORTRAIT = 750
+        const val BIOGRAPHY_MAX_LENGTH_LANDSCAPE = 2250
         const val BIOGRAPHY_MAX_LINE = 20
         private const val YOUTUBE = "YouTube"
         private const val TRAILER = "Trailer"
+        private const val MIN = " min"
+        private const val EMPTY = ""
+        private const val PADDING_VIEWPAGER = 0
+        private const val DELAY_TIME = 200L
+        private const val SEPARATOR = ", "
+        private const val DEFAULT_FAVORITE_MOVIE_ID = 0
+
+        fun getReviewButtonText(
+            resourceString: String,
+            size: Int,
+        ): String = "$resourceString ($size)"
     }
 }

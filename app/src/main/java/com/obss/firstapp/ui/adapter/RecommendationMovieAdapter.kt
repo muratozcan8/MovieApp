@@ -42,7 +42,12 @@ class RecommendationMovieAdapter : RecyclerView.Adapter<RecommendationMovieAdapt
             )
             holder.binding.ivMovieGrid.scaleType = ImageView.ScaleType.FIT_CENTER
         }
-        holder.itemView.setPadding(10, 10, 10, 10)
+        holder.itemView.setPadding(
+            PADDING_RECOMMENDATION_MOVIE,
+            PADDING_RECOMMENDATION_MOVIE,
+            PADDING_RECOMMENDATION_MOVIE,
+            PADDING_RECOMMENDATION_MOVIE,
+        )
         holder.binding.tvMovieGrid.text = movie.title
         holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal()
         holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) View.VISIBLE else View.GONE
@@ -60,5 +65,9 @@ class RecommendationMovieAdapter : RecyclerView.Adapter<RecommendationMovieAdapt
     fun updateList(newList: List<Movie>) {
         recommendationMovieList = newList
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val PADDING_RECOMMENDATION_MOVIE = 10
     }
 }

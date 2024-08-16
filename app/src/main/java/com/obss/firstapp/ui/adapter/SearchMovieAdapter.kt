@@ -42,7 +42,7 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>()
             holder.binding.ivMovieGrid.scaleType = ImageView.ScaleType.FIT_CENTER
         }
         holder.binding.tvMovieGrid.text = movie.title
-        holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal() ?: "-"
+        holder.binding.tvMovieScoreGrid.text = movie.voteAverage?.roundToSingleDecimal() ?: EMPTY
         holder.binding.ibMovieFavGrid.visibility = if (movie.isFavorite) android.view.View.VISIBLE else android.view.View.GONE
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { it(movie) }
@@ -58,5 +58,9 @@ class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>()
     fun updateList(newList: List<MovieSearch>) {
         searchMovieList = newList
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val EMPTY = ""
     }
 }

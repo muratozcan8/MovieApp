@@ -23,6 +23,9 @@ import com.obss.firstapp.databinding.FragmentHomeBinding
 import com.obss.firstapp.ui.adapter.LoadMoreAdapter
 import com.obss.firstapp.ui.adapter.MovieAdapter
 import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.utils.Constants.IS_POP_BACK_STACK
+import com.obss.firstapp.utils.Constants.MARGIN_COUNT
+import com.obss.firstapp.utils.Constants.POP_BACK_STACK_RESULT
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ScreenSetting
 import com.obss.firstapp.utils.ext.collectFlow
@@ -87,8 +90,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkPopBackStack(adapter: MovieAdapter) {
-        setFragmentResultListener("popBackStackResult") { _, bundle ->
-            val result = bundle.getBoolean("isPopBackStack")
+        setFragmentResultListener(POP_BACK_STACK_RESULT) { _, bundle ->
+            val result = bundle.getBoolean(IS_POP_BACK_STACK)
             if (result) {
                 adapter.refresh()
             }
@@ -230,7 +233,7 @@ class HomeFragment : Fragment() {
                         ?.resources
                         ?.getDimension(R.dimen.rv_margin_horizontal)
                         ?.toInt()
-                        ?.pxToDp(requireContext())!! * 2
+                        ?.pxToDp(requireContext())!! * MARGIN_COUNT
             ).toInt()
         return screenWidthDp
     }

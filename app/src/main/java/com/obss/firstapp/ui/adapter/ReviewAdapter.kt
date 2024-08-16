@@ -1,6 +1,7 @@
 package com.obss.firstapp.ui.adapter
 
 import android.annotation.SuppressLint
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
         holder.binding.tvReviewContent.maxLines = Int.MAX_VALUE
         holder.binding.tvAuthorUsername.text = reviewList[position].authorDetails.username
         holder.binding.tvReviewRating.text = (reviewList[position].authorDetails.rating * 10).toInt().toString() + "%"
-        holder.binding.tvReviewContent.text = reviewList[position].content
+        holder.binding.tvReviewContent.text = Html.fromHtml(reviewList[position].content, Html.FROM_HTML_MODE_COMPACT)
         holder.binding.tvReviewDate.text = (reviewList[position].createdAt).formatToReadableDate()
 
         if (reviewList[position].content.length > MAX_LENGTH) {
@@ -75,7 +76,7 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
     ) {
         if (isMore) {
             reviewList[position].isMore = false
-            holder.binding.tvReviewContent.maxLines = 10
+            holder.binding.tvReviewContent.maxLines = MAX_LINE
             holder.binding.tvReviewSeeMore.text = holder.itemView.context.getString(R.string.see_more)
             val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.see_more_24)
             holder.binding.tvReviewSeeMore.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
@@ -95,5 +96,6 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
 
     companion object {
         var MAX_LENGTH = 450
+        var MAX_LINE = 10
     }
 }

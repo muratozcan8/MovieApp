@@ -33,9 +33,9 @@ class ActorListAdapter : RecyclerView.Adapter<ActorListAdapter.ViewHolder>() {
         if (!actor.profilePath.isNullOrEmpty()) {
             holder.binding.ivActor.load("$IMAGE_BASE_URL${actor.profilePath}")
         } else {
-            if (actor.gender == 2) {
+            if (actor.gender == MALE) {
                 holder.binding.ivActor.setImageResource(com.obss.firstapp.R.drawable.face_male_24)
-            } else if (actor.gender == 1) {
+            } else if (actor.gender == FEMALE) {
                 holder.binding.ivActor.setImageResource(com.obss.firstapp.R.drawable.face_female_24)
             }
         }
@@ -53,5 +53,10 @@ class ActorListAdapter : RecyclerView.Adapter<ActorListAdapter.ViewHolder>() {
     fun updateList(newList: List<Cast>) {
         actorList = newList
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val FEMALE = 1
+        private const val MALE = 2
     }
 }
