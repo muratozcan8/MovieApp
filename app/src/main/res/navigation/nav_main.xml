@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.obss.firstapp.ui.view.home.HomeFragment"
+        android:name="com.obss.firstapp.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.obss.firstapp.ui.view.favorite.FavoriteFragment"
+        android:name="com.obss.firstapp.ui.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.obss.firstapp.ui.view.search.SearchFragment"
+        android:name="com.obss.firstapp.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.obss.firstapp.ui.view.detail.DetailFragment"
+        android:name="com.obss.firstapp.ui.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <action
@@ -104,7 +104,7 @@
     </fragment>
     <fragment
         android:id="@+id/reviewFragment"
-        android:name="com.obss.firstapp.ui.view.review.ReviewFragment"
+        android:name="com.obss.firstapp.ui.review.ReviewFragment"
         android:label="fragment_review"
         tools:layout="@layout/fragment_review" >
         <action
@@ -123,7 +123,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.obss.firstapp.ui.view.home.SplashFragment"
+        android:name="com.obss.firstapp.ui.home.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action

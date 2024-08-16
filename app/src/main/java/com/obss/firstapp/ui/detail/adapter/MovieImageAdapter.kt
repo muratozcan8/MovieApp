@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.adapter
+package com.obss.firstapp.ui.detail.adapter
 
 import android.view.LayoutInflater
 import android.view.View

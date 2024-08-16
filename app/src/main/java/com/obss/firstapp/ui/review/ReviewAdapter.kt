@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.adapter
+package com.obss.firstapp.ui.review
 
 import android.annotation.SuppressLint
 import android.text.Html

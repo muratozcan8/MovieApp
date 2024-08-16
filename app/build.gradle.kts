@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -18,6 +20,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProperties = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(localProperties.inputStream())
+        val bearerToken = properties.getProperty("BEARER") ?: ""
+
+        buildConfigField(
+            type = "String",
+            name = "BEARER",
+            value = bearerToken,
+        )
     }
 
     buildTypes {
@@ -39,6 +52,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

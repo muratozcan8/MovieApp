@@ -1,8 +1,8 @@
 package com.obss.firstapp.di
 
+import com.obss.firstapp.BuildConfig
 import com.obss.firstapp.data.network.MovieApiService
 import com.obss.firstapp.utils.Constants
-import com.obss.firstapp.utils.Constants.BEARER
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +33,7 @@ class NetworkModule
                         chain
                             .request()
                             .newBuilder()
-                            .addHeader("Authorization", "Bearer $BEARER")
+                            .addHeader("Authorization", "Bearer ${BuildConfig.BEARER}")
                             .build()
                     chain.proceed(request)
                 }.build()

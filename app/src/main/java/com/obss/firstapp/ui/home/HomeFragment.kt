@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.home
+package com.obss.firstapp.ui.home
 
 import android.app.Dialog
 import android.content.res.Configuration
@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.obss.firstapp.R
 import com.obss.firstapp.data.model.movie.Movie
 import com.obss.firstapp.databinding.FragmentHomeBinding
-import com.obss.firstapp.ui.adapter.LoadMoreAdapter
-import com.obss.firstapp.ui.adapter.MovieAdapter
-import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.ui.MainActivity
+import com.obss.firstapp.ui.home.adapter.LoadMoreAdapter
+import com.obss.firstapp.ui.home.adapter.MovieAdapter
 import com.obss.firstapp.utils.Constants.IS_POP_BACK_STACK
 import com.obss.firstapp.utils.Constants.MARGIN_COUNT
 import com.obss.firstapp.utils.Constants.POP_BACK_STACK_RESULT

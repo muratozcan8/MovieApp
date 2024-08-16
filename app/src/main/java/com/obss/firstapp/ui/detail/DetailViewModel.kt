@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.detail
+package com.obss.firstapp.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

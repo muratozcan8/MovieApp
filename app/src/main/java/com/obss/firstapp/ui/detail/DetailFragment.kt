@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.detail
+package com.obss.firstapp.ui.detail
 
 import android.app.Dialog
 import android.content.ActivityNotFoundException
@@ -24,11 +24,11 @@ import com.obss.firstapp.data.model.credit.Cast
 import com.obss.firstapp.data.model.movieDetail.Genre
 import com.obss.firstapp.data.model.movieDetail.MovieDetail
 import com.obss.firstapp.databinding.FragmentDetailBinding
-import com.obss.firstapp.ui.adapter.ActorListAdapter
-import com.obss.firstapp.ui.adapter.MovieCategoryAdapter
-import com.obss.firstapp.ui.adapter.MovieImageAdapter
-import com.obss.firstapp.ui.adapter.RecommendationMovieAdapter
-import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.ui.MainActivity
+import com.obss.firstapp.ui.detail.adapter.ActorListAdapter
+import com.obss.firstapp.ui.detail.adapter.MovieCategoryAdapter
+import com.obss.firstapp.ui.detail.adapter.MovieImageAdapter
+import com.obss.firstapp.ui.detail.adapter.RecommendationMovieAdapter
 import com.obss.firstapp.utils.Constants.IS_POP_BACK_STACK
 import com.obss.firstapp.utils.Constants.MOVIE_ID
 import com.obss.firstapp.utils.Constants.POP_BACK_STACK_RESULT

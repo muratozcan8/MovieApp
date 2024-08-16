@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.favorite
+package com.obss.firstapp.ui.favorite
 
 import android.app.Dialog
 import android.content.res.Configuration
@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.obss.firstapp.R
 import com.obss.firstapp.databinding.FragmentFavoriteBinding
-import com.obss.firstapp.ui.adapter.FavoriteMovieAdapter
-import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.utils.Constants.MARGIN_COUNT
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ScreenSetting

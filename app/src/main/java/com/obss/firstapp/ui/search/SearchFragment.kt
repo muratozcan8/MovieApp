@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.search
+package com.obss.firstapp.ui.search
 
 import android.app.Dialog
 import android.content.res.Configuration
@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.obss.firstapp.R
 import com.obss.firstapp.data.model.movieSearch.MovieSearch
 import com.obss.firstapp.databinding.FragmentSearchBinding
-import com.obss.firstapp.ui.adapter.SearchMovieAdapter
-import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.ui.MainActivity
 import com.obss.firstapp.utils.Constants.MARGIN_COUNT
 import com.obss.firstapp.utils.DialogHelper
 import com.obss.firstapp.utils.ScreenSetting

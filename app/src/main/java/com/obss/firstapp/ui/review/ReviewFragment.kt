@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.review
+package com.obss.firstapp.ui.review
 
 import android.app.Dialog
 import android.content.res.Configuration
@@ -12,9 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.obss.firstapp.R
 import com.obss.firstapp.data.model.review.ReviewResult
 import com.obss.firstapp.databinding.FragmentReviewBinding
-import com.obss.firstapp.ui.adapter.ReviewAdapter
-import com.obss.firstapp.ui.adapter.ReviewAdapter.Companion.MAX_LENGTH
-import com.obss.firstapp.ui.view.MainActivity
+import com.obss.firstapp.ui.MainActivity
+import com.obss.firstapp.ui.review.ReviewAdapter.Companion.MAX_LENGTH
 import com.obss.firstapp.utils.Constants.MOVIE_ID
 import com.obss.firstapp.utils.Constants.MOVIE_NAME
 import com.obss.firstapp.utils.DialogHelper

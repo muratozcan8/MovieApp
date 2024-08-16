@@ -1,4 +1,4 @@
-package com.obss.firstapp.ui.view.review
+package com.obss.firstapp.ui.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
