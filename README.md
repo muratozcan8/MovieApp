@@ -3,13 +3,12 @@
 MovieApp is an Android application that allows users to explore movies, view details, and save their favorite movies. This project demonstrates the use of modern Android development tools and practices, including MVVM architecture, Hilt for dependency injection, Room for local data storage, Retrofit for API requests, and xml for the UI.
 
 ## Screenshots
-![Screenshot_1725217384](https://github.com/user-attachments/assets/7185ad53-020c-4494-b5f1-052f99145bd1)
 <img src="https://github.com/user-attachments/assets/7185ad53-020c-4494-b5f1-052f99145bd1" alt="App Screenshot" width="300"/>
-![Screenshot_1725217388](https://github.com/user-attachments/assets/a683ab7a-764a-4d97-8241-7548cf898a9d)
-![Screenshot_1725217392](https://github.com/user-attachments/assets/07170277-88d2-440b-aa71-b35b091e208d)
-![Screenshot_1725217396](https://github.com/user-attachments/assets/a24b2c45-3fba-4222-8da7-38c24fb229ec)
-![Screenshot_1725217410](https://github.com/user-attachments/assets/ae67ea1d-07c9-4763-9529-fc4e5c1ca4a5)
-![Screenshot_1725217414](https://github.com/user-attachments/assets/bc26f296-58bf-4f5a-8bd2-35a2dc4afda2)
+<img src="https://github.com/user-attachments/assets/a683ab7a-764a-4d97-8241-7548cf898a9d" alt="App Screenshot" width="300"/>
+<img src="https://github.com/user-attachments/assets/07170277-88d2-440b-aa71-b35b091e208d" alt="App Screenshot" width="300"/>
+<img src="https://github.com/user-attachments/assets/a24b2c45-3fba-4222-8da7-38c24fb229ec" alt="App Screenshot" width="300"/>
+<img src="https://github.com/user-attachments/assets/ae67ea1d-07c9-4763-9529-fc4e5c1ca4a5" alt="App Screenshot" width="300"/>
+<img src="https://github.com/user-attachments/assets/bc26f296-58bf-4f5a-8bd2-35a2dc4afda2" alt="App Screenshot" width="300"/>
 
 
 ## Features
