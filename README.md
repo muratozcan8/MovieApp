@@ -4,6 +4,7 @@ MovieApp is an Android application that allows users to explore movies, view det
 
 ## Screenshots
 ![Screenshot_1725217384](https://github.com/user-attachments/assets/7185ad53-020c-4494-b5f1-052f99145bd1)
+<img src="https://github.com/user-attachments/assets/7185ad53-020c-4494-b5f1-052f99145bd1" alt="App Screenshot" width="300"/>
 ![Screenshot_1725217388](https://github.com/user-attachments/assets/a683ab7a-764a-4d97-8241-7548cf898a9d)
 ![Screenshot_1725217392](https://github.com/user-attachments/assets/07170277-88d2-440b-aa71-b35b091e208d)
 ![Screenshot_1725217396](https://github.com/user-attachments/assets/a24b2c45-3fba-4222-8da7-38c24fb229ec)
